@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+/**
+ * Generates the parser script used by the library
+ */
+const fs = require('fs');
+const Parser = require("jison").Parser;
+const Grammar = require('./grammar');
+
+const source = new Parser(Grammar, {
+    type: 'slr'
+}).generate();
+
+fs.writeFileSync(`${__dirname}/../src/_parser.js`, source);
