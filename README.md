@@ -55,6 +55,12 @@ be replaced depending on which language the DatQL library supports, the markup r
 open way to write SQL. Plus, DatQL at a glance is much easier to understand than SQL, especially for those who are not SQL
 experts.
 
+### “Idk... sounds like a load of bull. Do people even use this?”
+Yes, as a matter of fact, DQL is slowly replacing all query building operations in the 
+[@GoLinguistic](https://github.com/GoLinguistic) codebase (closed source, sorry). DQL was developed out of Linguistic do
+to the need for an abstract, unified way for communicating with the platform's Postgres database. As a result, DQL will 
+continue to improve and grow to meet the needs of the Linguistic platform.  
+
 The Markup
 ----------
 ### Queries & Mutations
@@ -184,3 +190,92 @@ your selectors simple and keep fields to the left of any operator.
 3. While this library is designed to be an abstraction over SQL, certain database-specific functions such as `Now()` have
 not yet been abstracted and will need to be changed manually if you switch databases. Ideally, in the future DatQL will 
 include its own built-in functions which will automatically be converted between databases.
+
+Support Table
+-------------
+<table>
+    <tr>
+        <td rowspan="11">Selecting</td>
+        <td>Single Table</td>
+        <td>✔</td>
+    </tr>
+    <tr>
+        <td>Multiple tables</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td>Sub-queries as tables</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+       <td>Fields & Aliases</td>
+       <td>✔</td>
+    </tr>  
+    <tr>
+       <td>Joins</td>
+       <td>✔</td>
+    </tr>  
+    <tr>
+       <td>Filtering</td>
+       <td>✔</td>
+    </tr>  
+    <tr>
+        <td>Sorting</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td>Grouping</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td>Having</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td>Limits & Offsets</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td>Unions</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td rowspan="5">Inserting & Updating</td>
+        <td>Fields</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td>Batch operations</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td>Filtering</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td>Sorting</td>
+        <td>✘</td>
+    </tr>  
+    <tr>
+        <td>Limits</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td rowspan="4">Deleting</td>
+        <td>Joins</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td>Filtering</td>
+        <td>✘</td>
+    </tr>
+    <tr>
+        <td>Sorting</td>
+        <td>✘</td>
+    </tr>  
+    <tr>
+        <td>Limits</td>
+        <td>✘</td>
+    </tr>
+    
+</table>
