@@ -8,7 +8,6 @@ module.exports = {
             ['\\d+\\b', "return 'NUMBER';"],
             ['query|mutation\\b', "return 'DEFINITION';"],
             ['[\\w\\_\\d]+', "return 'STRING';"],
-            // ['\\$[\\w\\_\\d]+', "return 'VARIABLE';"],
             ['[\\!+\\-*\\/%&|^=><]+', "return 'OPERATOR';"],
             ['\\{', "return '{'"],
             ['\\}', "return '}'"],
@@ -83,7 +82,7 @@ module.exports = {
             ],
             [
                 'Definition Text Block',
-                '$$ = { type: $1.toUpperCase(), name: $2, variables: [], nodes: $4 }'
+                '$$ = { type: $1.toUpperCase(), name: $2, variables: [], nodes: $3 }'
             ]
         ],
 

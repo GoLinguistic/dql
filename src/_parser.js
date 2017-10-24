@@ -266,7 +266,7 @@ var parser = (function() {
                         type: $$[$0 - 2].toUpperCase(),
                         name: $$[$0 - 1],
                         variables: [],
-                        nodes: $$[$01]
+                        nodes: $$[$0]
                     };
                     break;
                 case 13:
