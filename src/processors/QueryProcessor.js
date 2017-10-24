@@ -33,8 +33,10 @@ class QueryProcessor extends Processor {
         // Initialize qb
         let qb = this._qb.select().from(name);
 
-        // Get all FIELD nodes
-        let fields = nodes.filter(x => x.type === Nodes.FIELD);
+        // Get all FIELD nodes and prepend the table name to their values
+        let fields = nodes
+            .filter(x => x.type === Nodes.FIELD)
+            .map(x => ({ ...x, value: `${name}.${x.value}` }));
 
         // Iterate through each field and add it to the QueryBuilder
         fields.forEach(field => {
