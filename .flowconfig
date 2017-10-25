@@ -1,0 +1,23 @@
+[ignore]
+# Ignore node_modules because fuck that
+.*/node_modules/.*
+.*/bin/.*
+
+[options]
+# Add emojis to status messages because emojis are cool 😎
+emoji=true
+
+# Enable decorators
+esproposal.decorators=ignore
+
+# Enabled strict argument types
+experimental.strict_type_args=true
+
+# Only run flow on the following file extensions
+module.file_ext=.js
+
+# Allow getters and setters in index.js files
+unsafe.enable_getters_and_setters=true
+
+[version]
+^0.57.3

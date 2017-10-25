@@ -1,8 +1,10 @@
+// @flow
 import Processor from './Processor';
 import QueryBuilder from '../util/QueryBuilder';
 import Nodes from '../util/Nodes';
 import Helpers from '../util/Helpers';
 import JoinProcessor from './JoinProcessor';
+import type { TableNode, DocumentNode, FieldNode } from '../util/Types';
 
 /**
  * QueryProcessor
@@ -10,6 +12,8 @@ import JoinProcessor from './JoinProcessor';
  * Processes all query documents (the equivalent of a SELECT statement)
  */
 class QueryProcessor extends Processor {
+    _qb: QueryBuilder;
+
     /**
      * Processes a table block
      *
@@ -20,7 +24,7 @@ class QueryProcessor extends Processor {
      * @returns {qb}
      * @private
      */
-    _processTable(root, node, variables) {
+    _processTable(root: DocumentNode[], node: TableNode, variables: {}) {
         // Get the name and parameters associated with the table
         const { name, params, nodes } = node;
 
@@ -33,10 +37,13 @@ class QueryProcessor extends Processor {
         // Initialize qb
         let qb = this._qb.select().from(name);
 
-        // Get all FIELD nodes and prepend the table name to their values
-        let fields = nodes
+        // // Get all FIELD nodes and prepend the table name to their values
+        let fields: FieldNode[] = nodes
             .filter(x => x.type === Nodes.FIELD)
-            .map(x => ({ ...x, value: `${name}.${x.value}` }));
+            .map(x => ({
+                ...x,
+                value: `${name}.${x.value}`
+            }));
 
         // Iterate through each field and add it to the QueryBuilder
         fields.forEach(field => {
@@ -58,9 +65,26 @@ class QueryProcessor extends Processor {
         return qb;
     }
 
-    process(root, node, variables) {
-        let qb = this._qb;
+    /**
+     * Processes a query document
+     *
+     * @param root          Root of the document
+     * @param node          Query node
+     * @param variables     Global variables
+     * @returns {QueryBuilder}
+     */
+    process(
+        root: DocumentNode[],
+        node: DocumentNode,
+        variables: {},
+        qb: QueryBuilder = this._qb
+    ): QueryBuilder {
         const { variables: req_var, nodes } = node;
+
+        if (node.type !== Nodes.QUERY)
+            throw new Error(
+                'Only a query document node can be passed to a QueryProcessor'
+            );
 
         req_var.forEach(v => {
             if (!variables || !variables.hasOwnProperty(v)) {
@@ -80,4 +104,4 @@ class QueryProcessor extends Processor {
     }
 }
 
-export default flavor => new QueryProcessor(QueryBuilder(flavor));
+export default (flavor: string) => new QueryProcessor(QueryBuilder(flavor));

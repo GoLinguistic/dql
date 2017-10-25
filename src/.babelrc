@@ -12,5 +12,5 @@
       "stage-2",
       "babili"
   ],
-  "plugins": ["external-helpers"]
+  "plugins": ["external-helpers", "transform-flow-strip-types"]
 }

@@ -1,3 +1,4 @@
+// @flow
 import squel from 'squel';
 
-export default flavor => squel.useFlavour(flavor || 'mysql');
+export default (flavor: string) => squel.useFlavour(flavor || 'mysql');

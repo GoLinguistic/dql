@@ -1,6 +1,21 @@
+// @flow
 import Processor from './Processor';
 import Helpers from '../util/Helpers';
 import Nodes from '../util/Nodes';
+import type {
+    TableNode,
+    DocumentNode,
+    FieldNode,
+    JoinNode
+} from '../util/Types';
+import QueryBuilder from '../util/QueryBuilder';
+
+type ProcessedJoin = {
+    qb: QueryBuilder,
+    table: string,
+    fields: FieldNode[],
+    on: string
+};
 
 class JoinProcessor extends Processor {
     /**
@@ -11,7 +26,7 @@ class JoinProcessor extends Processor {
      * @param aliases   Array of defined aliases
      * @private
      */
-    _applyFields(qb, fields, aliases) {
+    _applyFields(qb: QueryBuilder, fields: FieldNode[], aliases: string[]) {
         fields.forEach(field => {
             if (field.alias) {
                 // Use an alias if one has already been defined for the field
@@ -36,7 +51,12 @@ class JoinProcessor extends Processor {
      * @param aliases       Keeps track of all previously declared aliases up the stack
      * @private
      */
-    _processJoin(root, node, variables, aliases) {
+    _processJoin(
+        root: DocumentNode[],
+        node: JoinNode,
+        variables: {},
+        aliases: string[]
+    ) {
         // Get basic information associated with join
         const { table, on, nodes } = node;
 
@@ -55,15 +75,19 @@ class JoinProcessor extends Processor {
             .join(' AND ');
 
         // Get all sub-joins
-        const joins = [];
+        const joins: ProcessedJoin[] = [];
+
         nodes.filter(x => x.type === Nodes.JOIN).forEach(join => {
             joins.push(this._processJoin(root, join, variables, aliases));
         });
 
         // Get all local files
-        const fields = nodes
-            .filter(x => x.type === Nodes.FIELD)
-            .map(x => ({ ...x, value: `${table}.${x.value}` }));
+        const fields = ((nodes.filter(
+            x => x.type === Nodes.FIELD
+        ): any[]): FieldNode[]).map((x: FieldNode) => ({
+            ...x,
+            value: `${table}.${x.value}`
+        }));
 
         // Start a new QueryBuilder
         const qb = this._qb.select().from(table);
@@ -82,13 +106,15 @@ class JoinProcessor extends Processor {
         // All sub-join fields to query
         joins.forEach(join => this._applyFields(qb, join.fields, aliases));
 
+        const field_vals = fields.map(x => x.value);
+
         // Add fields used in the 'on' statement but aren't returned by the full query
         on
             .map(x => Helpers.getFieldsFromOperationString(x, variables, []))
             .reduce((a, b) => a.concat(b))
             .forEach(field => {
                 const name = `${table}.${field.value}`;
-                if (!fields.includes(name)) qb.field(name);
+                if (!field_vals.includes(name)) qb.field(name);
             });
 
         // Add all sub-joins to the query
@@ -113,11 +139,18 @@ class JoinProcessor extends Processor {
      * @param qb            QueryBuilder object
      * @returns {*}
      */
-    process(root, node, variables, qb) {
-        const aliases = [];
-        const joins = node.nodes
+    process(
+        root: DocumentNode[],
+        node: TableNode,
+        variables: {},
+        qb: QueryBuilder
+    ): QueryBuilder {
+        const aliases: string[] = [];
+        const joins: ProcessedJoin[] = node.nodes
             .filter(x => x.type === Nodes.JOIN)
-            .map(x => this._processJoin(root, x, variables, aliases));
+            .map((x: JoinNode) =>
+                this._processJoin(root, x, variables, aliases)
+            );
 
         // Add fields from joins
         joins.forEach(join => this._applyFields(qb, join.fields, aliases));
@@ -129,4 +162,4 @@ class JoinProcessor extends Processor {
     }
 }
 
-export default queryBuilder => new JoinProcessor(queryBuilder);
+export default (queryBuilder: QueryBuilder) => new JoinProcessor(queryBuilder);

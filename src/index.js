@@ -1,3 +1,4 @@
+// @flow
 import Nodes from './util/Nodes';
 
 import parser from './_parser';
@@ -5,7 +6,7 @@ import parser from './_parser';
 import QueryProcessor from './processors/QueryProcessor';
 
 const dql = flavor =>
-    function(strings) {
+    function(strings: string[]) {
         const args = Array.from(arguments);
         const literals = args[0];
 

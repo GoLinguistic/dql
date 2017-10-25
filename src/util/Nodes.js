@@ -1,3 +1,4 @@
+// @flow
 export default {
     TABLE: 'TABLE',
     JOIN: 'JOIN',
@@ -6,5 +7,6 @@ export default {
     FIELD: 'FIELD',
     OPERATION: 'OPERATION',
     VARIABLE: 'VARIABLE',
-    BUILT_IN: 'BUILT_IN'
+    BUILT_IN: 'BUILT_IN',
+    MUTATION: 'MUTATION'
 };

@@ -1,4 +1,6 @@
+// Flow has to ignore this file because of the recursion in builderOperationStringHelper()
 import Nodes from './Nodes';
+import QueryProcessor from '../processors/QueryProcessor';
 
 function resolveVariable(variable, variables) {
     const v = variables[variable];
@@ -44,6 +46,7 @@ function buildOperationStringHelper(
             true,
             aliases
         );
+
         const b_bos = buildOperationStringHelper(
             root,
             null,
