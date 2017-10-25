@@ -1,6 +1,6 @@
 // @flow
 import QueryBuilder from '../util/QueryBuilder';
-import type { DocumentNode } from '../util/Types';
+import type { Config, DocumentNode } from '../util/Types';
 
 class Processor {
     _qb: QueryBuilder;
@@ -14,7 +14,7 @@ class Processor {
         this._qb = queryBuilder;
     }
 
-    process(root: DocumentNode[], node: any, variables: {}, qb: QueryBuilder) {
+    process(root: DocumentNode[], node: any, config: Config, qb: QueryBuilder) {
         throw new Error('No process() method implemented for this class');
     }
 }

@@ -82,3 +82,14 @@ export type DocumentNode = {
     variables: {}[],
     nodes: TableNode[]
 };
+
+/**
+ * Non-Node Types
+ * ==============
+ */
+export type Config = {
+    variables: {},
+    orderBy: string,
+    descending: boolean,
+    groupBy: string
+};

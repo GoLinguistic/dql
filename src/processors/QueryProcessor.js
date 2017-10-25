@@ -4,7 +4,7 @@ import QueryBuilder from '../util/QueryBuilder';
 import Nodes from '../util/Nodes';
 import Helpers from '../util/Helpers';
 import JoinProcessor from './JoinProcessor';
-import type { TableNode, DocumentNode, FieldNode } from '../util/Types';
+import type { TableNode, Config, DocumentNode, FieldNode } from '../util/Types';
 
 /**
  * QueryProcessor
@@ -24,9 +24,15 @@ class QueryProcessor extends Processor {
      * @returns {qb}
      * @private
      */
-    _processTable(root: DocumentNode[], node: TableNode, variables: {}) {
+    _processTable(
+        root: DocumentNode[],
+        node: TableNode,
+        variables: {},
+        options: {}
+    ) {
         // Get the name and parameters associated with the table
         const { name, params, nodes } = node;
+        const { orderBy, descending, groupBy } = options;
 
         // From the parameters, create an operator tree and generate
         // an array of selector strings to use in the WHERE() call
@@ -62,6 +68,14 @@ class QueryProcessor extends Processor {
             );
         }
 
+        // Add grouping
+        if (typeof groupBy !== 'undefined' && groupBy !== null)
+            qb.group(groupBy);
+
+        // Add order
+        if (typeof orderBy !== 'undefined' && orderBy !== null)
+            qb.order(orderBy, !descending);
+
         return qb;
     }
 
@@ -76,9 +90,10 @@ class QueryProcessor extends Processor {
     process(
         root: DocumentNode[],
         node: DocumentNode,
-        variables: {},
+        config: Config,
         qb: QueryBuilder = this._qb
     ): QueryBuilder {
+        const { variables, ...options } = config;
         const { variables: req_var, nodes } = node;
 
         if (node.type !== Nodes.QUERY)
@@ -95,7 +110,7 @@ class QueryProcessor extends Processor {
         nodes.forEach(node => {
             switch (node.type) {
                 case Nodes.TABLE:
-                    qb = this._processTable(root, node, variables);
+                    qb = this._processTable(root, node, variables, options);
                     break;
             }
         });

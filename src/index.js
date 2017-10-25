@@ -24,25 +24,25 @@ const dql = flavor =>
 
         return function() {
             let name = null;
-            let variables = {};
+            let config = {};
             let as_string = false;
 
             switch (arguments.length) {
                 case 1:
-                    variables = arguments[0];
+                    config = arguments[0];
                     break;
                 case 2:
                     if (typeof arguments[0] === 'string') {
                         name = arguments[0];
-                        variables = arguments[1];
+                        config = arguments[1];
                     } else {
-                        variables = arguments[0];
+                        config = arguments[0];
                         as_string = arguments[1];
                     }
                     break;
                 case 3:
                     name = arguments[0];
-                    variables = arguments[1];
+                    config = arguments[1];
                     as_string = arguments[2];
                     break;
             }
@@ -64,7 +64,7 @@ const dql = flavor =>
                     processed = QueryProcessor(flavor).process(
                         trees,
                         ast,
-                        variables
+                        config
                     );
                     break;
                 default:

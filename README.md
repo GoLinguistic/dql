@@ -145,12 +145,16 @@ const getBookmarksForUser = dql`
  * } 
  */
 const sql = getBookmarksForUser({
-    user_id: 1002
+    variables: {
+        user_id: 1002   
+    }
 });
 
 // Outputs SELECT id, bookmarks.name AS bookmark_name FROM users INNER JOIN (SELECT bookmarks.name, bookmarks.user_id FROM bookmarks) AS bookmarks ON (bookmarks.user_id = users.id) WHERE (id = 1002)
 const sql_str = getBookmarksForUser({
-    user_id: 1002
+    variables: {
+        user_id: 1002   
+    }
 });
 ```
 
@@ -161,9 +165,27 @@ pass in the name of the entry-point document as the first argument of the functi
 
 ```javascript
 getBookmarksForUser('getBookmarksForUser', {
-    user_id: 1002
+    variables: {
+        user_id: 1002   
+    }
 }, true);
 ```
+
+To order your query by a specific field, simply pass in the `orderBy` configuration option. By default, all fields are 
+in ascending order. To switch to descending, set the `descending` property to `true`:
+
+
+```javascript
+getBookmarksForUser('getBookmarksForUser', {
+    variables: {
+        user_id: 1002   
+    },
+    orderBy: 'id',
+    descending: true
+}, true);
+```
+
+Lastly, you can also pass in a `groupBy` option to group aggregated results based on certain fields.
 
 Caveats
 -------
@@ -195,7 +217,7 @@ Support Table
 -------------
 <table>
     <tr>
-        <td rowspan="11">Selecting</td>
+        <td rowspan="11">Selecting (46% completed)</td>
         <td>Single Table</td>
         <td>✔</td>
     </tr>
@@ -221,11 +243,11 @@ Support Table
     </tr>  
     <tr>
         <td>Sorting</td>
-        <td>✘</td>
+        <td>✔</td>
     </tr>
     <tr>
         <td>Grouping</td>
-        <td>✘</td>
+        <td>✔</td>
     </tr>
     <tr>
         <td>Having</td>
@@ -240,7 +262,7 @@ Support Table
         <td>✘</td>
     </tr>
     <tr>
-        <td rowspan="5">Inserting & Updating</td>
+        <td rowspan="5">Inserting & Updating (0% completed)</td>
         <td>Fields</td>
         <td>✘</td>
     </tr>
@@ -261,7 +283,7 @@ Support Table
         <td>✘</td>
     </tr>
     <tr>
-        <td rowspan="4">Deleting</td>
+        <td rowspan="4">Deleting (0% completed)</td>
         <td>Joins</td>
         <td>✘</td>
     </tr>
