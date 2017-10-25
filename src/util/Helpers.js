@@ -28,7 +28,8 @@ function buildOperationStringHelper(
     variables,
     params,
     left_side,
-    aliases
+    aliases,
+    qb
 ) {
     // If the node is an operation
     if (node.type === Nodes.OPERATION) {
@@ -44,7 +45,8 @@ function buildOperationStringHelper(
             variables,
             params,
             true,
-            aliases
+            aliases,
+            qb
         );
 
         const b_bos = buildOperationStringHelper(
@@ -54,7 +56,8 @@ function buildOperationStringHelper(
             variables,
             params,
             false,
-            aliases
+            aliases,
+            qb
         );
 
         // We return text and variables separately to allow Squel
@@ -112,7 +115,11 @@ function buildOperationStringHelper(
         // Return the object and process the call
         return {
             text: '?',
-            variables: [QueryProcessor.process(root, target_query, vmap)]
+            variables: [
+                QueryProcessor(qb.flavour).process(root, target_query, {
+                    variables: vmap
+                })
+            ]
         };
     } else if (left_side) {
         return {
@@ -176,7 +183,8 @@ class Helpers {
      * @param variables
      * @returns {{text, variables}}
      */
-    static buildOperationString(root, table, node, variables, aliases) {
+    static buildOperationString(root, table, node, variables, aliases, qb) {
+        // console.log(arguments);
         return buildOperationStringHelper(
             root,
             table,
@@ -184,7 +192,8 @@ class Helpers {
             variables,
             [],
             false,
-            aliases || {}
+            aliases || {},
+            qb
         );
     }
 

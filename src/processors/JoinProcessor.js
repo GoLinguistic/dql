@@ -67,7 +67,9 @@ class JoinProcessor extends Processor {
                     root,
                     node.table,
                     x,
-                    variables
+                    variables,
+                    aliases,
+                    this._qb
                 );
 
                 return Helpers.interpolateVariables(op.text, op.variables);

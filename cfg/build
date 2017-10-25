@@ -3,11 +3,9 @@
  * Generates the parser script used by the library
  */
 const fs = require('fs');
-const Parser = require("jison").Parser;
+const Parser = require('jison').Parser;
 const Grammar = require('./grammar');
 
-const source = new Parser(Grammar, {
-    type: 'slr'
-}).generate();
+const source = new Parser(fs.readFileSync(`${__dirname}/grammar.jison`, 'utf8')).generate();
 
 fs.writeFileSync(`${__dirname}/../src/_parser.js`, source);

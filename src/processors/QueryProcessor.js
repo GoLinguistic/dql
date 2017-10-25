@@ -37,7 +37,7 @@ class QueryProcessor extends Processor {
         // From the parameters, create an operator tree and generate
         // an array of selector strings to use in the WHERE() call
         const selectors = params.map(x =>
-            Helpers.buildOperationString(root, null, x, variables)
+            Helpers.buildOperationString(root, null, x, variables, [], this._qb)
         );
 
         // Initialize qb
@@ -110,7 +110,12 @@ class QueryProcessor extends Processor {
         nodes.forEach(node => {
             switch (node.type) {
                 case Nodes.TABLE:
-                    qb = this._processTable(root, node, variables, options);
+                    qb = this._processTable(
+                        root,
+                        node,
+                        variables || {},
+                        options
+                    );
                     break;
             }
         });

@@ -15,8 +15,8 @@ export default {
             exclude: 'node_modules/**'
         }),
         commonjs(),
-        resolve(),
-        uglify({}, minify)
+        resolve()
+        // uglify({}, minify)
     ],
     external: ['fs', 'path']
 };
