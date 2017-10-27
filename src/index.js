@@ -4,6 +4,7 @@ import Nodes from './util/Nodes';
 import parser from './_parser';
 
 import QueryProcessor from './processors/QueryProcessor';
+import MutationProcessor from './processors/MutationProcessor';
 
 const dql = flavor =>
     function(strings: string[]) {
@@ -62,6 +63,13 @@ const dql = flavor =>
             switch (ast.type) {
                 case Nodes.QUERY:
                     processed = QueryProcessor(flavor).process(
+                        trees,
+                        ast,
+                        config
+                    );
+                    break;
+                case Nodes.MUTATION:
+                    processed = MutationProcessor(flavor).process(
                         trees,
                         ast,
                         config

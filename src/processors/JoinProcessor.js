@@ -33,12 +33,12 @@ class JoinProcessor extends Processor {
                 if (aliases.includes(field.alias)) qb.field(field.alias);
                 else {
                     // Otherwise declare the alias and add it to our list of aliases
-                    qb.field(field.value, field.alias);
+                    qb.field(field.name, field.alias);
                     aliases.push(field.alias);
                 }
             } else
                 // Or just add the value if there isn't an alias
-                qb.field(field.value);
+                qb.field(field.name);
         });
     }
 
@@ -88,7 +88,7 @@ class JoinProcessor extends Processor {
             x => x.type === Nodes.FIELD
         ): any[]): FieldNode[]).map((x: FieldNode) => ({
             ...x,
-            value: `${table}.${x.value}`
+            name: `${table}.${x.name}`
         }));
 
         // Start a new QueryBuilder
@@ -102,7 +102,11 @@ class JoinProcessor extends Processor {
 
         // Add local fields to query
         fields.forEach(field => {
-            qb.field(field.value);
+            if (field.value)
+                throw new Error(
+                    'Values cannot be assigned to fields in a query document'
+                );
+            qb.field(field.name);
         });
 
         // All sub-join fields to query
@@ -115,7 +119,7 @@ class JoinProcessor extends Processor {
             .map(x => Helpers.getFieldsFromOperationString(x, variables, []))
             .reduce((a, b) => a.concat(b))
             .forEach(field => {
-                const name = `${table}.${field.value}`;
+                const name = `${table}.${field.name}`;
                 if (!field_vals.includes(name)) qb.field(name);
             });
 

@@ -16,8 +16,9 @@ export type TextNode = {
 
 export type FieldNode = {
     type: 'FIELD',
-    value: string,
-    alias: string
+    name: string,
+    value: string | null,
+    alias: string | null
 };
 
 export type VariableNode = {

@@ -115,6 +115,19 @@ query getBookmarksForUser($user_id) {
 }
 ```
 
+### INSERT & UPDATE
+INSERT and UPDATE statements are both grouped under mutation documents. Whether the resultant query uses INSERT or UPDATE
+is dependent on whether a selector is specified for the table. If one is present, the existing row is updated. If one is
+not provided, a new row is inserted. For example, to update a user's name:
+
+```
+mutation getBookmarksForUser($user_id, $user_name) {
+    users(id = $user_id) {
+        name: $user_name
+    }
+}
+```
+
 API
 ---
 Similar to Apollo's [graphql-tag](https://github.com/apollographql/graphql-tag), DatQL uses an ES2015 template literal 
@@ -262,9 +275,9 @@ Support Table
         <td>✘</td>
     </tr>
     <tr>
-        <td rowspan="5">Inserting & Updating (0% completed)</td>
+        <td rowspan="5">Inserting & Updating (60% completed)</td>
         <td>Fields</td>
-        <td>✘</td>
+        <td>✔</td>
     </tr>
     <tr>
         <td>Batch operations</td>
@@ -272,11 +285,11 @@ Support Table
     </tr>
     <tr>
         <td>Filtering</td>
-        <td>✘</td>
+        <td>✔</td>
     </tr>
     <tr>
         <td>Sorting</td>
-        <td>✘</td>
+        <td>✔</td>
     </tr>  
     <tr>
         <td>Limits</td>

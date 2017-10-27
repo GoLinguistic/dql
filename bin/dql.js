@@ -108,34 +108,34 @@ var parser = function () {
         for (o = o || {}, l = k.length; l--; o[k[l]] = v);return o;
     },
         $V0 = [1, 5],
-        $V1 = [1, 12],
+        $V1 = [1, 14],
         $V2 = [1, 8],
         $V3 = [1, 11],
         $V4 = [1, 13],
-        $V5 = [4, 5, 8, 10, 22, 23, 24, 28, 29, 31, 32, 33, 36, 38],
+        $V5 = [4, 5, 8, 12, 24, 25, 26, 30, 31, 33, 34, 35, 38, 40, 44],
         $V6 = [1, 19],
         $V7 = [1, 26],
-        $V8 = [22, 24],
-        $V9 = [4, 10, 38],
-        $Va = [1, 35],
-        $Vb = [22, 24, 31, 33],
-        $Vc = [1, 49],
-        $Vd = [1, 47],
-        $Ve = [1, 48],
-        $Vf = [1, 54],
-        $Vg = [1, 58],
-        $Vh = [4, 8, 28, 29];
+        $V8 = [24, 26],
+        $V9 = [4, 12, 40],
+        $Va = [1, 36],
+        $Vb = [1, 45],
+        $Vc = [1, 54],
+        $Vd = [1, 55],
+        $Ve = [1, 60],
+        $Vf = [24, 26, 33, 35],
+        $Vg = [1, 64],
+        $Vh = [4, 8, 30, 31];
     var parser = { trace: function trace() {},
         yy: {},
-        symbols_: { "error": 2, "Text": 3, "STRING": 4, ".": 5, "TextString": 6, "Number": 7, "NUMBER": 8, "Join": 9, "JOIN_OP": 10, "Definition": 11, "DEFINITION": 12, "Root": 13, "DocumentList": 14, "Document": 15, "Variables": 16, "Block": 17, "QueryCall": 18, "Params": 19, "ParamList": 20, "Variable": 21, ",": 22, "(": 23, ")": 24, "$": 25, "VariableList": 26, "BuiltInFunc": 27, "'": 28, "\"": 29, "Equation": 30, "OPERATOR": 31, "[": 32, "]": 33, "EquationList": 34, "Selectors": 35, "{": 36, "BlockContent": 37, "}": 38, "Content": 39, "JoinOperation": 40, "TableOperation": 41, "$accept": 0, "$end": 1 },
-        terminals_: { 2: "error", 4: "STRING", 5: ".", 8: "NUMBER", 10: "JOIN_OP", 12: "DEFINITION", 22: ",", 23: "(", 24: ")", 25: "$", 28: "'", 29: "\"", 31: "OPERATOR", 32: "[", 33: "]", 36: "{", 38: "}" },
-        productions_: [0, [3, 1], [3, 3], [6, 1], [6, 1], [6, 2], [6, 2], [7, 1], [9, 1], [11, 1], [13, 1], [15, 4], [15, 3], [14, 2], [14, 1], [18, 2], [20, 0], [20, 1], [20, 1], [20, 3], [20, 3], [19, 3], [21, 2], [16, 2], [16, 3], [26, 1], [26, 3], [27, 4], [27, 4], [30, 1], [30, 1], [30, 1], [30, 1], [30, 1], [30, 3], [30, 3], [30, 3], [34, 1], [34, 3], [35, 3], [17, 3], [37, 1], [37, 2], [39, 1], [39, 1], [39, 1], [39, 4], [41, 3], [41, 2], [40, 4]],
+        symbols_: { "error": 2, "Text": 3, "STRING": 4, ".": 5, "TextString": 6, "Number": 7, "NUMBER": 8, "Boolean": 9, "BOOLEAN": 10, "Join": 11, "JOIN_OP": 12, "Definition": 13, "DEFINITION": 14, "Root": 15, "DocumentList": 16, "Document": 17, "Variables": 18, "Block": 19, "QueryCall": 20, "Params": 21, "ParamList": 22, "Variable": 23, ",": 24, "(": 25, ")": 26, "$": 27, "VariableList": 28, "BuiltInFunc": 29, "'": 30, "\"": 31, "Equation": 32, "OPERATOR": 33, "[": 34, "]": 35, "EquationList": 36, "Selectors": 37, "{": 38, "BlockContent": 39, "}": 40, "Content": 41, "JoinOperation": 42, "TableOperation": 43, ":": 44, "$accept": 0, "$end": 1 },
+        terminals_: { 2: "error", 4: "STRING", 5: ".", 8: "NUMBER", 10: "BOOLEAN", 12: "JOIN_OP", 14: "DEFINITION", 24: ",", 25: "(", 26: ")", 27: "$", 30: "'", 31: "\"", 33: "OPERATOR", 34: "[", 35: "]", 38: "{", 40: "}", 44: ":" },
+        productions_: [0, [3, 1], [3, 3], [6, 1], [6, 1], [6, 2], [6, 2], [7, 1], [9, 1], [11, 1], [13, 1], [15, 1], [17, 4], [17, 3], [16, 2], [16, 1], [20, 2], [22, 0], [22, 1], [22, 1], [22, 3], [22, 3], [21, 3], [23, 2], [18, 2], [18, 3], [28, 1], [28, 3], [29, 4], [29, 4], [32, 1], [32, 1], [32, 1], [32, 1], [32, 1], [32, 3], [32, 3], [32, 3], [36, 1], [36, 3], [37, 3], [19, 3], [39, 1], [39, 2], [41, 1], [41, 1], [41, 1], [41, 4], [41, 3], [41, 3], [41, 3], [41, 3], [43, 3], [43, 2], [42, 4]],
         performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
             /* this == yyval */
 
             var $0 = $$.length - 1;
             switch (yystate) {
-                case 1:case 3:case 4:case 7:case 8:case 9:case 22:case 32:case 43:case 44:
+                case 1:case 3:case 4:case 7:case 8:case 9:case 10:case 23:case 33:case 44:case 45:
                     this.$ = $$[$0];
                     break;
                 case 2:
@@ -144,79 +144,91 @@ var parser = function () {
                 case 5:case 6:
                     this.$ = $$[$0 - 1] + ' ' + $$[$0];
                     break;
-                case 10:
+                case 11:
                     return this.$ = $$[$0];
                     break;
-                case 11:
+                case 12:
                     this.$ = { type: $$[$0 - 3].toUpperCase(), name: $$[$0 - 2], variables: $$[$0 - 1], nodes: $$[$0] };
                     break;
-                case 12:
+                case 13:
                     this.$ = { type: $$[$0 - 2].toUpperCase(), name: $$[$0 - 1], variables: [], nodes: $$[$0] };
                     break;
-                case 13:case 42:
+                case 14:case 43:
                     this.$ = $$[$0 - 1];$$[$0 - 1].push($$[$0]);
                     break;
-                case 14:case 25:case 37:case 41:
+                case 15:case 26:case 38:case 42:
                     this.$ = [$$[$0]];
                     break;
-                case 15:
+                case 16:
                     this.$ = { type: 'QUERY_CALL', name: $$[$0 - 1], params: $$[$0] };
                     break;
-                case 16:
+                case 17:
                     this.$ = [''];
                     break;
-                case 17:
+                case 18:
                     this.$ = [{ type: 'TEXT', value: $$[$0] }];
                     break;
-                case 18:
+                case 19:
                     this.$ = [{ type: 'VARIABLE', value: $$[$0] }];
                     break;
-                case 19:case 20:case 26:case 38:
+                case 20:case 21:case 27:case 39:
                     this.$ = $$[$0 - 2];$$[$0 - 2].push($$[$0]);
                     break;
-                case 21:case 24:case 35:case 36:case 39:case 40:
+                case 22:case 25:case 36:case 37:case 40:case 41:
                     this.$ = $$[$0 - 1];
                     break;
-                case 23:
+                case 24:
                     this.$ = [];
                     break;
-                case 27:case 28:
+                case 28:case 29:
                     this.$ = $$[$0 - 3] + " '" + $$[$0 - 1] + "'";
                     break;
-                case 29:
+                case 30:
                     this.$ = { type: 'TEXT', value: $$[$0] };
                     break;
-                case 30:
+                case 31:
                     this.$ = { type: 'NUMBER', value: $$[$0] };
                     break;
-                case 31:
+                case 32:
                     this.$ = { type: 'VARIABLE', value: $$[$0] };
                     break;
-                case 33:
+                case 34:
                     this.$ = { type: 'BUILT_IN', value: $$[$0] };
                     break;
-                case 34:
+                case 35:
                     this.$ = { type: 'OPERATION', a: $$[$0 - 2], op: $$[$0 - 1], b: $$[$0] };
                     break;
-                case 45:
-                    this.$ = { type: 'FIELD', value: $$[$0], alias: null };
-                    break;
                 case 46:
-                    this.$ = { type: 'FIELD', value: $$[$0 - 3], alias: $$[$0 - 1] };
+                    this.$ = { type: 'FIELD', name: $$[$0], value: null, alias: null };
                     break;
                 case 47:
-                    this.$ = { type: 'TABLE', name: $$[$0 - 2].trim(), params: $$[$0 - 1], nodes: $$[$0] };
+                    this.$ = { type: 'FIELD', name: $$[$0 - 3], value: null, alias: $$[$0 - 1] };
                     break;
                 case 48:
-                    this.$ = { type: 'TABLE', name: $$[$0 - 1].trim(), params: [], nodes: $$[$0] };
+                    this.$ = { type: 'FIELD', name: $$[$0 - 2], value: $$[$0] === 'true', alias: null };
                     break;
                 case 49:
+                    this.$ = { type: 'FIELD', name: $$[$0 - 2], value: $$[$0], alias: null };
+                    break;
+                case 50:
+                    this.$ = { type: 'FIELD', name: $$[$0 - 2], value: Number($$[$0]), alias: null };
+                    break;
+                case 51:
+                    this.$ = { type: 'FIELD', name: $$[$0 - 2], value: { type: 'VARIABLE', value: $$[$0] }, alias: null };
+                    break;
+                case 52:
+                    this.$ = { type: 'TABLE', name: $$[$0 - 2].trim(), params: $$[$0 - 1], nodes: $$[$0] };
+                    break;
+                case 53:
+                    this.$ = { type: 'TABLE', name: $$[$0 - 1].trim(), params: [], nodes: $$[$0] };
+                    break;
+                case 54:
                     this.$ = { type: 'JOIN', table: $$[$0 - 2].trim(), on: $$[$0 - 1], nodes: $$[$0] };
                     break;
             }
         },
-        table: [{ 11: 4, 12: $V0, 13: 1, 14: 2, 15: 3 }, { 1: [3] }, { 1: [2, 10], 11: 4, 12: $V0, 15: 6 }, o($V1, [2, 14]), { 3: 7, 4: $V2 }, { 4: [2, 9] }, o($V1, [2, 13]), { 5: $V3, 16: 9, 17: 10, 23: $V1, 36: $V4 }, o($V5, [2, 1]), { 17: 14, 36: $V4 }, o($V1, [2, 12]), { 4: [1, 15] }, { 21: 18, 24: [1, 16], 25: $V6, 26: 17 }, { 3: 24, 4: $V2, 9: 25, 10: $V7, 37: 20, 39: 21, 40: 22, 41: 23 }, o($V1, [2, 11]), o($V5, [2, 2]), { 36: [2, 23] }, { 22: [1, 28], 24: [1, 27] }, o($V8, [2, 25]), { 3: 29, 4: $V2 }, { 3: 24, 4: $V2, 9: 25, 10: $V7, 38: [1, 30], 39: 31, 40: 22, 41: 23 }, o($V9, [2, 41]), o($V9, [2, 43]), o($V9, [2, 44]), o($V9, [2, 45], { 35: 33, 17: 34, 5: $V3, 23: $Va, 32: [1, 32], 36: $V4 }), { 3: 36, 4: $V2 }, { 4: [2, 8] }, { 36: [2, 24] }, { 21: 37, 25: $V6 }, o($Vb, [2, 22], { 5: $V3 }), o([1, 4, 10, 12, 38], [2, 40]), o($V9, [2, 42]), { 3: 38, 4: $V2 }, { 17: 39, 36: $V4 }, o($V9, [2, 48]), { 3: 42, 4: $V2, 7: 43, 8: $Vc, 18: 45, 21: 44, 23: $Vd, 25: $V6, 27: 46, 30: 41, 32: $Ve, 34: 40 }, { 5: $V3, 23: $Va, 35: 50 }, o($V8, [2, 26]), { 5: $V3, 33: [1, 51] }, o($V9, [2, 47]), { 22: [1, 53], 24: [1, 52] }, o($V8, [2, 37], { 31: $Vf }), o($Vb, [2, 29], { 19: 55, 5: $V3, 23: $Vg, 28: [1, 56], 29: [1, 57] }), o($Vb, [2, 30]), o($Vb, [2, 31]), o($Vb, [2, 32]), o($Vb, [2, 33]), { 3: 42, 4: $V2, 7: 43, 8: $Vc, 18: 45, 21: 44, 23: $Vd, 25: $V6, 27: 46, 30: 59, 32: $Ve }, { 3: 42, 4: $V2, 7: 43, 8: $Vc, 18: 45, 21: 44, 23: $Vd, 25: $V6, 27: 46, 30: 60, 32: $Ve }, o([4, 8, 22, 24, 28, 29, 31, 33], [2, 7]), { 17: 61, 36: $V4 }, o($V9, [2, 46]), { 36: [2, 39] }, { 3: 42, 4: $V2, 7: 43, 8: $Vc, 18: 45, 21: 44, 23: $Vd, 25: $V6, 27: 46, 30: 62, 32: $Ve }, { 3: 42, 4: $V2, 7: 43, 8: $Vc, 18: 45, 21: 44, 23: $Vd, 25: $V6, 27: 46, 30: 63, 32: $Ve }, o($Vb, [2, 15]), { 3: 65, 4: $V2, 6: 64, 7: 66, 8: $Vc }, { 3: 65, 4: $V2, 6: 67, 7: 66, 8: $Vc }, o($V8, [2, 16], { 20: 68, 3: 69, 21: 70, 4: $V2, 25: $V6 }), { 24: [1, 71], 31: $Vf }, { 31: $Vf, 33: [1, 72] }, o($V9, [2, 49]), o($V8, [2, 38], { 31: $Vf }), o([22, 24, 33], [2, 34], { 31: $Vf }), { 3: 75, 4: $V2, 7: 74, 8: $Vc, 28: [1, 73] }, o($Vh, [2, 3], { 5: $V3 }), o($Vh, [2, 4]), { 3: 75, 4: $V2, 7: 74, 8: $Vc, 29: [1, 76] }, { 22: [1, 78], 24: [1, 77] }, o($V8, [2, 17], { 5: $V3 }), o($V8, [2, 18]), o($Vb, [2, 35]), o($Vb, [2, 36]), o($Vb, [2, 27]), o($Vh, [2, 5]), o($Vh, [2, 6], { 5: $V3 }), o($Vb, [2, 28]), o($Vb, [2, 21]), { 3: 80, 4: $V2, 18: 79 }, o($V8, [2, 19]), o($V8, [2, 20], { 19: 55, 5: $V3, 23: $Vg })],
-        defaultActions: { 5: [2, 9], 16: [2, 23], 26: [2, 8], 27: [2, 24], 52: [2, 39] },
+        table: [{ 13: 4, 14: $V0, 15: 1, 16: 2, 17: 3 }, { 1: [3] }, { 1: [2, 11], 13: 4, 14: $V0, 17: 6 }, o($V1, [2, 15]), { 3: 7, 4: $V2 }, { 4: [2, 10] }, o($V1, [2, 14]), { 5: $V3, 18: 9, 19: 10, 25: [1, 12], 38: $V4 }, o($V5, [2, 1]), { 19: 14, 38: $V4 }, o($V1, [2, 13]), { 4: [1, 15] }, { 23: 18, 26: [1, 16], 27: $V6, 28: 17 }, { 3: 24, 4: $V2, 11: 25, 12: $V7, 39: 20, 41: 21, 42: 22, 43: 23 }, o($V1, [2, 12]), o($V5, [2, 2]), { 38: [2, 24] }, { 24: [1, 28], 26: [1, 27] }, o($V8, [2, 26]), { 3: 29, 4: $V2 }, { 3: 24, 4: $V2, 11: 25, 12: $V7, 40: [1, 30], 41: 31, 42: 22, 43: 23 }, o($V9, [2, 42]), o($V9, [2, 44]), o($V9, [2, 45]), o($V9, [2, 46], { 37: 34, 19: 35, 5: $V3, 25: $Va, 34: [1, 32], 38: $V4, 44: [1, 33] }), { 3: 37, 4: $V2 }, { 4: [2, 9] }, { 38: [2, 25] }, { 23: 38, 27: $V6 }, o([4, 12, 24, 26, 33, 35, 40], [2, 23], { 5: $V3 }), o([1, 4, 12, 14, 40], [2, 41]), o($V9, [2, 43]), { 3: 39, 4: $V2 }, { 3: 41, 4: $V2, 7: 42, 8: $Vb, 9: 40, 10: [1, 44], 23: 43, 27: $V6 }, { 19: 46, 38: $V4 }, o($V9, [2, 53]), { 3: 49, 4: $V2, 7: 50, 8: $Vb, 20: 52, 23: 51, 25: $Vc, 27: $V6, 29: 53, 32: 48, 34: $Vd, 36: 47 }, { 5: $V3, 25: $Va, 37: 56 }, o($V8, [2, 27]), { 5: $V3, 35: [1, 57] }, o($V9, [2, 48]), o($V9, [2, 49], { 5: $V3 }), o($V9, [2, 50]), o($V9, [2, 51]), o($V9, [2, 8]), o([4, 8, 12, 24, 26, 30, 31, 33, 35, 40], [2, 7]), o($V9, [2, 52]), { 24: [1, 59], 26: [1, 58] }, o($V8, [2, 38], { 33: $Ve }), o($Vf, [2, 30], { 21: 61, 5: $V3, 25: $Vg, 30: [1, 62], 31: [1, 63] }), o($Vf, [2, 31]), o($Vf, [2, 32]), o($Vf, [2, 33]), o($Vf, [2, 34]), { 3: 49, 4: $V2, 7: 50, 8: $Vb, 20: 52, 23: 51, 25: $Vc, 27: $V6, 29: 53, 32: 65, 34: $Vd }, { 3: 49, 4: $V2, 7: 50, 8: $Vb, 20: 52, 23: 51, 25: $Vc, 27: $V6, 29: 53, 32: 66, 34: $Vd }, { 19: 67, 38: $V4 }, o($V9, [2, 47]), { 38: [2, 40] }, { 3: 49, 4: $V2, 7: 50, 8: $Vb, 20: 52, 23: 51, 25: $Vc, 27: $V6, 29: 53, 32: 68, 34: $Vd }, { 3: 49, 4: $V2, 7: 50, 8: $Vb, 20: 52, 23: 51, 25: $Vc, 27: $V6, 29: 53, 32: 69, 34: $Vd }, o($Vf, [2, 16]), { 3: 71, 4: $V2, 6: 70, 7: 72, 8: $Vb }, { 3: 71, 4: $V2, 6: 73, 7: 72, 8: $Vb }, o($V8, [2, 17], { 22: 74, 3: 75, 23: 76, 4: $V2, 27: $V6 }), { 26: [1, 77], 33: $Ve }, { 33: $Ve, 35: [1, 78] }, o($V9, [2, 54]), o($V8, [2, 39], { 33: $Ve }), o([24, 26, 35], [2, 35], { 33: $Ve }), { 3: 81, 4: $V2, 7: 80, 8: $Vb, 30: [1, 79] }, o($Vh, [2, 3], { 5: $V3 }), o($Vh, [2, 4]), { 3: 81, 4: $V2, 7: 80, 8: $Vb, 31: [1, 82] }, { 24: [1, 84], 26: [1, 83] }, o($V8, [2, 18], { 5: $V3 }), o($V8, [2, 19]), o($Vf, [2, 36]), o($Vf, [2, 37]), o($Vf, [2, 28]), o($Vh, [2, 5]), o($Vh, [2, 6], { 5: $V3 }), o($Vf, [2, 29]), o($Vf, [2, 22]), { 3: 86, 4: $V2, 20: 85 }, o($V8, [2, 20]), o($V8, [2, 21], { 21: 61, 5: $V3, 25: $Vg })],
+        defaultActions: { 5: [2, 10], 16: [2, 24], 26: [2, 9], 27: [2, 25], 58: [2, 40] },
         parseError: function parseError(str, hash) {
             if (hash.recoverable) {
                 this.trace(str);
@@ -688,54 +700,60 @@ var parser = function () {
                         return 8;
                         break;
                     case 2:
-                        return 12;
+                        return 14;
                         break;
                     case 3:
-                        return 4;
+                        return 10;
                         break;
                     case 4:
-                        return 31;
+                        return 4;
                         break;
                     case 5:
-                        return 36;
+                        return 33;
                         break;
                     case 6:
                         return 38;
                         break;
                     case 7:
-                        return 23;
+                        return 40;
                         break;
                     case 8:
-                        return 24;
-                        break;
-                    case 9:
-                        return 10;
-                        break;
-                    case 10:
-                        return 22;
-                        break;
-                    case 11:
-                        return '\'';
-                        break;
-                    case 12:
-                        return 29;
-                        break;
-                    case 13:
-                        return 5;
-                        break;
-                    case 14:
                         return 25;
                         break;
+                    case 9:
+                        return 26;
+                        break;
+                    case 10:
+                        return 12;
+                        break;
+                    case 11:
+                        return 24;
+                        break;
+                    case 12:
+                        return '\'';
+                        break;
+                    case 13:
+                        return 31;
+                        break;
+                    case 14:
+                        return 5;
+                        break;
                     case 15:
-                        return 32;
+                        return 27;
                         break;
                     case 16:
-                        return 33;
+                        return 34;
+                        break;
+                    case 17:
+                        return 35;
+                        break;
+                    case 18:
+                        return 44;
                         break;
                 }
             },
-            rules: [/^(?:\s+)/, /^(?:\d+\b)/, /^(?:query|mutation\b)/, /^(?:[\w\_\d]+)/, /^(?:[\!+\-*\/%&|^=><]+)/, /^(?:\{)/, /^(?:\})/, /^(?:\()/, /^(?:\))/, /^(?:\.{3}\s*on\b)/, /^(?:,)/, /^(?:')/, /^(?:")/, /^(?:\.)/, /^(?:\$)/, /^(?:\[)/, /^(?:\])/],
-            conditions: { "INITIAL": { "rules": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], "inclusive": true } }
+            rules: [/^(?:\s+)/, /^(?:\d+\b)/, /^(?:query|mutation\b)/, /^(?:false|true\b)/, /^(?:[\w\_\d]+)/, /^(?:[\!+\-*\/%&|^=><]+)/, /^(?:\{)/, /^(?:\})/, /^(?:\()/, /^(?:\))/, /^(?:\.{3}\s*on\b)/, /^(?:,)/, /^(?:')/, /^(?:")/, /^(?:\.)/, /^(?:\$)/, /^(?:\[)/, /^(?:\])/, /^(?::)/],
+            conditions: { "INITIAL": { "rules": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "inclusive": true } }
         };
         return lexer;
     }();
@@ -5115,12 +5133,12 @@ class JoinProcessor extends Processor {
                 // Use an alias if one has already been defined for the field
                 if (aliases.includes(field.alias)) qb.field(field.alias);else {
                     // Otherwise declare the alias and add it to our list of aliases
-                    qb.field(field.value, field.alias);
+                    qb.field(field.name, field.alias);
                     aliases.push(field.alias);
                 }
             } else
                 // Or just add the value if there isn't an alias
-                qb.field(field.value);
+                qb.field(field.name);
         });
     }
 
@@ -5153,7 +5171,7 @@ class JoinProcessor extends Processor {
 
         // Get all local files
         const fields = nodes.filter(x => x.type === Nodes.FIELD).map(x => _extends({}, x, {
-            value: `${table}.${x.value}`
+            name: `${table}.${x.name}`
         }));
 
         // Start a new QueryBuilder
@@ -5164,7 +5182,8 @@ class JoinProcessor extends Processor {
 
         // Add local fields to query
         fields.forEach(field => {
-            qb.field(field.value);
+            if (field.value) throw new Error('Values cannot be assigned to fields in a query document');
+            qb.field(field.name);
         });
 
         // All sub-join fields to query
@@ -5174,7 +5193,7 @@ class JoinProcessor extends Processor {
 
         // Add fields used in the 'on' statement but aren't returned by the full query
         on.map(x => Helpers.getFieldsFromOperationString(x, variables, [])).reduce((a, b) => a.concat(b)).forEach(field => {
-            const name = `${table}.${field.value}`;
+            const name = `${table}.${field.name}`;
             if (!field_vals.includes(name)) qb.field(name);
         });
 
@@ -5247,12 +5266,12 @@ class QueryProcessor extends Processor {
 
         // // Get all FIELD nodes and prepend the table name to their values
         let fields = nodes.filter(x => x.type === Nodes.FIELD).map(x => _extends({}, x, {
-            value: `${name}.${x.value}`
+            name: `${name}.${x.name}`
         }));
 
         // Iterate through each field and add it to the QueryBuilder
         fields.forEach(field => {
-            if (field.alias) qb.field(field.value, field.alias);else qb.field(field.value);
+            if (field.value) throw new Error('Values cannot be assigned to fields in a query document');else if (field.alias) qb.field(field.name, field.alias);else qb.field(field.name);
         });
 
         // Iterate through each join and add it to the QueryBuilder
@@ -5307,6 +5326,124 @@ class QueryProcessor extends Processor {
 
 var QueryProcessor$1 = (flavor => new QueryProcessor(QueryBuilder(flavor)));
 
+/**
+ * MutationProcessor
+ * ==============
+ * Processes all mutation documents (the equivalent of an INSERT or UPDATE statement)
+ */
+class MutationProcessor extends Processor {
+
+    /**
+     * Processes a table block
+     *
+     * @param qb         The qb object
+     * @param root          The root of the document (contains all queries, mutations, etc.)
+     * @param node          The table node to process
+     * @param variables     All variables passed to the query
+     * @returns {qb}
+     * @private
+     */
+    _processTable(root, node, variables, options) {
+        // Get the name and parameters associated with the table
+        const { name, params, nodes } = node;
+        const { returning, descending, orderBy } = options;
+
+        // Method for throwing errors for invalid fields
+        const verifyField = field => {
+            if (field.alias) throw new Error('Aliases not allowed in mutations');else if (field.value === null) throw new Error(`Value required for field '${field.name}'`);else return true;
+        };
+
+        let qb;
+
+        if (nodes.filter(x => x.type === Nodes.JOIN).length > 0) throw new Error('Join statements are not allowed in mutations');
+
+        // Get all FIELD nodes and prepend the table name to their values
+        let fields = nodes.filter(x => x.type === Nodes.FIELD).map(x => _extends({}, x, {
+            name: `${name}.${x.name}`
+        }));
+
+        // If we have selectors, then we're updating a row
+        if (params.length > 0) {
+            // From the parameters, create an operator tree and generate
+            // an array of selector strings to use in the WHERE() call
+            const selectors = params.map(x => Helpers.buildOperationString(root, null, x, variables, [], this._qb));
+
+            // Initialize the query builder
+            qb = this._qb.update().table(name);
+
+            // Iterate through each field and add it to the QueryBuilder
+            fields.forEach(field => {
+                verifyField(field);
+
+                if (typeof field.value === 'object' && field.value.type === Nodes.VARIABLE) {
+                    const variable = field.value.value;
+                    const val = variables[variable];
+
+                    if (typeof val === 'undefined') throw new Error(`Could not find variable: ${variable}`);else qb.set(field.name, val);
+                } else qb.set(field.name, field.value);
+            });
+
+            // Include selectors
+            qb = qb.where(selectors.map(x => x.text).join(' AND '), ...selectors.map(x => x.variables).reduce((a, b) => a.concat(b)));
+
+            // Add order
+            if (typeof orderBy !== 'undefined' && orderBy !== null) qb.order(orderBy, !descending);
+        } else {
+            qb = this._qb.insert().into(name);
+
+            // Iterate through each field and add it to the QueryBuilder
+            fields.forEach(field => {
+                verifyField(field);
+
+                if (typeof field.value === 'object' && field.value.type === Nodes.VARIABLE) {
+                    const variable = field.value.value;
+                    const val = variables[variable];
+
+                    if (typeof val === 'undefined') throw new Error(`Could not find variable: ${variable}`);else qb.set(field.name, val);
+                } else qb.set(field.name, field.value);
+            });
+
+            if (returning) qb.returning(returning);
+        }
+
+        return qb;
+    }
+
+    /**
+     * Processes a query document
+     *
+     * @param root          Root of the document
+     * @param node          Query node
+     * @param variables     Global variables
+     * @returns {QueryBuilder}
+     */
+    process(root, node, config, qb = this._qb) {
+        const { variables } = config,
+              options = objectWithoutProperties(config, ['variables']);
+        const { variables: req_var, nodes } = node;
+
+        if (node.type !== Nodes.MUTATION) throw new Error('Only a mutation document node can be passed to a MutationProcessor');
+
+        req_var.forEach(v => {
+            if (!variables || !variables.hasOwnProperty(v)) {
+                throw new Error(`Missing required variable ${v.toString()}`);
+            }
+        });
+
+        nodes.forEach(node => {
+            switch (node.type) {
+                case Nodes.TABLE:
+                    qb = this._processTable(root, node, variables || {}, options);
+                    break;
+            }
+        });
+
+        return qb;
+    }
+}
+
+var MutationProcessor$1 = (flavor => new MutationProcessor(QueryBuilder(flavor)));
+
 const dql = flavor => function (strings) {
     const args = Array.from(arguments);
     const literals = args[0];
@@ -5359,6 +5496,9 @@ const dql = flavor => function (strings) {
         switch (ast.type) {
             case Nodes.QUERY:
                 processed = QueryProcessor$1(flavor).process(trees, ast, config);
+                break;
+            case Nodes.MUTATION:
+                processed = MutationProcessor$1(flavor).process(trees, ast, config);
                 break;
             default:
                 throw new Error('Unrecognized document type');

@@ -28,7 +28,11 @@ class QueryProcessor extends Processor {
         root: DocumentNode[],
         node: TableNode,
         variables: {},
-        options: {}
+        options: {
+            orderBy: string,
+            descending: boolean,
+            groupBy: string
+        }
     ) {
         // Get the name and parameters associated with the table
         const { name, params, nodes } = node;
@@ -48,13 +52,17 @@ class QueryProcessor extends Processor {
             .filter(x => x.type === Nodes.FIELD)
             .map(x => ({
                 ...x,
-                value: `${name}.${x.value}`
+                name: `${name}.${x.name}`
             }));
 
         // Iterate through each field and add it to the QueryBuilder
         fields.forEach(field => {
-            if (field.alias) qb.field(field.value, field.alias);
-            else qb.field(field.value);
+            if (field.value)
+                throw new Error(
+                    'Values cannot be assigned to fields in a query document'
+                );
+            else if (field.alias) qb.field(field.name, field.alias);
+            else qb.field(field.name);
         });
 
         // Iterate through each join and add it to the QueryBuilder
