@@ -1,8 +1,25 @@
-DatQL (DQL)
-===========
+<div align="center">
+    <img src="https://github.com/Nickersoft/dql/raw/master/logo.png" width="400" />
+</div>
 
-An Introduction
----------------
+Contents
+--------
+
+- [Introduction](#introduction)
+    - [What is DatQL?](#what-is-datql)
+    - [Motivation](#so-whats-the-point)
+    - [Legitimacy](#idk-sounds-like-a-load-of-bull-do-people-even-use-this)
+- [The Markup](#the-markup)
+    - [Queries & Mutations](#queries--mutations)
+    - [Selecting](#select)
+    - [Joining](#join)
+    - [Inserting & Updating](#insert--update)
+- [API](#api)
+- [Caveats](#caveats)
+- [Support Table](#support-table)
+    
+Introduction
+------------
 
 ### What is DatQL?
 DatQL (a working title short for Data Query Language and pronounced *dat-quill*) is a 
