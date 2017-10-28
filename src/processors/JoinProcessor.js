@@ -119,7 +119,7 @@ class JoinProcessor extends Processor {
             .map(x => Helpers.getFieldsFromOperationString(x, variables, []))
             .reduce((a, b) => a.concat(b))
             .forEach(field => {
-                const name = `${table}.${field.name}`;
+                const name = `${table}.${field.value}`;
                 if (!field_vals.includes(name)) qb.field(name);
             });
 

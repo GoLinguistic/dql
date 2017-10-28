@@ -1,9 +1,11 @@
-'use strict';
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('fs'), require('path')) :
+	typeof define === 'function' && define.amd ? define(['fs', 'path'], factory) :
+	(global.dql = factory(global.fs,global.path));
+}(this, (function (fs,path) { 'use strict';
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var fs = _interopDefault(require('fs'));
-var path = _interopDefault(require('path'));
+fs = fs && fs.hasOwnProperty('default') ? fs['default'] : fs;
+path = path && path.hasOwnProperty('default') ? path['default'] : path;
 
 var Nodes = {
     TABLE: 'TABLE',
@@ -114,28 +116,29 @@ var parser = function () {
         $V4 = [1, 13],
         $V5 = [4, 5, 8, 12, 24, 25, 26, 30, 31, 33, 34, 35, 38, 40, 44],
         $V6 = [1, 19],
-        $V7 = [1, 26],
+        $V7 = [1, 27],
         $V8 = [24, 26],
-        $V9 = [4, 12, 40],
-        $Va = [1, 36],
-        $Vb = [1, 45],
-        $Vc = [1, 54],
+        $V9 = [1, 4, 12, 14, 40],
+        $Va = [4, 12, 40],
+        $Vb = [1, 37],
+        $Vc = [1, 46],
         $Vd = [1, 55],
-        $Ve = [1, 60],
-        $Vf = [24, 26, 33, 35],
-        $Vg = [1, 64],
-        $Vh = [4, 8, 30, 31];
+        $Ve = [1, 56],
+        $Vf = [1, 61],
+        $Vg = [24, 26, 33, 35],
+        $Vh = [1, 65],
+        $Vi = [4, 8, 30, 31];
     var parser = { trace: function trace() {},
         yy: {},
         symbols_: { "error": 2, "Text": 3, "STRING": 4, ".": 5, "TextString": 6, "Number": 7, "NUMBER": 8, "Boolean": 9, "BOOLEAN": 10, "Join": 11, "JOIN_OP": 12, "Definition": 13, "DEFINITION": 14, "Root": 15, "DocumentList": 16, "Document": 17, "Variables": 18, "Block": 19, "QueryCall": 20, "Params": 21, "ParamList": 22, "Variable": 23, ",": 24, "(": 25, ")": 26, "$": 27, "VariableList": 28, "BuiltInFunc": 29, "'": 30, "\"": 31, "Equation": 32, "OPERATOR": 33, "[": 34, "]": 35, "EquationList": 36, "Selectors": 37, "{": 38, "BlockContent": 39, "}": 40, "Content": 41, "JoinOperation": 42, "TableOperation": 43, ":": 44, "$accept": 0, "$end": 1 },
         terminals_: { 2: "error", 4: "STRING", 5: ".", 8: "NUMBER", 10: "BOOLEAN", 12: "JOIN_OP", 14: "DEFINITION", 24: ",", 25: "(", 26: ")", 27: "$", 30: "'", 31: "\"", 33: "OPERATOR", 34: "[", 35: "]", 38: "{", 40: "}", 44: ":" },
-        productions_: [0, [3, 1], [3, 3], [6, 1], [6, 1], [6, 2], [6, 2], [7, 1], [9, 1], [11, 1], [13, 1], [15, 1], [17, 4], [17, 3], [16, 2], [16, 1], [20, 2], [22, 0], [22, 1], [22, 1], [22, 3], [22, 3], [21, 3], [23, 2], [18, 2], [18, 3], [28, 1], [28, 3], [29, 4], [29, 4], [32, 1], [32, 1], [32, 1], [32, 1], [32, 1], [32, 3], [32, 3], [32, 3], [36, 1], [36, 3], [37, 3], [19, 3], [39, 1], [39, 2], [41, 1], [41, 1], [41, 1], [41, 4], [41, 3], [41, 3], [41, 3], [41, 3], [43, 3], [43, 2], [42, 4]],
+        productions_: [0, [3, 1], [3, 3], [6, 1], [6, 1], [6, 2], [6, 2], [7, 1], [9, 1], [11, 1], [13, 1], [15, 1], [17, 4], [17, 3], [16, 2], [16, 1], [20, 2], [22, 0], [22, 1], [22, 1], [22, 3], [22, 3], [21, 3], [23, 2], [18, 2], [18, 3], [28, 1], [28, 3], [29, 4], [29, 4], [32, 1], [32, 1], [32, 1], [32, 1], [32, 1], [32, 3], [32, 3], [32, 3], [36, 1], [36, 3], [37, 3], [19, 3], [19, 2], [39, 1], [39, 2], [41, 1], [41, 1], [41, 1], [41, 4], [41, 3], [41, 3], [41, 3], [41, 3], [43, 3], [43, 2], [42, 4]],
         performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
             /* this == yyval */
 
             var $0 = $$.length - 1;
             switch (yystate) {
-                case 1:case 3:case 4:case 7:case 8:case 9:case 10:case 23:case 33:case 44:case 45:
+                case 1:case 3:case 4:case 8:case 9:case 10:case 23:case 33:case 45:case 46:
                     this.$ = $$[$0];
                     break;
                 case 2:
@@ -143,6 +146,9 @@ var parser = function () {
                     break;
                 case 5:case 6:
                     this.$ = $$[$0 - 1] + ' ' + $$[$0];
+                    break;
+                case 7:
+                    this.$ = Number($$[$0]);
                     break;
                 case 11:
                     return this.$ = $$[$0];
@@ -153,10 +159,10 @@ var parser = function () {
                 case 13:
                     this.$ = { type: $$[$0 - 2].toUpperCase(), name: $$[$0 - 1], variables: [], nodes: $$[$0] };
                     break;
-                case 14:case 43:
+                case 14:case 44:
                     this.$ = $$[$0 - 1];$$[$0 - 1].push($$[$0]);
                     break;
-                case 15:case 26:case 38:case 42:
+                case 15:case 26:case 38:case 43:
                     this.$ = [$$[$0]];
                     break;
                 case 16:
@@ -177,7 +183,7 @@ var parser = function () {
                 case 22:case 25:case 36:case 37:case 40:case 41:
                     this.$ = $$[$0 - 1];
                     break;
-                case 24:
+                case 24:case 42:
                     this.$ = [];
                     break;
                 case 28:case 29:
@@ -198,37 +204,34 @@ var parser = function () {
                 case 35:
                     this.$ = { type: 'OPERATION', a: $$[$0 - 2], op: $$[$0 - 1], b: $$[$0] };
                     break;
-                case 46:
+                case 47:
                     this.$ = { type: 'FIELD', name: $$[$0], value: null, alias: null };
                     break;
-                case 47:
+                case 48:
                     this.$ = { type: 'FIELD', name: $$[$0 - 3], value: null, alias: $$[$0 - 1] };
                     break;
-                case 48:
+                case 49:
                     this.$ = { type: 'FIELD', name: $$[$0 - 2], value: $$[$0] === 'true', alias: null };
                     break;
-                case 49:
+                case 50:case 51:
                     this.$ = { type: 'FIELD', name: $$[$0 - 2], value: $$[$0], alias: null };
                     break;
-                case 50:
-                    this.$ = { type: 'FIELD', name: $$[$0 - 2], value: Number($$[$0]), alias: null };
-                    break;
-                case 51:
+                case 52:
                     this.$ = { type: 'FIELD', name: $$[$0 - 2], value: { type: 'VARIABLE', value: $$[$0] }, alias: null };
                     break;
-                case 52:
+                case 53:
                     this.$ = { type: 'TABLE', name: $$[$0 - 2].trim(), params: $$[$0 - 1], nodes: $$[$0] };
                     break;
-                case 53:
+                case 54:
                     this.$ = { type: 'TABLE', name: $$[$0 - 1].trim(), params: [], nodes: $$[$0] };
                     break;
-                case 54:
+                case 55:
                     this.$ = { type: 'JOIN', table: $$[$0 - 2].trim(), on: $$[$0 - 1], nodes: $$[$0] };
                     break;
             }
         },
-        table: [{ 13: 4, 14: $V0, 15: 1, 16: 2, 17: 3 }, { 1: [3] }, { 1: [2, 11], 13: 4, 14: $V0, 17: 6 }, o($V1, [2, 15]), { 3: 7, 4: $V2 }, { 4: [2, 10] }, o($V1, [2, 14]), { 5: $V3, 18: 9, 19: 10, 25: [1, 12], 38: $V4 }, o($V5, [2, 1]), { 19: 14, 38: $V4 }, o($V1, [2, 13]), { 4: [1, 15] }, { 23: 18, 26: [1, 16], 27: $V6, 28: 17 }, { 3: 24, 4: $V2, 11: 25, 12: $V7, 39: 20, 41: 21, 42: 22, 43: 23 }, o($V1, [2, 12]), o($V5, [2, 2]), { 38: [2, 24] }, { 24: [1, 28], 26: [1, 27] }, o($V8, [2, 26]), { 3: 29, 4: $V2 }, { 3: 24, 4: $V2, 11: 25, 12: $V7, 40: [1, 30], 41: 31, 42: 22, 43: 23 }, o($V9, [2, 42]), o($V9, [2, 44]), o($V9, [2, 45]), o($V9, [2, 46], { 37: 34, 19: 35, 5: $V3, 25: $Va, 34: [1, 32], 38: $V4, 44: [1, 33] }), { 3: 37, 4: $V2 }, { 4: [2, 9] }, { 38: [2, 25] }, { 23: 38, 27: $V6 }, o([4, 12, 24, 26, 33, 35, 40], [2, 23], { 5: $V3 }), o([1, 4, 12, 14, 40], [2, 41]), o($V9, [2, 43]), { 3: 39, 4: $V2 }, { 3: 41, 4: $V2, 7: 42, 8: $Vb, 9: 40, 10: [1, 44], 23: 43, 27: $V6 }, { 19: 46, 38: $V4 }, o($V9, [2, 53]), { 3: 49, 4: $V2, 7: 50, 8: $Vb, 20: 52, 23: 51, 25: $Vc, 27: $V6, 29: 53, 32: 48, 34: $Vd, 36: 47 }, { 5: $V3, 25: $Va, 37: 56 }, o($V8, [2, 27]), { 5: $V3, 35: [1, 57] }, o($V9, [2, 48]), o($V9, [2, 49], { 5: $V3 }), o($V9, [2, 50]), o($V9, [2, 51]), o($V9, [2, 8]), o([4, 8, 12, 24, 26, 30, 31, 33, 35, 40], [2, 7]), o($V9, [2, 52]), { 24: [1, 59], 26: [1, 58] }, o($V8, [2, 38], { 33: $Ve }), o($Vf, [2, 30], { 21: 61, 5: $V3, 25: $Vg, 30: [1, 62], 31: [1, 63] }), o($Vf, [2, 31]), o($Vf, [2, 32]), o($Vf, [2, 33]), o($Vf, [2, 34]), { 3: 49, 4: $V2, 7: 50, 8: $Vb, 20: 52, 23: 51, 25: $Vc, 27: $V6, 29: 53, 32: 65, 34: $Vd }, { 3: 49, 4: $V2, 7: 50, 8: $Vb, 20: 52, 23: 51, 25: $Vc, 27: $V6, 29: 53, 32: 66, 34: $Vd }, { 19: 67, 38: $V4 }, o($V9, [2, 47]), { 38: [2, 40] }, { 3: 49, 4: $V2, 7: 50, 8: $Vb, 20: 52, 23: 51, 25: $Vc, 27: $V6, 29: 53, 32: 68, 34: $Vd }, { 3: 49, 4: $V2, 7: 50, 8: $Vb, 20: 52, 23: 51, 25: $Vc, 27: $V6, 29: 53, 32: 69, 34: $Vd }, o($Vf, [2, 16]), { 3: 71, 4: $V2, 6: 70, 7: 72, 8: $Vb }, { 3: 71, 4: $V2, 6: 73, 7: 72, 8: $Vb }, o($V8, [2, 17], { 22: 74, 3: 75, 23: 76, 4: $V2, 27: $V6 }), { 26: [1, 77], 33: $Ve }, { 33: $Ve, 35: [1, 78] }, o($V9, [2, 54]), o($V8, [2, 39], { 33: $Ve }), o([24, 26, 35], [2, 35], { 33: $Ve }), { 3: 81, 4: $V2, 7: 80, 8: $Vb, 30: [1, 79] }, o($Vh, [2, 3], { 5: $V3 }), o($Vh, [2, 4]), { 3: 81, 4: $V2, 7: 80, 8: $Vb, 31: [1, 82] }, { 24: [1, 84], 26: [1, 83] }, o($V8, [2, 18], { 5: $V3 }), o($V8, [2, 19]), o($Vf, [2, 36]), o($Vf, [2, 37]), o($Vf, [2, 28]), o($Vh, [2, 5]), o($Vh, [2, 6], { 5: $V3 }), o($Vf, [2, 29]), o($Vf, [2, 22]), { 3: 86, 4: $V2, 20: 85 }, o($V8, [2, 20]), o($V8, [2, 21], { 21: 61, 5: $V3, 25: $Vg })],
-        defaultActions: { 5: [2, 10], 16: [2, 24], 26: [2, 9], 27: [2, 25], 58: [2, 40] },
+        table: [{ 13: 4, 14: $V0, 15: 1, 16: 2, 17: 3 }, { 1: [3] }, { 1: [2, 11], 13: 4, 14: $V0, 17: 6 }, o($V1, [2, 15]), { 3: 7, 4: $V2 }, { 4: [2, 10] }, o($V1, [2, 14]), { 5: $V3, 18: 9, 19: 10, 25: [1, 12], 38: $V4 }, o($V5, [2, 1]), { 19: 14, 38: $V4 }, o($V1, [2, 13]), { 4: [1, 15] }, { 23: 18, 26: [1, 16], 27: $V6, 28: 17 }, { 3: 25, 4: $V2, 11: 26, 12: $V7, 39: 20, 40: [1, 21], 41: 22, 42: 23, 43: 24 }, o($V1, [2, 12]), o($V5, [2, 2]), { 38: [2, 24] }, { 24: [1, 29], 26: [1, 28] }, o($V8, [2, 26]), { 3: 30, 4: $V2 }, { 3: 25, 4: $V2, 11: 26, 12: $V7, 40: [1, 31], 41: 32, 42: 23, 43: 24 }, o($V9, [2, 42]), o($Va, [2, 43]), o($Va, [2, 45]), o($Va, [2, 46]), o($Va, [2, 47], { 37: 35, 19: 36, 5: $V3, 25: $Vb, 34: [1, 33], 38: $V4, 44: [1, 34] }), { 3: 38, 4: $V2 }, { 4: [2, 9] }, { 38: [2, 25] }, { 23: 39, 27: $V6 }, o([4, 12, 24, 26, 33, 35, 40], [2, 23], { 5: $V3 }), o($V9, [2, 41]), o($Va, [2, 44]), { 3: 40, 4: $V2 }, { 3: 42, 4: $V2, 7: 43, 8: $Vc, 9: 41, 10: [1, 45], 23: 44, 27: $V6 }, { 19: 47, 38: $V4 }, o($Va, [2, 54]), { 3: 50, 4: $V2, 7: 51, 8: $Vc, 20: 53, 23: 52, 25: $Vd, 27: $V6, 29: 54, 32: 49, 34: $Ve, 36: 48 }, { 5: $V3, 25: $Vb, 37: 57 }, o($V8, [2, 27]), { 5: $V3, 35: [1, 58] }, o($Va, [2, 49]), o($Va, [2, 50], { 5: $V3 }), o($Va, [2, 51]), o($Va, [2, 52]), o($Va, [2, 8]), o([4, 8, 12, 24, 26, 30, 31, 33, 35, 40], [2, 7]), o($Va, [2, 53]), { 24: [1, 60], 26: [1, 59] }, o($V8, [2, 38], { 33: $Vf }), o($Vg, [2, 30], { 21: 62, 5: $V3, 25: $Vh, 30: [1, 63], 31: [1, 64] }), o($Vg, [2, 31]), o($Vg, [2, 32]), o($Vg, [2, 33]), o($Vg, [2, 34]), { 3: 50, 4: $V2, 7: 51, 8: $Vc, 20: 53, 23: 52, 25: $Vd, 27: $V6, 29: 54, 32: 66, 34: $Ve }, { 3: 50, 4: $V2, 7: 51, 8: $Vc, 20: 53, 23: 52, 25: $Vd, 27: $V6, 29: 54, 32: 67, 34: $Ve }, { 19: 68, 38: $V4 }, o($Va, [2, 48]), { 38: [2, 40] }, { 3: 50, 4: $V2, 7: 51, 8: $Vc, 20: 53, 23: 52, 25: $Vd, 27: $V6, 29: 54, 32: 69, 34: $Ve }, { 3: 50, 4: $V2, 7: 51, 8: $Vc, 20: 53, 23: 52, 25: $Vd, 27: $V6, 29: 54, 32: 70, 34: $Ve }, o($Vg, [2, 16]), { 3: 72, 4: $V2, 6: 71, 7: 73, 8: $Vc }, { 3: 72, 4: $V2, 6: 74, 7: 73, 8: $Vc }, o($V8, [2, 17], { 22: 75, 3: 76, 23: 77, 4: $V2, 27: $V6 }), { 26: [1, 78], 33: $Vf }, { 33: $Vf, 35: [1, 79] }, o($Va, [2, 55]), o($V8, [2, 39], { 33: $Vf }), o([24, 26, 35], [2, 35], { 33: $Vf }), { 3: 82, 4: $V2, 7: 81, 8: $Vc, 30: [1, 80] }, o($Vi, [2, 3], { 5: $V3 }), o($Vi, [2, 4]), { 3: 82, 4: $V2, 7: 81, 8: $Vc, 31: [1, 83] }, { 24: [1, 85], 26: [1, 84] }, o($V8, [2, 18], { 5: $V3 }), o($V8, [2, 19]), o($Vg, [2, 36]), o($Vg, [2, 37]), o($Vg, [2, 28]), o($Vi, [2, 5]), o($Vi, [2, 6], { 5: $V3 }), o($Vg, [2, 29]), o($Vg, [2, 22]), { 3: 87, 4: $V2, 20: 86 }, o($V8, [2, 20]), o($V8, [2, 21], { 21: 62, 5: $V3, 25: $Vh })],
+        defaultActions: { 5: [2, 10], 16: [2, 24], 27: [2, 9], 28: [2, 25], 59: [2, 40] },
         parseError: function parseError(str, hash) {
             if (hash.recoverable) {
                 this.trace(str);
@@ -4953,170 +4956,7 @@ class Helpers {
     }
 }
 
-var asyncGenerator = function () {
-  function AwaitValue(value) {
-    this.value = value;
-  }
-
-  function AsyncGenerator(gen) {
-    var front, back;
-
-    function send(key, arg) {
-      return new Promise(function (resolve, reject) {
-        var request = {
-          key: key,
-          arg: arg,
-          resolve: resolve,
-          reject: reject,
-          next: null
-        };
-
-        if (back) {
-          back = back.next = request;
-        } else {
-          front = back = request;
-          resume(key, arg);
-        }
-      });
-    }
-
-    function resume(key, arg) {
-      try {
-        var result = gen[key](arg);
-        var value = result.value;
-
-        if (value instanceof AwaitValue) {
-          Promise.resolve(value.value).then(function (arg) {
-            resume("next", arg);
-          }, function (arg) {
-            resume("throw", arg);
-          });
-        } else {
-          settle(result.done ? "return" : "normal", result.value);
-        }
-      } catch (err) {
-        settle("throw", err);
-      }
-    }
-
-    function settle(type, value) {
-      switch (type) {
-        case "return":
-          front.resolve({
-            value: value,
-            done: true
-          });
-          break;
-
-        case "throw":
-          front.reject(value);
-          break;
-
-        default:
-          front.resolve({
-            value: value,
-            done: false
-          });
-          break;
-      }
-
-      front = front.next;
-
-      if (front) {
-        resume(front.key, front.arg);
-      } else {
-        back = null;
-      }
-    }
-
-    this._invoke = send;
-
-    if (typeof gen.return !== "function") {
-      this.return = undefined;
-    }
-  }
-
-  if (typeof Symbol === "function" && Symbol.asyncIterator) {
-    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
-      return this;
-    };
-  }
-
-  AsyncGenerator.prototype.next = function (arg) {
-    return this._invoke("next", arg);
-  };
-
-  AsyncGenerator.prototype.throw = function (arg) {
-    return this._invoke("throw", arg);
-  };
-
-  AsyncGenerator.prototype.return = function (arg) {
-    return this._invoke("return", arg);
-  };
-
-  return {
-    wrap: function (fn) {
-      return function () {
-        return new AsyncGenerator(fn.apply(this, arguments));
-      };
-    },
-    await: function (value) {
-      return new AwaitValue(value);
-    }
-  };
-}();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var _extends = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-var objectWithoutProperties = function (obj, keys) {
-  var target = {};
-
-  for (var i in obj) {
-    if (keys.indexOf(i) >= 0) continue;
-    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
-    target[i] = obj[i];
-  }
-
-  return target;
-};
+var _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 class JoinProcessor extends Processor {
     /**
@@ -5170,7 +5010,7 @@ class JoinProcessor extends Processor {
         });
 
         // Get all local files
-        const fields = nodes.filter(x => x.type === Nodes.FIELD).map(x => _extends({}, x, {
+        const fields = nodes.filter(x => x.type === Nodes.FIELD).map(x => _extends$1({}, x, {
             name: `${table}.${x.name}`
         }));
 
@@ -5193,7 +5033,7 @@ class JoinProcessor extends Processor {
 
         // Add fields used in the 'on' statement but aren't returned by the full query
         on.map(x => Helpers.getFieldsFromOperationString(x, variables, [])).reduce((a, b) => a.concat(b)).forEach(field => {
-            const name = `${table}.${field.name}`;
+            const name = `${table}.${field.value}`;
             if (!field_vals.includes(name)) qb.field(name);
         });
 
@@ -5234,6 +5074,10 @@ class JoinProcessor extends Processor {
 }
 
 var JoinProcessor$1 = (queryBuilder => new JoinProcessor(queryBuilder));
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 /**
  * QueryProcessor
@@ -5301,7 +5145,7 @@ class QueryProcessor extends Processor {
      */
     process(root, node, config, qb = this._qb) {
         const { variables } = config,
-              options = objectWithoutProperties(config, ['variables']);
+              options = _objectWithoutProperties(config, ['variables']);
         const { variables: req_var, nodes } = node;
 
         if (node.type !== Nodes.QUERY) throw new Error('Only a query document node can be passed to a QueryProcessor');
@@ -5312,12 +5156,12 @@ class QueryProcessor extends Processor {
             }
         });
 
-        nodes.forEach(node => {
-            switch (node.type) {
-                case Nodes.TABLE:
-                    qb = this._processTable(root, node, variables || {}, options);
-                    break;
-            }
+        const tables = nodes.filter(x => x.type === Nodes.TABLE);
+
+        if (tables.length < 1) throw new Error('Query must contain at least one table');
+
+        tables.forEach(table => {
+            qb = this._processTable(root, table, variables || {}, options);
         });
 
         return qb;
@@ -5325,6 +5169,10 @@ class QueryProcessor extends Processor {
 }
 
 var QueryProcessor$1 = (flavor => new QueryProcessor(QueryBuilder(flavor)));
+
+var _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _objectWithoutProperties$1(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 /**
  * MutationProcessor
@@ -5358,7 +5206,7 @@ class MutationProcessor extends Processor {
         if (nodes.filter(x => x.type === Nodes.JOIN).length > 0) throw new Error('Join statements are not allowed in mutations');
 
         // Get all FIELD nodes and prepend the table name to their values
-        let fields = nodes.filter(x => x.type === Nodes.FIELD).map(x => _extends({}, x, {
+        let fields = nodes.filter(x => x.type === Nodes.FIELD).map(x => _extends$2({}, x, {
             name: `${name}.${x.name}`
         }));
 
@@ -5419,7 +5267,7 @@ class MutationProcessor extends Processor {
      */
     process(root, node, config, qb = this._qb) {
         const { variables } = config,
-              options = objectWithoutProperties(config, ['variables']);
+              options = _objectWithoutProperties$1(config, ['variables']);
         const { variables: req_var, nodes } = node;
 
         if (node.type !== Nodes.MUTATION) throw new Error('Only a mutation document node can be passed to a MutationProcessor');
@@ -5430,12 +5278,12 @@ class MutationProcessor extends Processor {
             }
         });
 
-        nodes.forEach(node => {
-            switch (node.type) {
-                case Nodes.TABLE:
-                    qb = this._processTable(root, node, variables || {}, options);
-                    break;
-            }
+        const tables = nodes.filter(x => x.type === Nodes.TABLE);
+
+        if (tables.length < 1) throw new Error('Mutations must contain at least one table');
+
+        tables.forEach(table => {
+            qb = this._processTable(root, table, variables || {}, options);
         });
 
         return qb;
@@ -5514,4 +5362,6 @@ var index = {
     mssql: dql('mssql')
 };
 
-module.exports = index;
+return index;
+
+})));

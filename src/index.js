@@ -85,8 +85,6 @@ const dql = flavor =>
         };
     };
 
-export default {
-    postgres: dql('postgres'),
-    mysql: dql('mysql'),
-    mssql: dql('mssql')
-};
+export const postgres = dql('postgres');
+export const mysql = dql('mysql');
+export const mssql = dql('mssql');

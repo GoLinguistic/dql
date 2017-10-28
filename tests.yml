@@ -1,0 +1,240 @@
+---
+#######################
+# TEST DOCUMENTS SETS #
+#######################
+
+# Empty Queries
+# =============
+- name: empty query
+  document: |
+    query getBookmarksForUser { }
+
+# Select All
+# ==========
+- name: select all
+  expected: SELECT * FROM users
+  document: |
+    query getBookmarksForUser {
+      users { }
+    }
+
+# Selection with Fields
+# =====================
+- name: select with fields
+  expected: SELECT users.id, users.name FROM users
+  document: |
+    query getBookmarksForUser {
+      users {
+        id
+        name
+      }
+    }
+
+# Selection with Aliased Fields
+# =============================
+- name: select with fields
+  expected: >
+    SELECT users.id AS user_id,
+           users.name AS user_name
+    FROM users
+  document: |
+    query getUsers {
+      users {
+        id[user_id]
+        name[user_name]
+      }
+    }
+
+# Selection with a WHICH statement
+# ================================
+- name: select with which statement
+  expected: SELECT * FROM users WHERE (id = 3)
+  document: |
+    query getBookmarksForUser {
+      users(id = 3) { }
+    }
+
+# Selection with a WHICH Statement That Uses a Variable
+# =====================================================
+- name: select with which statement (variable)
+  expected: SELECT * FROM users WHERE (id = 3)
+  config:
+    variables:
+      user_id: 3
+  document: |
+    query getBookmarksForUser($user_id) {
+      users(id = $user_id) { }
+    }
+
+# Selection with a Single Aliased JOIN
+# ====================================
+- name: select with simple aliased join
+  expected: >
+    SELECT bookmarks.name AS bookmark_name
+    FROM users
+        INNER JOIN (SELECT
+                      bookmarks.name,
+                      bookmarks.user_id
+                    FROM bookmarks) AS bookmarks ON (bookmarks.user_id = users.id)
+  document: |
+    query getBookmarksForUser {
+      users {
+        ...on bookmarks(user_id = users.id) {
+          name[bookmark_name]
+        }
+      }
+    }
+
+# Selection with a Nested Aliased JOINs
+# =====================================
+- name: select with nested aliased joins
+  expected: >
+    SELECT
+      users.name,
+      bookmarks.name AS bookmark_name,
+      page_number,
+      chapter_name
+    FROM users
+      INNER JOIN (SELECT
+                    bookmarks.name,
+                    pages.number AS page_number,
+                    chapter_name,
+                    bookmarks.user_id
+                  FROM bookmarks
+                    INNER JOIN (SELECT
+                                  pages.number,
+                                  chapters.name AS chapter_name,
+                                  pages.bookmark_id
+                                FROM pages
+                                  INNER JOIN (SELECT
+                                                chapters.name,
+                                                chapters.page_id
+                                              FROM chapters) AS
+                                             chapters ON (chapters.page_id = pages.id)) AS pages ON (pages.bookmark_id =
+                                                                                                     bookmarks.id)) AS bookmarks
+        ON (bookmarks.user_id = users.id)
+  document: |
+    query getBookmarksForUser {
+      users {
+        name
+
+        ...on bookmarks(user_id = users.id) {
+          name[bookmark_name]
+
+          ...on pages(bookmark_id = bookmarks.id) {
+              number[page_number]
+
+              ...on chapters(page_id = pages.id) {
+                name[chapter_name]
+              }
+          }
+        }
+      }
+    }
+
+# Sorting (ASC)
+# =============
+- name: sorting (ascending)
+  expected: >
+    SELECT users.name, users.created FROM users ORDER BY created ASC
+  document: |
+    query getUsers {
+      users {
+        name
+        created
+      }
+    }
+  config:
+    orderBy: created
+
+# Sorting (DESC)
+# ==============
+- name: sorting (descending)
+  expected: >
+    SELECT users.name, users.created FROM users ORDER BY created DESC
+  document: |
+    query getUsers {
+      users {
+        name
+        created
+      }
+    }
+  config:
+    orderBy: created
+    descending: true
+
+# Inserting
+# =========
+- name: inserting
+  expected: >
+    INSERT INTO users (users.name, users.age) VALUES ('John', 45)
+  document: |
+    mutation getUsers {
+      users {
+        name: John
+        age: 45
+      }
+    }
+
+# Inserting Using Variables
+# =========================
+- name: inserting using variables
+  expected: >
+    INSERT INTO users (users.name, users.age) VALUES ('John', 45)
+  document: |
+    mutation getUsers($name, $age) {
+      users {
+        name: $name
+        age: $age
+      }
+    }
+  config:
+    variables:
+      name: John
+      age: 45
+
+# Inserting Using 'Returning' (Postgres Only)
+# ===========================================
+- name: inserting using 'returning' (Postgres only)
+  expected: >
+    INSERT INTO users (users.name, users.age) VALUES ('John', 45) RETURNING users.id
+  document: |
+    mutation getUsers {
+      users {
+        name: John
+        age: 45
+      }
+    }
+  config:
+    returning: users.id
+
+# Updating
+# ========
+- name: updating
+  expected: >
+    UPDATE users SET users.name = 'John', users.age = 45 WHERE (id = 9)
+  document: |
+    mutation getUsers {
+      users(id = 9) {
+        name: John
+        age: 45
+      }
+    }
+
+# Updating Using Variables
+# ========================
+- name: updating using variables
+  expected: >
+    UPDATE users SET users.name = 'John', users.age = 45 WHERE (id = 9)
+  document: |
+    mutation getUsers($id, $name, $age) {
+      users(id = $id) {
+        name: $name
+        age: $age
+      }
+    }
+  config:
+    variables:
+      id: 9
+      name: John
+      age: 45

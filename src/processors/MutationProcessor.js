@@ -162,17 +162,13 @@ class MutationProcessor extends Processor {
             }
         });
 
-        nodes.forEach(node => {
-            switch (node.type) {
-                case Nodes.TABLE:
-                    qb = this._processTable(
-                        root,
-                        node,
-                        variables || {},
-                        options
-                    );
-                    break;
-            }
+        const tables = nodes.filter(x => x.type === Nodes.TABLE);
+
+        if (tables.length < 1)
+            throw new Error('Mutations must contain at least one table');
+
+        tables.forEach(table => {
+            qb = this._processTable(root, table, variables || {}, options);
         });
 
         return qb;

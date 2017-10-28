@@ -8,11 +8,27 @@ export default {
     input: 'src/index.js',
     output: {
         file: 'bin/dql.js',
-        format: 'cjs'
+        format: 'umd',
+        name: 'dql'
     },
     plugins: [
         babel({
-            exclude: 'node_modules/**'
+            babelrc: false,
+            exclude: 'node_modules/**',
+            presets: [
+                [
+                    'env',
+                    {
+                        modules: false,
+                        targets: {
+                            node: '8'
+                        }
+                    }
+                ],
+                'flow',
+                'stage-2'
+            ],
+            runtimeHelpers: true
         }),
         commonjs(),
         resolve()

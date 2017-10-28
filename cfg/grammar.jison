@@ -69,7 +69,7 @@ TextString
 // Any number
 Number
     : NUMBER
-        {$$ = $1;}
+        {$$ = Number($1);}
 ;
 
 // Boolean
@@ -260,6 +260,8 @@ Selectors
 Block
     : '{' BlockContent '}'
         {$$ = $2;}
+    |  '{' '}'
+        {$$ = [];}
 ;
 
 // Block Content
@@ -289,7 +291,7 @@ Content
     | Text ':' Text
         {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
     | Text ':' Number
-        {$$ = { type: 'FIELD', name: $1, value: Number($3), alias: null };}
+        {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
     | Text ':' Variable
         {$$ = { type: 'FIELD', name: $1, value: { type: 'VARIABLE', value: $3 }, alias: null };}
 ;
