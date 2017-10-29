@@ -89,8 +89,10 @@ export type DocumentNode = {
  * ==============
  */
 export type Config = {
-    variables: {},
-    orderBy: string,
-    descending: boolean,
-    groupBy: string
+    variables?: {},
+    orderBy?: string,
+    descending?: boolean,
+    groupBy?: string,
+    limit?: number,
+    offset?: number
 };

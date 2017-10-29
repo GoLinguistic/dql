@@ -3,12 +3,7 @@ import Processor from './Processor';
 import QueryBuilder from '../util/QueryBuilder';
 import Nodes from '../util/Nodes';
 import Helpers from '../util/Helpers';
-import type {
-    TableNode,
-    Config,
-    DocumentNode,
-    MutationFieldNode
-} from '../util/Types';
+import type { TableNode, Config, DocumentNode, FieldNode } from '../util/Types';
 
 /**
  * MutationProcessor
@@ -19,13 +14,142 @@ class MutationProcessor extends Processor {
     _qb: QueryBuilder;
 
     /**
-     * Processes a table block
+     * Adds fields from a table to a QueryBuilder object
      *
-     * @param qb         The qb object
-     * @param root          The root of the document (contains all queries, mutations, etc.)
-     * @param node          The table node to process
-     * @param variables     All variables passed to the query
-     * @returns {qb}
+     * @param node          The table node
+     * @param variables     Global variables
+     * @param qb            The QueryBuilder
+     * @private
+     */
+    _addTableFields(node: TableNode, variables: {}, qb: QueryBuilder) {
+        const fields = Helpers.getFieldsFromTable(node);
+        fields.forEach(field => {
+            this._verifyField(field);
+
+            if (
+                typeof field.value === 'object' &&
+                field.value.type === Nodes.VARIABLE
+            ) {
+                const variable = field.value.value;
+                const val = variables[variable];
+
+                if (typeof val === 'undefined')
+                    throw new Error(`Could not find variable: ${variable}`);
+                else qb.set(field.name, val);
+            } else qb.set(field.name, field.value);
+        });
+    }
+
+    /**
+     * Verifies a field to make sure it is valid for a mutation
+     *
+     * @param field     The field node
+     * @returns {boolean}
+     * @private
+     */
+    _verifyField(field: FieldNode) {
+        if (field.alias) throw new Error('Aliases not allowed in mutations');
+        else if (field.value === null)
+            throw new Error(`Value required for field '${field.name}'`);
+        else return true;
+    }
+
+    /**
+     * Processed an INSERT statement
+     *
+     * @param root          The document root
+     * @param node          The table node
+     * @param variables     Global variables
+     * @param options       Config object
+     * @returns {QueryBuilder}
+     * @private
+     */
+    _processInsert(
+        root: DocumentNode[],
+        node: TableNode,
+        variables: {},
+        options: {
+            returning: string
+        }
+    ) {
+        const { name } = node;
+        const { returning } = options;
+        let qb = this._qb.insert().into(name);
+
+        this._addTableFields(node, variables, qb);
+
+        if (returning) qb.returning(returning);
+
+        return qb;
+    }
+
+    /**
+     * Processes an UPDATE statement
+     *
+     * @param root          The document root
+     * @param node          The table node
+     * @param variables     Global variables
+     * @param options       Config object
+     * @returns {QueryBuilder}
+     * @private
+     */
+    _processUpdate(
+        root: DocumentNode[],
+        node: TableNode,
+        variables: {},
+        options: {
+            returning: string,
+            orderBy: boolean,
+            descending: boolean,
+            limit: number
+        }
+    ) {
+        const { name, params } = node;
+        const { descending, orderBy, limit } = options;
+
+        // From the parameters, create an operator tree and generate
+        // an array of selector strings to use in the WHERE() call
+        const selectors = params.map(x =>
+            Helpers.buildFilterString(
+                root,
+                null,
+                x,
+                variables,
+                [],
+                this._qb.flavour
+            )
+        );
+
+        // Initialize the query builder
+        let qb = this._qb.update().table(name);
+
+        // Iterate through each field and add it to the QueryBuilder
+        this._addTableFields(node, variables, qb);
+
+        // Include selectors
+        qb = qb.where(
+            selectors.map(x => x.text).join(' AND '),
+            ...selectors.map(x => x.variables).reduce((a, b) => a.concat(b))
+        );
+
+        // Add order
+        if (typeof orderBy !== 'undefined' && orderBy !== null)
+            qb.order(orderBy, !descending);
+
+        // Add limit
+        if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
+
+        return qb;
+    }
+
+    /**
+     * Processes a table node
+     *
+     * @param root          The document root
+     * @param node          The table node
+     * @param variables     Global variables
+     * @param options       Config object
+     * @returns {QueryBuilder}
      * @private
      */
     _processTable(
@@ -36,104 +160,22 @@ class MutationProcessor extends Processor {
             returning: string,
             orderBy: boolean,
             descending: boolean,
-            limit: number,
-            offset: number
+            limit: number
         }
     ) {
         // Get the name and parameters associated with the table
-        const { name, params, nodes } = node;
-        const { returning, descending, orderBy, limit, offset } = options;
-
-        // Method for throwing errors for invalid fields
-        const verifyField = field => {
-            if (field.alias)
-                throw new Error('Aliases not allowed in mutations');
-            else if (field.value === null)
-                throw new Error(`Value required for field '${field.name}'`);
-            else return true;
-        };
-
-        let qb;
+        const { params, nodes } = node;
 
         if (nodes.filter(x => x.type === Nodes.JOIN).length > 0)
             throw new Error('Join statements are not allowed in mutations');
 
-        // Get all FIELD nodes and prepend the table name to their values
-        let fields: MutationFieldNode[] = nodes
-            .filter(x => x.type === Nodes.FIELD)
-            .map(x => ({
-                ...x,
-                name: `${name}.${x.name}`
-            }));
+        let qb;
 
         // If we have selectors, then we're updating a row
         if (params.length > 0) {
-            // From the parameters, create an operator tree and generate
-            // an array of selector strings to use in the WHERE() call
-            const selectors = params.map(x =>
-                Helpers.buildOperationString(
-                    root,
-                    null,
-                    x,
-                    variables,
-                    [],
-                    this._qb
-                )
-            );
-
-            // Initialize the query builder
-            qb = this._qb.update().table(name);
-
-            // Iterate through each field and add it to the QueryBuilder
-            fields.forEach(field => {
-                verifyField(field);
-
-                if (
-                    typeof field.value === 'object' &&
-                    field.value.type === Nodes.VARIABLE
-                ) {
-                    const variable = field.value.value;
-                    const val = variables[variable];
-
-                    if (typeof val === 'undefined')
-                        throw new Error(`Could not find variable: ${variable}`);
-                    else qb.set(field.name, val);
-                } else qb.set(field.name, field.value);
-            });
-
-            // Include selectors
-            qb = qb.where(
-                selectors.map(x => x.text).join(' AND '),
-                ...selectors.map(x => x.variables).reduce((a, b) => a.concat(b))
-            );
-
-            // Add order
-            if (typeof orderBy !== 'undefined' && orderBy !== null)
-                qb.order(orderBy, !descending);
-
-            // Add limit
-            if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
+            qb = this._processUpdate(root, node, variables, options);
         } else {
-            qb = this._qb.insert().into(name);
-
-            // Iterate through each field and add it to the QueryBuilder
-            fields.forEach(field => {
-                verifyField(field);
-
-                if (
-                    typeof field.value === 'object' &&
-                    field.value.type === Nodes.VARIABLE
-                ) {
-                    const variable = field.value.value;
-                    const val = variables[variable];
-
-                    if (typeof val === 'undefined')
-                        throw new Error(`Could not find variable: ${variable}`);
-                    else qb.set(field.name, val);
-                } else qb.set(field.name, field.value);
-            });
-
-            if (returning) qb.returning(returning);
+            qb = this._processInsert(root, node, variables, options);
         }
 
         return qb;

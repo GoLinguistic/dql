@@ -63,13 +63,13 @@ class JoinProcessor extends Processor {
         // Get 'on' selector as interpolated string
         const selectors = on
             .map(x => {
-                const op = Helpers.buildOperationString(
+                const op = Helpers.buildFilterString(
                     root,
                     node.table,
                     x,
                     variables,
                     aliases,
-                    this._qb
+                    this._qb.flavour
                 );
 
                 return Helpers.interpolateVariables(op.text, op.variables);

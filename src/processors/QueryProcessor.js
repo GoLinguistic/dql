@@ -15,9 +15,30 @@ class QueryProcessor extends Processor {
     _qb: QueryBuilder;
 
     /**
-     * Processes a table block
+     * Adds fields from a table to a QueryBuilder object
      *
-     * @param qb         The qb object
+     * @param node          The table node
+     * @param variables     Global variables
+     * @param qb            The QueryBuilder
+     * @private
+     */
+    _addTableFields(node: TableNode, qb: QueryBuilder) {
+        const fields = Helpers.getFieldsFromTable(node);
+        // Iterate through each field and add it to the QueryBuilder
+        fields.forEach(field => {
+            if (field.value)
+                throw new Error(
+                    'Values cannot be assigned to fields in a query document'
+                );
+            else if (field.alias) qb.field(field.name, field.alias);
+            else qb.field(field.name);
+        });
+    }
+
+    /**
+     * Processes a table node
+     *
+     * @param qb            The QueryBuilder object
      * @param root          The root of the document (contains all queries, mutations, etc.)
      * @param node          The table node to process
      * @param variables     All variables passed to the query
@@ -37,35 +58,27 @@ class QueryProcessor extends Processor {
         }
     ) {
         // Get the name and parameters associated with the table
-        const { name, params, nodes } = node;
+        const { name, params } = node;
         const { orderBy, descending, groupBy, limit, offset } = options;
 
         // From the parameters, create an operator tree and generate
         // an array of selector strings to use in the WHERE() call
         const selectors = params.map(x =>
-            Helpers.buildOperationString(root, null, x, variables, [], this._qb)
+            Helpers.buildFilterString(
+                root,
+                null,
+                x,
+                variables,
+                [],
+                this._qb.flavour
+            )
         );
 
         // Initialize qb
         let qb = this._qb.select().from(name);
 
-        // // Get all FIELD nodes and prepend the table name to their values
-        let fields: FieldNode[] = nodes
-            .filter(x => x.type === Nodes.FIELD)
-            .map(x => ({
-                ...x,
-                name: `${name}.${x.name}`
-            }));
-
-        // Iterate through each field and add it to the QueryBuilder
-        fields.forEach(field => {
-            if (field.value)
-                throw new Error(
-                    'Values cannot be assigned to fields in a query document'
-                );
-            else if (field.alias) qb.field(field.name, field.alias);
-            else qb.field(field.name);
-        });
+        // Add fields from table
+        this._addTableFields(node, qb);
 
         // Iterate through each join and add it to the QueryBuilder
         qb = JoinProcessor(this._qb).process(root, node, variables, qb);

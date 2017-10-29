@@ -1,7 +1,7 @@
 ---
-#######################
-# TEST DOCUMENTS SETS #
-#######################
+###########
+# QUERIES #
+###########
 
 # Empty Queries
 # =============
@@ -64,6 +64,23 @@
   document: |
     query getBookmarksForUser($user_id) {
       users(id = $user_id) { }
+    }
+
+# Selection with a neighboring query call
+# =======================================
+- name: select with a query call
+  expected: SELECT users.name FROM users WHERE (id = (SELECT users.id FROM users WHERE (id = 3)))
+  document: |
+    query getUserID() {
+      users(id = 3) {
+        id
+      }
+    }
+
+    query getBookmarksForUser {
+      users(id = getUserID()) {
+        name
+      }
     }
 
 # Selection with a Single Aliased JOIN
@@ -192,6 +209,10 @@
   config:
     orderBy: created
     descending: true
+
+#############
+# MUTATIONS #
+#############
 
 # Inserting
 # =========

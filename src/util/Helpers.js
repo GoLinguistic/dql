@@ -1,153 +1,23 @@
 // Flow has to ignore this file because of the recursion in builderOperationStringHelper()
 import Nodes from './Nodes';
-import QueryProcessor from '../processors/QueryProcessor';
-
-function resolveVariable(variable, variables) {
-    const v = variables[variable];
-
-    if (typeof v === 'undefined')
-        throw new Error(`Could not find variable: ${variable}`);
-
-    return v;
-}
-
-/**
- * Builds a string from the operator tree found in selector blocks (inside parens)
- *
- * @param root          Root of the document
- * @param table         Name of table the operation is associated with
- * @param node          Base node of operator tree
- * @param variables     Variables passed to the query
- * @param left_side     Boolean denoting whether the node is on the left site of an operator
- * @returns {*}
- */
-function buildOperationStringHelper(
-    root,
-    table,
-    node,
-    variables,
-    params,
-    left_side,
-    aliases,
-    qb
-) {
-    // If the node is an operation
-    if (node.type === Nodes.OPERATION) {
-        const a = node.a;
-        const op = node.op;
-        const b = node.b;
-
-        // Recurse on both sides of the operand
-        const a_bos = buildOperationStringHelper(
-            root,
-            table,
-            a,
-            variables,
-            params,
-            true,
-            aliases,
-            qb
-        );
-
-        const b_bos = buildOperationStringHelper(
-            root,
-            null,
-            b,
-            variables,
-            params,
-            false,
-            aliases,
-            qb
-        );
-
-        // We return text and variables separately to allow Squel
-        // to sanitize the input
-        return {
-            text: `${a_bos.text} ${op} ${b_bos.text}`,
-            variables: [...a_bos.variables, ...b_bos.variables]
-        };
-    } else if (node.type === Nodes.VARIABLE) {
-        // If the node is a $variable
-        // Resolve any variable node and return the object
-        // The text just becomes '?', which tells Squel where
-        // to interpolate the variable
-        return {
-            text: '?',
-            variables: [resolveVariable(node.value, variables)]
-        };
-    } else if (node.type === Nodes.BUILT_IN) {
-        // If the node is a built-in SQL function such as INTERVAL
-        // Return built-in SQL operations as is
-        // They're not special
-        return {
-            text: node.value,
-            variables: []
-        };
-    } else if (node.type === Nodes.QUERY_CALL) {
-        // If the node is a call to a neighboring query
-        // Locate the query
-        const target_query = root.filter(
-            x => x.type === 'QUERY' && x.name === node.name
-        )[0];
-
-        if (typeof target_query === 'undefined')
-            throw new Error(`Could not find query '${node.name}`);
-
-        // Extract the required variables in the query declaration
-        const { variables: tq_variables } = target_query;
-
-        // Initialize a map of variables
-        const vmap = {};
-
-        // For each of the required variables
-        tq_variables.forEach((v, index) => {
-            const param = node.params[index];
-
-            // If the param passed at the end of that variable is itself
-            // a variable, resolve it before passing it in
-            if (param.type === Nodes.VARIABLE) {
-                vmap[v] = resolveVariable(param.value, variables);
-            } else
-                // Otherwise just pass in the param
-                vmap[v] = param.value;
-        });
-
-        // Return the object and process the call
-        return {
-            text: '?',
-            variables: [
-                QueryProcessor(qb.flavour).process(root, target_query, {
-                    variables: vmap
-                })
-            ]
-        };
-    } else if (left_side) {
-        return {
-            text:
-                table !== null
-                    ? typeof aliases[node.value] !== 'undefined'
-                      ? node.alias
-                      : `${table}.${node.value}`
-                    : node.value,
-            variables: []
-        };
-    } else {
-        // Assume anything else is a field, and prepend
-        // the table name if one is available
-        return {
-            text: '?',
-            variables: [
-                table !== null
-                    ? typeof aliases[node.value] !== 'undefined'
-                      ? node.alias
-                      : `${table}.${node.value}`
-                    : node.value
-            ]
-        };
-    }
-}
+import FilterString from './FilterString';
 
 class Helpers {
+    /**
+     * Gets all the fields from a table node
+     *
+     * @param node  Table node
+     * @private
+     */
+    static getFieldsFromTable(node) {
+        const { name, nodes } = node;
+
+        return nodes.filter(x => x.type === Nodes.FIELD).map(x => ({
+            ...x,
+            name: `${name}.${x.name}`
+        }));
+    }
+
     /**
      * Returns anything that can be identified as a "field" in an operator tree
      * Careful – any text that doesn't conform to a set grammar can be identified as a field
@@ -183,18 +53,15 @@ class Helpers {
      * @param variables
      * @returns {{text, variables}}
      */
-    static buildOperationString(root, table, node, variables, aliases, qb) {
-        // console.log(arguments);
-        return buildOperationStringHelper(
+    static buildFilterString(root, table, node, variables, aliases, flavor) {
+        return new FilterString(
             root,
             table,
             node,
             variables,
-            [],
-            false,
-            aliases || {},
-            qb
-        );
+            aliases,
+            flavor
+        ).toString();
     }
 
     /**
