@@ -6,14 +6,13 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 [![Github file size](https://img.shields.io/github/size/Nickersoft/dql/bin/dql.js.svg)]()
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Nickersoft/dql.svg)](https://greenkeeper.io/)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 </div>
 
 Contents
 --------
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/Nickersoft/dql.svg)](https://greenkeeper.io/)
 
 - [Introduction](#introduction)
     - [What is DatQL?](#what-is-datql)
