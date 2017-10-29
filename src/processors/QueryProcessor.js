@@ -31,12 +31,14 @@ class QueryProcessor extends Processor {
         options: {
             orderBy: string,
             descending: boolean,
-            groupBy: string
+            groupBy: string,
+            limit: number,
+            offset: number
         }
     ) {
         // Get the name and parameters associated with the table
         const { name, params, nodes } = node;
-        const { orderBy, descending, groupBy } = options;
+        const { orderBy, descending, groupBy, limit, offset } = options;
 
         // From the parameters, create an operator tree and generate
         // an array of selector strings to use in the WHERE() call
@@ -83,6 +85,12 @@ class QueryProcessor extends Processor {
         // Add order
         if (typeof orderBy !== 'undefined' && orderBy !== null)
             qb.order(orderBy, !descending);
+
+        // Add offset
+        if (typeof offset !== 'undefined' && offset !== null) qb.offset(offset);
+
+        // Add limit
+        if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
 
         return qb;
     }

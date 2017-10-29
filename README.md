@@ -256,7 +256,7 @@ Support Table
 -------------
 <table>
     <tr>
-        <td rowspan="11">Selecting (46% completed)</td>
+        <td rowspan="11">Selecting (63% completed)</td>
         <td>Single Table</td>
         <td>✔</td>
     </tr>
@@ -294,14 +294,14 @@ Support Table
     </tr>
     <tr>
         <td>Limits & Offsets</td>
-        <td>✘</td>
+        <td>✔</td>
     </tr>
     <tr>
         <td>Unions</td>
         <td>✘</td>
     </tr>
     <tr>
-        <td rowspan="5">Inserting & Updating (60% completed)</td>
+        <td rowspan="6">Inserting & Updating (66% completed)</td>
         <td>Fields</td>
         <td>✔</td>
     </tr>
@@ -319,6 +319,10 @@ Support Table
     </tr>  
     <tr>
         <td>Limits</td>
+        <td>✔</td>
+    </tr>
+    <tr>
+        <td>Functions as values</td>
         <td>✘</td>
     </tr>
     <tr>

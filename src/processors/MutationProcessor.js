@@ -35,12 +35,14 @@ class MutationProcessor extends Processor {
         options: {
             returning: string,
             orderBy: boolean,
-            descending: boolean
+            descending: boolean,
+            limit: number,
+            offset: number
         }
     ) {
         // Get the name and parameters associated with the table
         const { name, params, nodes } = node;
-        const { returning, descending, orderBy } = options;
+        const { returning, descending, orderBy, limit, offset } = options;
 
         // Method for throwing errors for invalid fields
         const verifyField = field => {
@@ -108,6 +110,9 @@ class MutationProcessor extends Processor {
             // Add order
             if (typeof orderBy !== 'undefined' && orderBy !== null)
                 qb.order(orderBy, !descending);
+
+            // Add limit
+            if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
         } else {
             qb = this._qb.insert().into(name);
 

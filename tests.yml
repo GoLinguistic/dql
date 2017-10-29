@@ -132,9 +132,39 @@
       }
     }
 
-# Sorting (ASC)
-# =============
-- name: sorting (ascending)
+# Limiting for Queries
+# ====================
+- name: limiting (queries)
+  expected: >
+    SELECT users.name, users.created FROM users LIMIT 1
+  document: |
+    query getUsers {
+      users {
+        name
+        created
+      }
+    }
+  config:
+    limit: 1
+
+# Offset for Queries
+# ==================
+- name: offset (queries)
+  expected: >
+    SELECT users.name, users.created FROM users OFFSET 1
+  document: |
+    query getUsers {
+      users {
+        name
+        created
+      }
+    }
+  config:
+    offset: 1
+
+# Sorting for Queries (ASC)
+# =========================
+- name: sorting (queries) (ascending)
   expected: >
     SELECT users.name, users.created FROM users ORDER BY created ASC
   document: |
@@ -147,9 +177,9 @@
   config:
     orderBy: created
 
-# Sorting (DESC)
-# ==============
-- name: sorting (descending)
+# Sorting for Queries (DESC)
+# ==========================
+- name: sorting (queries) (descending)
   expected: >
     SELECT users.name, users.created FROM users ORDER BY created DESC
   document: |
@@ -238,3 +268,49 @@
       id: 9
       name: John
       age: 45
+
+# Sorting for Updating (ASC)
+# ==========================
+- name: sorting (mutations) (ascending)
+  expected: >
+    UPDATE users SET users.name = 'John', users.age = 45 WHERE (id = 9) ORDER BY created ASC
+  document: |
+    mutation getUsers {
+      users(id = 9) {
+        name: John
+        age: 45
+      }
+    }
+  config:
+    orderBy: created
+
+# Sorting for Updating (DESC)
+# ===========================
+- name: sorting (mutations) (descending)
+  expected: >
+    UPDATE users SET users.name = 'John', users.age = 45 WHERE (id = 9) ORDER BY created DESC
+  document: |
+    mutation getUsers {
+      users(id = 9) {
+        name: John
+        age: 45
+      }
+    }
+  config:
+    orderBy: created
+    descending: true
+
+# Limiting for Updating
+# =====================
+- name: limiting (mutations)
+  expected: >
+    UPDATE users SET users.name = 'John', users.age = 45 WHERE (id = 9) LIMIT 1
+  document: |
+    mutation getUsers {
+      users(id = 9) {
+        name: John
+        age: 45
+      }
+    }
+  config:
+    limit: 1
