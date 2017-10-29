@@ -1,5 +1,13 @@
 <div align="center">
-    <img src="https://github.com/Nickersoft/dql/raw/master/logo.png" width="400" />
+    <img src="https://github.com/Nickersoft/dql/raw/master/logo.png" width="400" /><br/><br/>
+
+[![Travis](https://img.shields.io/travis/Nickersoft/dql.svg)]()
+[![Coveralls github](https://img.shields.io/coveralls/github/Nickersoft/dql.svg)]()
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
+[![Github file size](https://img.shields.io/github/size/Nickersoft/dql/bin/dql.js.svg)]()
+
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
 </div>
 
 Contents

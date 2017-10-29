@@ -31,8 +31,8 @@ export default {
             runtimeHelpers: true
         }),
         commonjs(),
-        resolve()
-        // uglify({}, minify)
+        resolve(),
+        uglify({}, minify)
     ],
     external: ['fs', 'path']
 };
