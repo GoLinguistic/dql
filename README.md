@@ -13,6 +13,8 @@
 Contents
 --------
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Nickersoft/dql.svg)](https://greenkeeper.io/)
+
 - [Introduction](#introduction)
     - [What is DatQL?](#what-is-datql)
     - [Motivation](#so-whats-the-point)
