@@ -10,5 +10,10 @@
     ],
     "flow",
     "stage-2"
-  ]
+  ],
+  "env": {
+    "development": {
+      "sourceMaps": "inline"
+    }
+  }
 }

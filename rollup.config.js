@@ -8,8 +8,7 @@ export default {
     input: 'src/index.js',
     output: {
         file: 'bin/dql.js',
-        format: 'umd',
-        name: 'dql'
+        format: 'cjs'
     },
     plugins: [
         babel({
@@ -28,6 +27,7 @@ export default {
                 'flow',
                 'stage-2'
             ],
+            plugins: ['external-helpers'],
             runtimeHelpers: true
         }),
         commonjs(),
