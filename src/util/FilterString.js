@@ -50,16 +50,16 @@ class FilterString {
     /**
      * Handles case where node is a call to a neighboring query (document)
      *
-     * @param root      Document root
+     * @param docroot      Document docroot
      * @param node      Current node
      * @param flavor    Flavor to use for SQL (postgres, mysql, mssql)
      * @returns {{text: string, variables: [null]}}
      * @private
      */
-    _handleQueryCall(root, node, variables, flavor) {
+    _handleQueryCall(docroot, node, variables, flavor) {
         // If the node is a call to a neighboring query
         // Locate the query
-        const target_query = root.filter(
+        const target_query = docroot.filter(
             x => x.type === 'QUERY' && x.name === node.name
         )[0];
 
@@ -89,7 +89,7 @@ class FilterString {
         return {
             text: '?',
             variables: [
-                QueryProcessor(flavor).process(root, target_query, {
+                QueryProcessor(flavor).process(docroot, target_query, {
                     variables: vmap
                 })
             ]
@@ -128,7 +128,7 @@ class FilterString {
     /**
      * Handles case where current node is another operator
      *
-     * @param root          Document root
+     * @param docroot          Document docroot
      * @param table         Table name
      * @param node          Current node
      * @param variables     Global variable map
@@ -137,14 +137,14 @@ class FilterString {
      * @returns {{text: string, variables: [null,null]}}
      * @private
      */
-    _handleOperation(root, table, node, variables, aliases, flavor) {
+    _handleOperation(docroot, table, node, variables, aliases, flavor) {
         const a = node.a;
         const op = node.op;
         const b = node.b;
 
         // Recurse on both sides of the operand
         const a_bos = this._buildString(
-            root,
+            docroot,
             table,
             a,
             variables,
@@ -154,7 +154,7 @@ class FilterString {
         );
 
         const b_bos = this._buildString(
-            root,
+            docroot,
             null,
             b,
             variables,
@@ -174,7 +174,7 @@ class FilterString {
     /**
      * Builds a string from the operator tree found in selector blocks (inside parens)
      *
-     * @param root          Document root
+     * @param docroot          Document docroot
      * @param table         Table name
      * @param node          Current node
      * @param variables     Global variable map
@@ -183,11 +183,13 @@ class FilterString {
      * @param flavor        Flavor to use for SQL
      * @returns {*}
      */
-    _buildString(root, table, node, variables, left_side, aliases, flavor) {
+    _buildString(docroot, table, node, variables, left_side, aliases, flavor) {
+        let value = null;
+
         switch (node.type) {
             case Nodes.OPERATION:
-                return this._handleOperation(
-                    root,
+                value = this._handleOperation(
+                    docroot,
                     table,
                     node,
                     variables,
@@ -196,24 +198,26 @@ class FilterString {
                 );
                 break;
             case Nodes.VARIABLE:
-                return this._handleVariable(node, variables);
+                value = this._handleVariable(node, variables);
                 break;
             case Nodes.BUILT_IN:
-                return this._handleBuiltIn(node);
+                value = this._handleBuiltIn(node);
                 break;
             case Nodes.QUERY_CALL:
-                return this._handleQueryCall(root, node, variables, flavor);
+                value = this._handleQueryCall(docroot, node, variables, flavor);
                 break;
             default:
-                return left_side
+                value = left_side
                     ? this._handleLeftSide(table, node, aliases)
                     : this._handleText(table, node, aliases);
         }
+
+        return value;
     }
 
-    constructor(root, table, node, variables, aliases, flavor) {
+    constructor(docroot, table, node, variables, aliases, flavor) {
         this._string = this._buildString(
-            root,
+            docroot,
             table,
             node,
             variables,

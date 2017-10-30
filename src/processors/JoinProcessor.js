@@ -43,28 +43,20 @@ class JoinProcessor extends Processor {
     }
 
     /**
-     *  Processes JOIN blocks and adds their fields to the global fields
+     * Gets the "on" selector string from an operation tree
      *
-     * @param root          Document root
-     * @param node          JOIN node
+     * @param docroot       Document root
+     * @param node          Join node
      * @param variables     Global variable map
-     * @param aliases       Keeps track of all previously declared aliases up the stack
+     * @returns {string}
      * @private
      */
-    _processJoin(
-        root: DocumentNode[],
-        node: JoinNode,
-        variables: {},
-        aliases: string[]
-    ) {
-        // Get basic information associated with join
-        const { table, on, nodes } = node;
-
-        // Get 'on' selector as interpolated string
-        const selectors = on
+    _getOnString(docroot, node, variables, aliases) {
+        const { on } = node;
+        return on
             .map(x => {
                 const op = Helpers.buildFilterString(
-                    root,
+                    docroot,
                     node.table,
                     x,
                     variables,
@@ -75,24 +67,26 @@ class JoinProcessor extends Processor {
                 return Helpers.interpolateVariables(op.text, op.variables);
             })
             .join(' AND ');
+    }
 
-        // Get all sub-joins
-        const joins: ProcessedJoin[] = [];
+    /**
+     * Adds all possible fields and subjoins in a join to a QueryBuilder
+     *
+     * @param docroot       Document root
+     * @param node          Join node
+     * @param variables     Global variable map
+     * @param qb            QueryBuilder
+     * @returns {string[]}  All available fields
+     * @private
+     */
+    _addAllFieldsAndJoins(docroot, node, variables, aliases, qb) {
+        const { table, on } = node;
 
-        nodes.filter(x => x.type === Nodes.JOIN).forEach(join => {
-            joins.push(this._processJoin(root, join, variables, aliases));
-        });
+        // Get all local fields
+        const fields = Helpers.getFieldsFromNode(node);
 
-        // Get all local files
-        const fields = ((nodes.filter(
-            x => x.type === Nodes.FIELD
-        ): any[]): FieldNode[]).map((x: FieldNode) => ({
-            ...x,
-            name: `${table}.${x.name}`
-        }));
-
-        // Start a new QueryBuilder
-        const qb = this._qb.select().from(table);
+        // Get all subjoins
+        const joins = this._getAllSubjoins(docroot, node, variables, aliases);
 
         // Extract fields from all sub-joins
         const join_fields =
@@ -112,9 +106,9 @@ class JoinProcessor extends Processor {
         // All sub-join fields to query
         joins.forEach(join => this._applyFields(qb, join.fields, aliases));
 
+        // Get just field values
         const field_vals = fields.map(x => x.value);
 
-        // Add fields used in the 'on' statement but aren't returned by the full query
         on
             .map(x => Helpers.getFieldsFromOperationString(x, variables, []))
             .reduce((a, b) => a.concat(b))
@@ -126,12 +120,66 @@ class JoinProcessor extends Processor {
         // Add all sub-joins to the query
         joins.forEach(join => qb.join(join.qb, join.table, join.on));
 
+        return [...fields, ...join_fields];
+    }
+
+    /**
+     * Gets all subjoins in a join node
+     *
+     * @param node
+     * @returns {ProcessedJoin[]}
+     * @private
+     */
+    _getAllSubjoins(docroot, node, variables, aliases) {
+        const { nodes } = node;
+        const joins: ProcessedJoin[] = [];
+
+        nodes.filter(x => x.type === Nodes.JOIN).forEach(join => {
+            joins.push(this._processJoin(docroot, join, variables, aliases));
+        });
+
+        return joins;
+    }
+
+    /**
+     *  Processes JOIN blocks and adds their fields to the global fields
+     *
+     * @param docroot          Document docroot
+     * @param node          JOIN node
+     * @param variables     Global variable map
+     * @param aliases       Keeps track of all previously declared aliases up the stack
+     * @private
+     */
+    _processJoin(
+        docroot: DocumentNode[],
+        node: JoinNode,
+        variables: {},
+        aliases: string[]
+    ) {
+        // Get basic information associated with join
+        const { table } = node;
+
+        // Get 'on' selector as interpolated string
+        const on = this._getOnString(docroot, node, variables, aliases);
+
+        // Start a new QueryBuilder
+        const qb = this._qb.select().from(table);
+
+        // Gets and applies all fields contained in this join
+        const fields = this._addAllFieldsAndJoins(
+            docroot,
+            node,
+            variables,
+            aliases,
+            qb
+        );
+
         // Return an object with info about the JOIN
         return {
             qb, // <-- QueryBuilder object
             table, // <-- table name
-            fields: [...fields, ...join_fields], // <-- All fields
-            on: selectors // <-- 'on' selector statement
+            fields, // <-- All fields
+            on // <-- 'on' selector statement
         };
     }
 
@@ -139,14 +187,14 @@ class JoinProcessor extends Processor {
      * Processes a table's JOINs
      * Should be run right after fields are defined in a table
      *
-     * @param root          Root of the document
+     * @param docroot          docroot of the document
      * @param node          Table node
      * @param variables     Global variables
      * @param qb            QueryBuilder object
      * @returns {*}
      */
     process(
-        root: DocumentNode[],
+        docroot: DocumentNode[],
         node: TableNode,
         variables: {},
         qb: QueryBuilder
@@ -155,7 +203,7 @@ class JoinProcessor extends Processor {
         const joins: ProcessedJoin[] = node.nodes
             .filter(x => x.type === Nodes.JOIN)
             .map((x: JoinNode) =>
-                this._processJoin(root, x, variables, aliases)
+                this._processJoin(docroot, x, variables, aliases)
             );
 
         // Add fields from joins

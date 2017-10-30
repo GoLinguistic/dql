@@ -22,7 +22,7 @@ class MutationProcessor extends Processor {
      * @private
      */
     _addTableFields(node: TableNode, variables: {}, qb: QueryBuilder) {
-        const fields = Helpers.getFieldsFromTable(node);
+        const fields = Helpers.getFieldsFromNode(node);
         fields.forEach(field => {
             this._verifyField(field);
 
@@ -57,7 +57,7 @@ class MutationProcessor extends Processor {
     /**
      * Processed an INSERT statement
      *
-     * @param root          The document root
+     * @param docroot          The document docroot
      * @param node          The table node
      * @param variables     Global variables
      * @param options       Config object
@@ -65,7 +65,7 @@ class MutationProcessor extends Processor {
      * @private
      */
     _processInsert(
-        root: DocumentNode[],
+        docroot: DocumentNode[],
         node: TableNode,
         variables: {},
         options: {
@@ -86,7 +86,7 @@ class MutationProcessor extends Processor {
     /**
      * Processes an UPDATE statement
      *
-     * @param root          The document root
+     * @param docroot          The document docroot
      * @param node          The table node
      * @param variables     Global variables
      * @param options       Config object
@@ -94,31 +94,13 @@ class MutationProcessor extends Processor {
      * @private
      */
     _processUpdate(
-        root: DocumentNode[],
+        docroot: DocumentNode[],
         node: TableNode,
         variables: {},
-        options: {
-            returning: string,
-            orderBy: boolean,
-            descending: boolean,
-            limit: number
-        }
+        options: Config
     ) {
-        const { name, params } = node;
+        const { name } = node;
         const { descending, orderBy, limit } = options;
-
-        // From the parameters, create an operator tree and generate
-        // an array of selector strings to use in the WHERE() call
-        const selectors = params.map(x =>
-            Helpers.buildFilterString(
-                root,
-                null,
-                x,
-                variables,
-                [],
-                this._qb.flavour
-            )
-        );
 
         // Initialize the query builder
         let qb = this._qb.update().table(name);
@@ -126,11 +108,8 @@ class MutationProcessor extends Processor {
         // Iterate through each field and add it to the QueryBuilder
         this._addTableFields(node, variables, qb);
 
-        // Include selectors
-        qb = qb.where(
-            selectors.map(x => x.text).join(' AND '),
-            ...selectors.map(x => x.variables).reduce((a, b) => a.concat(b))
-        );
+        // Apply a WHERE statement if applicable
+        Helpers.applyWhereStatement(docroot, node, variables, qb);
 
         // Add order
         if (typeof orderBy !== 'undefined' && orderBy !== null)
@@ -145,7 +124,7 @@ class MutationProcessor extends Processor {
     /**
      * Processes a table node
      *
-     * @param root          The document root
+     * @param docroot          The document docroot
      * @param node          The table node
      * @param variables     Global variables
      * @param options       Config object
@@ -153,7 +132,7 @@ class MutationProcessor extends Processor {
      * @private
      */
     _processTable(
-        root: DocumentNode[],
+        docroot: DocumentNode[],
         node: TableNode,
         variables: {},
         options: {
@@ -173,9 +152,9 @@ class MutationProcessor extends Processor {
 
         // If we have selectors, then we're updating a row
         if (params.length > 0) {
-            qb = this._processUpdate(root, node, variables, options);
+            qb = this._processUpdate(docroot, node, variables, options);
         } else {
-            qb = this._processInsert(root, node, variables, options);
+            qb = this._processInsert(docroot, node, variables, options);
         }
 
         return qb;
@@ -184,13 +163,13 @@ class MutationProcessor extends Processor {
     /**
      * Processes a query document
      *
-     * @param root          Root of the document
+     * @param docroot          docroot of the document
      * @param node          Query node
      * @param variables     Global variables
      * @returns {QueryBuilder}
      */
     process(
-        root: DocumentNode[],
+        docroot: DocumentNode[],
         node: DocumentNode,
         config: Config,
         qb: QueryBuilder = this._qb
@@ -215,7 +194,7 @@ class MutationProcessor extends Processor {
             throw new Error('Mutations must contain at least one table');
 
         tables.forEach(table => {
-            qb = this._processTable(root, table, variables || {}, options);
+            qb = this._processTable(docroot, table, variables || {}, options);
         });
 
         return qb;

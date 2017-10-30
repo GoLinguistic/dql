@@ -4,17 +4,17 @@ import FilterString from './FilterString';
 
 class Helpers {
     /**
-     * Gets all the fields from a table node
+     * Gets all the fields from a table or join node
      *
-     * @param node  Table node
-     * @private
+     * @param node  Table or join node
      */
-    static getFieldsFromTable(node) {
-        const { name, nodes } = node;
+    static getFieldsFromNode(node) {
+        const { type, table, name, nodes } = node;
 
         return nodes.filter(x => x.type === Nodes.FIELD).map(x => ({
             ...x,
-            name: `${name}.${x.name}`
+            name:
+                type === Nodes.JOIN ? `${table}.${x.name}` : `${name}.${x.name}`
         }));
     }
 
@@ -47,15 +47,15 @@ class Helpers {
 
     /**
      * Gets the whole recursion thing for buildOperationStringHelper going
-     * @param root
+     * @param docroot
      * @param table
      * @param node
      * @param variables
      * @returns {{text, variables}}
      */
-    static buildFilterString(root, table, node, variables, aliases, flavor) {
+    static buildFilterString(docroot, table, node, variables, aliases, flavor) {
         return new FilterString(
-            root,
+            docroot,
             table,
             node,
             variables,
@@ -65,6 +65,37 @@ class Helpers {
     }
 
     /**
+     * Applies a WHERE statement to a QueryBuilder object
+     *
+     * @param node  Table node
+     * @param qb
+     */
+    static applyWhereStatement(docroot, node, variables, qb) {
+        // Get the name and parameters associated with the table
+        const { params } = node;
+
+        // From the parameters, create an operator tree and generate
+        // an array of selector strings to use in the WHERE() call
+        const selectors = params.map(x =>
+            Helpers.buildFilterString(
+                docroot,
+                null,
+                x,
+                variables,
+                [],
+                qb.flavour
+            )
+        );
+
+        // If the user has included selectors, add those too
+        if (selectors.length > 0) {
+            qb = qb.where(
+                selectors.map(x => x.text).join(' AND '),
+                ...selectors.map(x => x.variables).reduce((a, b) => a.concat(b))
+            );
+        }
+    }
+    /**
      * Interpolates variables into strings using '?' like Squel does
      *
      * @param string        String containing '?''s
@@ -72,27 +103,44 @@ class Helpers {
      * @returns {*}
      */
     static interpolateVariables(string, variables) {
+        // Matches all standalone question marks (?) in a string
         const regex = /(\s+\?\s+)|(^\?\s+)|(\s+\?$)/g;
 
+        // Define an iterator to know which match we're on
         let iterator = 0;
+
+        // Index of the last matched question mark
         let last_index = 0;
+
+        // Our final message
         let message = '';
+
+        // Match the first question mark
         let match = regex.exec(string);
 
-        if (match === null) return string;
-
+        // Recursively match all question marks in the string
         while (match !== null) {
+            // Get the variable at that index
             const v = variables[iterator];
 
+            // If there isn't a variable available, error
             if (typeof v === 'undefined')
                 throw new Error('Missing variable. Cannot interpolate.');
 
+            // Replace the question mark with the variable value
             message += `${string.substring(last_index, match.index)} ${v}`;
+
+            // Increment the last index
             last_index = match.index + (match.index === 0 ? 1 : 2);
+
+            // Increment the iterator
             iterator++;
+
+            // Match the next question mark
             match = regex.exec(string);
         }
 
+        // Append the rest of the string, whatever that may be
         message += string.substring(last_index, string.length);
 
         return message;

@@ -14,7 +14,12 @@ class Processor {
         this._qb = queryBuilder;
     }
 
-    process(root: DocumentNode[], node: any, config: Config, qb: QueryBuilder) {
+    process(
+        docroot: DocumentNode[],
+        node: any,
+        config: Config,
+        qb: QueryBuilder
+    ) {
         throw new Error('No process() method implemented for this class');
     }
 }

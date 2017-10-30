@@ -4,7 +4,7 @@ import QueryBuilder from '../util/QueryBuilder';
 import Nodes from '../util/Nodes';
 import Helpers from '../util/Helpers';
 import JoinProcessor from './JoinProcessor';
-import type { TableNode, Config, DocumentNode, FieldNode } from '../util/Types';
+import type { TableNode, Config, DocumentNode } from '../util/Types';
 
 /**
  * QueryProcessor
@@ -23,7 +23,7 @@ class QueryProcessor extends Processor {
      * @private
      */
     _addTableFields(node: TableNode, qb: QueryBuilder) {
-        const fields = Helpers.getFieldsFromTable(node);
+        const fields = Helpers.getFieldsFromNode(node);
         // Iterate through each field and add it to the QueryBuilder
         fields.forEach(field => {
             if (field.value)
@@ -36,43 +36,47 @@ class QueryProcessor extends Processor {
     }
 
     /**
+     * Adds configuration options to a QueryBuilder object
+     *
+     * @param options   Options object
+     * @param qb        QueryBuilder
+     * @private
+     */
+    _addConfigOptions(options: Config, qb: QueryBuilder) {
+        const { orderBy, descending, groupBy, limit, offset } = options;
+        const exists = obj => typeof obj !== 'undefined' && obj !== null;
+
+        // Add grouping
+        if (exists(groupBy)) qb.group(groupBy);
+
+        // Add sorting
+        if (exists(orderBy)) qb.order(orderBy, !descending);
+
+        // Add offset
+        if (exists(offset)) qb.offset(offset);
+
+        // Add limit
+        if (exists(limit)) qb.limit(limit);
+    }
+
+    /**
      * Processes a table node
      *
      * @param qb            The QueryBuilder object
-     * @param root          The root of the document (contains all queries, mutations, etc.)
+     * @param docroot          The docroot of the document (contains all queries, mutations, etc.)
      * @param node          The table node to process
      * @param variables     All variables passed to the query
      * @returns {qb}
      * @private
      */
     _processTable(
-        root: DocumentNode[],
+        docroot: DocumentNode[],
         node: TableNode,
         variables: {},
-        options: {
-            orderBy: string,
-            descending: boolean,
-            groupBy: string,
-            limit: number,
-            offset: number
-        }
+        options: Config
     ) {
         // Get the name and parameters associated with the table
-        const { name, params } = node;
-        const { orderBy, descending, groupBy, limit, offset } = options;
-
-        // From the parameters, create an operator tree and generate
-        // an array of selector strings to use in the WHERE() call
-        const selectors = params.map(x =>
-            Helpers.buildFilterString(
-                root,
-                null,
-                x,
-                variables,
-                [],
-                this._qb.flavour
-            )
-        );
+        const { name } = node;
 
         // Initialize qb
         let qb = this._qb.select().from(name);
@@ -81,29 +85,12 @@ class QueryProcessor extends Processor {
         this._addTableFields(node, qb);
 
         // Iterate through each join and add it to the QueryBuilder
-        qb = JoinProcessor(this._qb).process(root, node, variables, qb);
+        qb = JoinProcessor(this._qb).process(docroot, node, variables, qb);
 
-        // If the user has included selectors, add those too
-        if (selectors.length > 0) {
-            qb = qb.where(
-                selectors.map(x => x.text).join(' AND '),
-                ...selectors.map(x => x.variables).reduce((a, b) => a.concat(b))
-            );
-        }
+        // Apply a WHERE statement if applicable
+        Helpers.applyWhereStatement(docroot, node, variables, qb);
 
-        // Add grouping
-        if (typeof groupBy !== 'undefined' && groupBy !== null)
-            qb.group(groupBy);
-
-        // Add order
-        if (typeof orderBy !== 'undefined' && orderBy !== null)
-            qb.order(orderBy, !descending);
-
-        // Add offset
-        if (typeof offset !== 'undefined' && offset !== null) qb.offset(offset);
-
-        // Add limit
-        if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
+        this._addConfigOptions(options, qb);
 
         return qb;
     }
@@ -111,13 +98,13 @@ class QueryProcessor extends Processor {
     /**
      * Processes a query document
      *
-     * @param root          Root of the document
+     * @param docroot          docroot of the document
      * @param node          Query node
      * @param variables     Global variables
      * @returns {QueryBuilder}
      */
     process(
-        root: DocumentNode[],
+        docroot: DocumentNode[],
         node: DocumentNode,
         config: Config,
         qb: QueryBuilder = this._qb
@@ -142,7 +129,7 @@ class QueryProcessor extends Processor {
             throw new Error('Query must contain at least one table');
 
         tables.forEach(table => {
-            qb = this._processTable(root, table, variables || {}, options);
+            qb = this._processTable(docroot, table, variables || {}, options);
         });
 
         return qb;
