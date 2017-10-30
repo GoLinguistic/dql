@@ -3,9 +3,17 @@
     "version": "0.0.1",
     "description": "A GraphQL-inspired markup for querying databases",
     "main": "bin/dql.js",
-    "url": "https://github.com/Nickersoft/dql",
     "author": "Tyler Nickerson",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Nickersoft/dql"
+    },
+    "files": ["bin", "*.md", "*.png"],
+    "bugs": {
+        "url": "https://github.com/Nickersoft/dql/issues"
+    },
+    "homepage": "https://github.com/Nickersoft/dql",
     "scripts": {
         "precommit": "lint-staged",
         "build-rollup": "rollup -c rollup.config.js",

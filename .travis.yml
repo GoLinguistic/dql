@@ -3,10 +3,17 @@ node_js:
 - node
 - 8
 before_install: yarn global add greenkeeper-lockfile@1
-before_script: greenkeeper-lockfile-update
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+  - greenkeeper-lockfile-update
 script: npm run test
-after_script: greenkeeper-lockfile-upload
-after_success: "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls"
+after_script:
+  - ./node_modules/.bin/nyc report --reporter=lcov
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
+  - greenkeeper-lockfile-upload
 env:
   global:
-    secure: UrhENg89tmsvbPB6M2onxOAm9biTcCRyIwOGzDml7AArILDGKKXRjY3lqcR5RBOQVDty20zWSM0Ka32krD3oOl6n+plMtFxzlYrZdgltMey6z7yRFmbG0ETUjpVA/dx9w0Qq1IzbsCRNMZ2VJz2QgwaVw6M1mZtBvkySAJzvrWl6IQSda3sL+b5CIRw1fURegD31sXtVxYvDLPq/X9ti3bes6Xbjn0i3oyKJHMno1zzD2TGaJgYaCMoMmbbNPaRMxLWLPs6A5Yx27VZUTSHdMtzOgt/CZnH3qNeWmbfQjUK4lkfBZcnKrdOoaPEmqz/TVfrnbloYmEBc66SzVX91/Tr1CTg2DWGYgVUrCuG18z/ec72USE4vWQt6AHlmzSKZLsbfi1uVzd/8Zmtwwg7I4XqYXnEQQDJ2LUYzwnWRziqJMWwR/UGiJq1cfN8j1Xi9xhwoClY0R26EpkaooPRSOkEE12oE/YDVxs6lIjtkxhrBF/lbFxyjEr8psRp6BrmBhqcOpUiFrw9FkK7MjT7cvvaHwpj/sZVHN2OgkivY53urFkhKmUU9Yd/w+FOgQt36AoFXLKMX4YLRJ1zXncLY36b0morZ1o4lpHQOm5KISRnaySSLs27QVGTd8CYmgz1mvcZPBeVc2fvRrWLee/edb0d/p8KPugKwcdbGWfU+ys0=
+    - CC_TEST_REPORTER_ID=36ec1869bdfd7454d2f33054aec344ebf3cec85d3b0057083bc30de659a2138c
+    - secure: UrhENg89tmsvbPB6M2onxOAm9biTcCRyIwOGzDml7AArILDGKKXRjY3lqcR5RBOQVDty20zWSM0Ka32krD3oOl6n+plMtFxzlYrZdgltMey6z7yRFmbG0ETUjpVA/dx9w0Qq1IzbsCRNMZ2VJz2QgwaVw6M1mZtBvkySAJzvrWl6IQSda3sL+b5CIRw1fURegD31sXtVxYvDLPq/X9ti3bes6Xbjn0i3oyKJHMno1zzD2TGaJgYaCMoMmbbNPaRMxLWLPs6A5Yx27VZUTSHdMtzOgt/CZnH3qNeWmbfQjUK4lkfBZcnKrdOoaPEmqz/TVfrnbloYmEBc66SzVX91/Tr1CTg2DWGYgVUrCuG18z/ec72USE4vWQt6AHlmzSKZLsbfi1uVzd/8Zmtwwg7I4XqYXnEQQDJ2LUYzwnWRziqJMWwR/UGiJq1cfN8j1Xi9xhwoClY0R26EpkaooPRSOkEE12oE/YDVxs6lIjtkxhrBF/lbFxyjEr8psRp6BrmBhqcOpUiFrw9FkK7MjT7cvvaHwpj/sZVHN2OgkivY53urFkhKmUU9Yd/w+FOgQt36AoFXLKMX4YLRJ1zXncLY36b0morZ1o4lpHQOm5KISRnaySSLs27QVGTd8CYmgz1mvcZPBeVc2fvRrWLee/edb0d/p8KPugKwcdbGWfU+ys0=
