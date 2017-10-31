@@ -215,7 +215,9 @@ BuiltInFunc
 // Formal equation that can be surrounded by parens () or square brackets []
 Equation
     : Text
-        {$$ = { type: 'TEXT', value: $1 };}
+        {$$ = { type: 'RAW', value: $1 };}
+    | "'" Text "'"
+        {$$ = { type: 'TEXT', value: $2 };}
     | Number
         {$$ = { type: 'NUMBER', value: $1 };}
     | Variable

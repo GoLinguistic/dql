@@ -15,7 +15,8 @@
     },
     "homepage": "https://github.com/Nickersoft/dql",
     "scripts": {
-        "precommit": "lint-staged",
+        "precommit":
+            "lint-staged && npm run build && git add bin/ src/_parser.js",
         "build-rollup": "rollup -c rollup.config.js",
         "build-parser": "node cfg/build",
         "build": "npm run build-parser && npm run build-rollup",

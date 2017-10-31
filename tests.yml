@@ -83,6 +83,50 @@
       }
     }
 
+# Selection with a Built-In Function Call #1
+# ==========================================
+- name: select with a built-in function call (1)
+  expected: SELECT users.name FROM users WHERE (created = CURRENT_TIMESTAMP - INTERVAL '1 week')
+  document: |
+    query getBookmarksForUser {
+      users(created = CURRENT_TIMESTAMP - INTERVAL '1 week') {
+        name
+      }
+    }
+
+# Selection with a Built-In Function Call #2
+# ==========================================
+- name: select with a built-in function call (2)
+  expected: SELECT users.name FROM users WHERE (created = NOW())
+  document: |
+    query getBookmarksForUser {
+      users(created = NOW()) {
+        name
+      }
+    }
+
+# Selection with a Built-In Constant
+# ==================================
+- name: select with a built-in constant
+  expected: SELECT users.name FROM users WHERE (created < CURRENT_TIMESTAMP)
+  document: |
+    query getBookmarksForUser {
+      users(created < CURRENT_TIMESTAMP) {
+        name
+      }
+    }
+
+# Selection with a Selector Constant
+# ==================================
+- name: select with a selector constant
+  expected: SELECT users.name FROM users WHERE (name = 'Tyler')
+  document: |
+    query getBookmarksForUser {
+      users(name = 'Tyler') {
+        name
+      }
+    }
+
 # Selection with a Single Aliased JOIN
 # ====================================
 - name: select with simple aliased join

@@ -64,7 +64,10 @@ class FilterString {
         )[0];
 
         if (typeof target_query === 'undefined')
-            throw new Error(`Could not find query '${node.name}`);
+            return {
+                text: `${node.name}(${node.params.join(', ')})`,
+                variables: []
+            };
 
         // Extract the required variables in the query declaration
         const { variables: tq_variables } = target_query;
@@ -205,6 +208,9 @@ class FilterString {
                 break;
             case Nodes.QUERY_CALL:
                 value = this._handleQueryCall(docroot, node, variables, flavor);
+                break;
+            case Nodes.RAW_TEXT:
+                value = this._handleLeftSide(table, node, aliases);
                 break;
             default:
                 value = left_side
