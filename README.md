@@ -17,6 +17,7 @@ Contents
 
 - [Introduction](#introduction)
     - [What is DatQL?](#what-is-datql)
+    - [Installing](#installing)
     - [Motivation](#so-whats-the-point)
     - [Legitimacy](#idk-sounds-like-a-load-of-bull-do-people-even-use-this)
 - [The Markup](#the-markup)
@@ -58,6 +59,23 @@ query getUserTextMessages($conversation_id) {
     }
 }
 ```
+
+### Installing
+DatQL has the super-slick `dql` package name thanks to [@maxogden](https://github.com/maxogden) and can be installed via
+NPM or Yarn:
+
+```bash
+$ npm install dql@beta --save-dev
+$ yarn add dql@beta --dev
+```
+
+Currently, DatQL is only accessible as a CommonJS module that can be used in Node 8+ (maybe earlier, but that's the Babel 
+preset it uses, *sooo*..). It is also in beta (so a `beta` tag is required), and must be v0.2.0+, otherwise you'll get 
+the old library, which can be found [here](https://github.com/maxogden/dql).
+
+It is also important to note that [@maxogden](https://github.com/maxogden) happens to (coincidentally) be the a prominent 
+contributor of the [Dat Project](https://github.com/datproject), a "distributed data community" that is in no way 
+related to this project other than just have "dat" in the title. 
 
 ### “So... what's the point?”
 Right now you're probably thinking *“Big whoop man. Who the hell cares? SQL ain't that difficult.”* Well, let's talk 
