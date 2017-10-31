@@ -22,7 +22,8 @@ class MutationProcessor extends Processor {
      * @private
      */
     _addTableFields(node: TableNode, variables: {}, qb: QueryBuilder) {
-        const fields = Helpers.getFieldsFromNode(node);
+        const fields = node.nodes.filter(x => x.type === Nodes.FIELD);
+
         fields.forEach(field => {
             this._verifyField(field);
 

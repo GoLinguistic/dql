@@ -262,7 +262,7 @@
 # =========
 - name: inserting
   expected: >
-    INSERT INTO users (users.name, users.age) VALUES ('John', 45)
+    INSERT INTO users (name, age) VALUES ('John', 45)
   document: |
     mutation getUsers {
       users {
@@ -275,7 +275,7 @@
 # =========================
 - name: inserting using variables
   expected: >
-    INSERT INTO users (users.name, users.age) VALUES ('John', 45)
+    INSERT INTO users (name, age) VALUES ('John', 45)
   document: |
     mutation getUsers($name, $age) {
       users {
@@ -292,7 +292,7 @@
 # ===========================================
 - name: inserting using 'returning' (Postgres only)
   expected: >
-    INSERT INTO users (users.name, users.age) VALUES ('John', 45) RETURNING users.id
+    INSERT INTO users (name, age) VALUES ('John', 45) RETURNING id
   document: |
     mutation getUsers {
       users {
@@ -301,13 +301,13 @@
       }
     }
   config:
-    returning: users.id
+    returning: id
 
 # Updating
 # ========
 - name: updating
   expected: >
-    UPDATE users SET users.name = 'John', users.age = 45 WHERE (id = 9)
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9)
   document: |
     mutation getUsers {
       users(id = 9) {
@@ -320,7 +320,7 @@
 # ========================
 - name: updating using variables
   expected: >
-    UPDATE users SET users.name = 'John', users.age = 45 WHERE (id = 9)
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9)
   document: |
     mutation getUsers($id, $name, $age) {
       users(id = $id) {
@@ -338,7 +338,7 @@
 # ==========================
 - name: sorting (mutations) (ascending)
   expected: >
-    UPDATE users SET users.name = 'John', users.age = 45 WHERE (id = 9) ORDER BY created ASC
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) ORDER BY created ASC
   document: |
     mutation getUsers {
       users(id = 9) {
@@ -353,7 +353,7 @@
 # ===========================
 - name: sorting (mutations) (descending)
   expected: >
-    UPDATE users SET users.name = 'John', users.age = 45 WHERE (id = 9) ORDER BY created DESC
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) ORDER BY created DESC
   document: |
     mutation getUsers {
       users(id = 9) {
@@ -369,7 +369,7 @@
 # =====================
 - name: limiting (mutations)
   expected: >
-    UPDATE users SET users.name = 'John', users.age = 45 WHERE (id = 9) LIMIT 1
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) LIMIT 1
   document: |
     mutation getUsers {
       users(id = 9) {
