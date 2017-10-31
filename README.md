@@ -2,11 +2,11 @@
     <img src="https://github.com/Nickersoft/dql/raw/master/logo.png" width="400" /><br/><br/>
 
 [![Travis](https://img.shields.io/travis/Nickersoft/dql.svg)](https://travis-ci.org/Nickersoft/dql)
-[![Coveralls github](https://img.shields.io/coveralls/Nickersoft/dql.svg)](https://coveralls.io/github/Nickersoft/dql)
 [![Maintainability](https://api.codeclimate.com/v1/badges/78ac0fa85c83fea5213a/maintainability)](https://codeclimate.com/github/Nickersoft/dql/maintainability)
+[![Code Climate](https://img.shields.io/codeclimate/coverage/github/Nickersoft/dql.svg)]()
 [![Github file size](https://img.shields.io/github/size/Nickersoft/dql/bin/dql.js.svg)](https://github.com/Nickersoft/dql)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Nickersoft/dql.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://img.shields.io/badge/Greenkeeper-enabled-brightgreen.svg)](https://greenkeeper.io/)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/Nickersoft/dql/blob/master/LICENSE.md)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
