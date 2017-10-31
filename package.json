@@ -16,11 +16,12 @@
     "homepage": "https://github.com/Nickersoft/dql",
     "scripts": {
         "precommit":
-            "lint-staged && npm run build && git add bin/ src/_parser.js",
+            "npm run build && git add bin/ src/_parser.js && lint-staged",
         "build-rollup": "rollup -c rollup.config.js",
         "build-parser": "node cfg/build",
         "build": "npm run build-parser && npm run build-rollup",
-        "test": " nyc ava"
+        "test": "nyc ava",
+        "flow": "flow"
     },
     "dependencies": {
         "squel": "^5.12.0"
