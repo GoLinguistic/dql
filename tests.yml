@@ -97,10 +97,10 @@
 # Selection with a Built-In Function Call #2
 # ==========================================
 - name: select with a built-in function call (2)
-  expected: SELECT users.name FROM users WHERE (created = NOW())
+  expected: SELECT users.name FROM users WHERE (created != NOW())
   document: |
     query getBookmarksForUser {
-      users(created = NOW()) {
+      users(created != NOW()) {
         name
       }
     }

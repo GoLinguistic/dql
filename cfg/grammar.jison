@@ -10,7 +10,7 @@
 query|mutation\b                return 'DEFINITION';
 false|true\b                    return 'BOOLEAN';
 [\w\_\d]+                       return 'STRING';
-([\+\-*\/%&|^=><]+)|(![=<>])    return 'OPERATOR';
+([\+\-*\/%&|^=><]+)|(\![=<>]+)  return 'OPERATOR';
 "{"                             return '{';
 "}"                             return '}';
 "("                             return '(';
