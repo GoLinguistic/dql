@@ -7,13 +7,11 @@ const tests = yaml.safeLoad(fs.readFileSync('tests.yml', 'utf8'));
 
 tests.forEach(entry => {
     const doc = dql`${entry.document}`;
+    const config = entry.config || {};
 
     if (!entry.expected) test(entry.name, t => t.throws(() => doc()));
     else
         test(entry.name, t =>
-            t.is(
-                doc(entry.config || {}, true),
-                entry.expected.replace(/\s+/g, ' ').trim()
-            )
+            t.is(doc(config, true), entry.expected.replace(/\s+/g, ' ').trim())
         );
 });

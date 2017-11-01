@@ -202,8 +202,6 @@ VariableList
 BuiltInFunc
     : Text "'" TextString "'"
         {$$ = $1 + " '" + $3 + "'";}
-    | Text '"' TextString '"'
-        {$$ = $1 + " '" + $3 + "'";}
 ;
 
 /*************
@@ -216,7 +214,7 @@ BuiltInFunc
 Equation
     : Text
         {$$ = { type: 'RAW', value: $1 };}
-    | "'" Text "'"
+    | '"' Text '"'
         {$$ = { type: 'TEXT', value: $2 };}
     | Number
         {$$ = { type: 'NUMBER', value: $1 };}
@@ -290,10 +288,12 @@ Content
         {$$ = { type: 'FIELD', name: $1, value: null, alias: $3 };}
     | Text ':' Boolean
             {$$ = { type: 'FIELD', name: $1, value: $3 === 'true', alias: null };}
+    | Text ':' '"' Text '"'
+        {$$ = { type: 'FIELD', name: $1, value: { type: 'TEXT', value: $4 }, alias: null };}
     | Text ':' Text
-        {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
+        {$$ = { type: 'FIELD', name: $1, value: { type: 'RAW', value: $3 }, alias: null };}
     | Text ':' Number
-        {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
+        {$$ = { type: 'FIELD', name: $1, value: { type: 'NUMBER', value: $3 }, alias: null };}
     | Text ':' Variable
         {$$ = { type: 'FIELD', name: $1, value: { type: 'VARIABLE', value: $3 }, alias: null };}
 ;

@@ -122,7 +122,7 @@
   expected: SELECT users.name FROM users WHERE (name = 'Tyler')
   document: |
     query getBookmarksForUser {
-      users(name = 'Tyler') {
+      users(name = "Tyler") {
         name
       }
     }
@@ -266,7 +266,7 @@
   document: |
     mutation getUsers {
       users {
-        name: John
+        name: "John"
         age: 45
       }
     }
@@ -296,7 +296,7 @@
   document: |
     mutation getUsers {
       users {
-        name: John
+        name: "John"
         age: 45
       }
     }
@@ -311,7 +311,7 @@
   document: |
     mutation getUsers {
       users(id = 9) {
-        name: John
+        name: "John"
         age: 45
       }
     }
@@ -342,7 +342,7 @@
   document: |
     mutation getUsers {
       users(id = 9) {
-        name: John
+        name: "John"
         age: 45
       }
     }
@@ -357,7 +357,7 @@
   document: |
     mutation getUsers {
       users(id = 9) {
-        name: John
+        name: "John"
         age: 45
       }
     }
@@ -373,9 +373,105 @@
   document: |
     mutation getUsers {
       users(id = 9) {
-        name: John
+        name: "John"
         age: 45
       }
     }
   config:
     limit: 1
+
+#########################
+# VALUE EXPERIMENTATION #
+#########################
+
+# Query with Different Scalars
+# ============================
+- name: query with different scalar types
+  expected: SELECT * FROM users WHERE (id = 101 AND name = 'Tyler')
+  document: |
+    query getBookmarksForUser {
+      users(id = 101, name = "Tyler") { }
+    }
+
+# Update with Different Scalars
+# =============================
+- name: update with different scalar types
+  expected: UPDATE users SET id = 101, name = 'Tyler', description = (NULL), created = (CURRENT_TIMESTAMP) WHERE (id = 101 AND name = 'Tyler')
+  document: |
+    mutation getBookmarksForUser {
+      users(id = 101, name = "Tyler") {
+        id: 101
+        name: "Tyler"
+        description: NULL
+        created: CURRENT_TIMESTAMP
+      }
+    }
+
+# Insert with Different Scalars
+# =============================
+- name: insert with different scalar types
+  expected: INSERT INTO users (id, name, description, created) VALUES (101, 'Tyler', (NULL), (CURRENT_TIMESTAMP))
+  document: |
+    mutation getBookmarksForUser {
+      users {
+        id: 101
+        name: "Tyler"
+        description: NULL
+        created: CURRENT_TIMESTAMP
+      }
+    }
+
+# Query with Different Variable Scalars
+# =====================================
+- name: query with different scalar types
+  expected: SELECT * FROM users WHERE (id = 101 AND name = 'Tyler' AND description = NULL AND available = FALSE)
+  document: |
+    query getBookmarksForUser($id, $name, $desc, $available) {
+      users(id = $id, name = $name, description = $desc, available = $available) { }
+    }
+  config:
+    variables:
+      id: 101
+      name: Tyler
+      desc: null
+      available: false
+
+# Update with Different Scalars
+# =============================
+- name: update with different scalar types
+  expected: UPDATE users SET id = 101, name = 'Tyler', description = NULL, available = FALSE WHERE (id = 101 AND name = 'Tyler')
+  document: |
+    mutation getBookmarksForUser($id, $name, $desc, $available) {
+      users(id = $id, name = $name) {
+        id: $id
+        name: $name
+        description: $desc
+        available: $available
+      }
+    }
+  config:
+    variables:
+      id: 101
+      name: Tyler
+      desc: null
+      available: false
+
+# Insert with Different Scalars
+# =============================
+- name: insert with different scalar types
+  expected: INSERT INTO users (id, name, description, available) VALUES (101, 'Tyler', NULL, FALSE)
+  document: |
+    mutation getBookmarksForUser($id, $name, $desc, $available) {
+      users {
+        id: $id
+        name: $name
+        description: $desc
+        available: $available
+      }
+    }
+  config:
+    variables:
+      id: 101
+      name: Tyler
+      desc: null
+      available: false

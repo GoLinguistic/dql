@@ -27,17 +27,21 @@ class MutationProcessor extends Processor {
         fields.forEach(field => {
             this._verifyField(field);
 
-            if (
-                typeof field.value === 'object' &&
-                field.value.type === Nodes.VARIABLE
-            ) {
-                const variable = field.value.value;
-                const val = variables[variable];
+            switch (field.value.type) {
+                case Nodes.VARIABLE:
+                    const variable = field.value.value;
+                    const val = variables[variable];
 
-                if (typeof val === 'undefined')
-                    throw new Error(`Could not find variable: ${variable}`);
-                else qb.set(field.name, val);
-            } else qb.set(field.name, field.value);
+                    if (typeof val === 'undefined')
+                        throw new Error(`Could not find variable: ${variable}`);
+                    else qb.set(field.name, val);
+                    break;
+                case Nodes.RAW_TEXT:
+                    qb.set(field.name, this._qb.str(field.value.value));
+                    break;
+                default:
+                    qb.set(field.name, field.value.value);
+            }
         });
     }
 
