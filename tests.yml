@@ -254,6 +254,17 @@
     orderBy: created
     descending: true
 
+# Attempting to Assign Values in Query
+# ====================================
+- name: attempting to assign values in a query
+  document: |
+    query getUsers {
+      users {
+        name: "Tyler"
+        created: CURRENT_TIMESTAMP
+      }
+    }
+
 #############
 # MUTATIONS #
 #############
@@ -475,3 +486,28 @@
       name: Tyler
       desc: null
       available: false
+
+# Mutation With Required Variable
+# ===============================
+- name: mutation with required variable
+  expected: INSERT INTO users (id) VALUES (101)
+  document: |
+    mutation getBookmarksForUser($id!, $name, $desc, $available) {
+       users {
+         id: $id
+         name: $name
+         description: $desc
+         available: $available
+       }
+     }
+  config:
+    variables:
+      id: 101
+
+# Query With Optional Variable in Selector
+# ========================================
+- name: query with optional variable in selector
+  document: |
+    query getBookmarksForUser($id, $name, $desc, $available) {
+       users(name = $name) { }
+     }

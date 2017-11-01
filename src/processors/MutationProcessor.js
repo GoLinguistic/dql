@@ -32,9 +32,9 @@ class MutationProcessor extends Processor {
                     const variable = field.value.value;
                     const val = variables[variable];
 
-                    if (typeof val === 'undefined')
-                        throw new Error(`Could not find variable: ${variable}`);
-                    else qb.set(field.name, val);
+                    if (typeof val !== 'undefined')
+                        qb.set(field.name, val.value);
+
                     break;
                 case Nodes.RAW_TEXT:
                     qb.set(field.name, this._qb.str(field.value.value));
@@ -188,8 +188,14 @@ class MutationProcessor extends Processor {
             );
 
         req_var.forEach(v => {
-            if (!variables || !variables.hasOwnProperty(v)) {
-                throw new Error(`Missing required variable ${v.toString()}`);
+            if (variables && variables.hasOwnProperty(v.name)) {
+                variables[v.name] = {
+                    value: variables[v.name],
+                    required: v.required
+                };
+            } else {
+                if (v.required)
+                    throw new Error(`Missing required variable ${v.name}`);
             }
         });
 

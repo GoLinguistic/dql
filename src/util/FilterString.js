@@ -8,7 +8,7 @@ function resolveVariable(variable, variables) {
     if (typeof v === 'undefined')
         throw new Error(`Could not find variable: ${variable}`);
 
-    return v;
+    return v.value;
 }
 
 const getFieldValue = (table, node, aliases) =>
@@ -177,7 +177,7 @@ class FilterString {
     /**
      * Builds a string from the operator tree found in selector blocks (inside parens)
      *
-     * @param docroot          Document docroot
+     * @param docroot       Document docroot
      * @param table         Table name
      * @param node          Current node
      * @param variables     Global variable map

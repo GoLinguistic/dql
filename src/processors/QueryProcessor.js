@@ -118,11 +118,16 @@ class QueryProcessor extends Processor {
             );
 
         req_var.forEach(v => {
-            if (!variables || !variables.hasOwnProperty(v)) {
-                throw new Error(`Missing required variable ${v}`);
+            if (variables && variables.hasOwnProperty(v.name)) {
+                variables[v.name] = {
+                    value: variables[v.name],
+                    required: v.required
+                };
+            } else {
+                if (v.required)
+                    throw new Error(`Missing required variable ${v.name}`);
             }
         });
-
         const tables = nodes.filter(x => x.type === Nodes.TABLE);
 
         if (tables.length < 1)

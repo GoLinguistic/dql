@@ -5,25 +5,26 @@
 %lex
 %%
 
-\s+                 /* skip whitespace */
-\d+\b               return 'NUMBER';
-query|mutation\b    return 'DEFINITION';
-false|true\b        return 'BOOLEAN';
-[\w\_\d]+           return 'STRING';
-[\!+\-*\/%&|^=><]+  return 'OPERATOR';
-"{"                 return '{';
-"}"                 return '}';
-"("                 return '(';
-")"                 return ')';
-\.{3}\s*on          return 'JOIN_OP';
-","                 return ',';
-"'"                 return '\'';
-\"                  return '"';
-"."                 return '.';
-"$"                 return '$';
-"["                 return '[';
-"]"                 return ']';
-":"                 return ':';
+\s+                             /* skip whitespace */
+\d+\b                           return 'NUMBER';
+query|mutation\b                return 'DEFINITION';
+false|true\b                    return 'BOOLEAN';
+[\w\_\d]+                       return 'STRING';
+([\+\-*\/%&|^=><]+)|(![=<>])    return 'OPERATOR';
+"{"                             return '{';
+"}"                             return '}';
+"("                             return '(';
+")"                             return ')';
+\.{3}\s*on                      return 'JOIN_OP';
+","                             return ',';
+"'"                             return '\'';
+\"                              return '"';
+"."                             return '.';
+"$"                             return '$';
+"["                             return '[';
+"]"                             return ']';
+":"                             return ':';
+"!"                             return '!';
 
 /lex
 
@@ -191,9 +192,13 @@ Variables
 // A comma-separated list of variables
 VariableList
     : Variable
-        {$$ = [$1];}
+        {$$ = [{ required: false, name: $1}];}
+    | Variable '!'
+        {$$ = [{ required: true, name: $1 }]}
     | VariableList ',' Variable
-        {$$ = $1; $1.push($3);}
+        {$$ = $1; $1.push({ required: false, name: $3 });}
+    | VariableList ',' Variable '!'
+        {$$ = $1; $1.push({ required: true, name: $3 });}
 ;
 
 // Built-In Function
