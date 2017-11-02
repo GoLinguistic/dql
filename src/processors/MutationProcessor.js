@@ -28,24 +28,31 @@ class MutationProcessor extends Processor {
         fields.forEach(field => {
             this._verifyField(field);
 
-            switch (field.value.type) {
-                case Nodes.VARIABLE:
-                    const variable = field.value.value;
-                    const val = variables[variable];
+            try {
+                switch (field.value.type) {
+                    case Nodes.VARIABLE:
+                        const variable = field.value.value;
+                        const val = variables[variable];
 
-                    if (typeof val !== 'undefined') {
-                        qb.set(field.name, val.value);
+                        if (typeof val !== 'undefined') {
+                            qb.set(field.name, val.value);
+                            count++;
+                        }
+
+                        break;
+                    case Nodes.RAW_TEXT:
+                        qb.set(field.name, this._qb.str(field.value.value));
                         count++;
-                    }
-
-                    break;
-                case Nodes.RAW_TEXT:
-                    qb.set(field.name, this._qb.str(field.value.value));
-                    count++;
-                    break;
-                default:
-                    qb.set(field.name, field.value.value);
-                    count++;
+                        break;
+                    default:
+                        qb.set(field.name, field.value.value);
+                        count++;
+                }
+            } catch (e) {
+                console.error(
+                    `Value \'${field.value
+                        .value}\` for field \`${field.name}\` is invalid`
+                );
             }
         });
 
