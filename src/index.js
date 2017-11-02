@@ -69,7 +69,7 @@ const getEntryPoint = (args, trees) => {
  * @returns {string|{text: string, variables: string[]}}
  */
 const getProcessedDocument = (ast, trees, flavor, args) => {
-    const { config, as_string } = args;
+    let { config, as_string } = args;
     let processed = null;
 
     switch (ast.type) {

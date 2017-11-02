@@ -109,8 +109,11 @@ class QueryProcessor extends Processor {
         config: Config,
         qb: QueryBuilder = this._qb
     ): QueryBuilder {
-        const { variables, ...options } = config;
         const { variables: req_var, nodes } = node;
+        let { variables, ...options } = config;
+
+        // Clone the variables
+        variables = Object.assign({}, variables);
 
         if (node.type !== Nodes.QUERY)
             throw new Error(
