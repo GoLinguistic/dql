@@ -23,6 +23,7 @@ class MutationProcessor extends Processor {
      */
     _addTableFields(node: TableNode, variables: {}, qb: QueryBuilder) {
         const fields = node.nodes.filter(x => x.type === Nodes.FIELD);
+        let count = 0;
 
         fields.forEach(field => {
             this._verifyField(field);
@@ -32,17 +33,24 @@ class MutationProcessor extends Processor {
                     const variable = field.value.value;
                     const val = variables[variable];
 
-                    if (typeof val !== 'undefined')
+                    if (typeof val !== 'undefined') {
                         qb.set(field.name, val.value);
+                        count++;
+                    }
 
                     break;
                 case Nodes.RAW_TEXT:
                     qb.set(field.name, this._qb.str(field.value.value));
+                    count++;
                     break;
                 default:
                     qb.set(field.name, field.value.value);
+                    count++;
             }
         });
+
+        if (count === 0)
+            throw new Error('At least one field must be set in a mutation');
     }
 
     /**
