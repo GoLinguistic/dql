@@ -292,7 +292,7 @@ Content
     | Text '[' Text ']'
         {$$ = { type: 'FIELD', name: $1, value: null, alias: $3 };}
     | Text ':' Boolean
-            {$$ = { type: 'FIELD', name: $1, value: $3 === 'true', alias: null };}
+            {$$ = { type: 'FIELD', name: $1, value: { type: 'BOOLEAN', value: $3 === 'true' }, alias: null };}
     | Text ':' '"' Text '"'
         {$$ = { type: 'FIELD', name: $1, value: { type: 'TEXT', value: $4 }, alias: null };}
     | Text ':' Text

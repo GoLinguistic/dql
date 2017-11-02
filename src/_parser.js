@@ -388,7 +388,7 @@ var parser = (function() {
                     this.$ = {
                         type: 'FIELD',
                         name: $$[$0 - 2],
-                        value: $$[$0] === 'true',
+                        value: { type: 'BOOLEAN', value: $$[$0] === 'true' },
                         alias: null
                     };
                     break;
