@@ -63,11 +63,20 @@ class FilterString {
             x => x.type === 'QUERY' && x.name === node.name
         )[0];
 
-        if (typeof target_query === 'undefined')
+        if (typeof target_query === 'undefined') {
+            let param_list = [];
+
+            node.params.forEach(param => {
+                if (param.type === Nodes.VARIABLE)
+                    param_list.push(resolveVariable(param.value, variables));
+                else param_list.push(param.value);
+            });
+
             return {
-                text: `${node.name}(${node.params.join(', ')})`,
+                text: `${node.name}(${param_list.join(', ')})`,
                 variables: []
             };
+        }
 
         // Extract the required variables in the query declaration
         const { variables: tq_variables } = target_query;
@@ -82,10 +91,10 @@ class FilterString {
             // If the param passed at the end of that variable is itself
             // a variable, resolve it before passing it in
             if (param.type === Nodes.VARIABLE) {
-                vmap[v] = resolveVariable(param.value, variables);
+                vmap[v.name] = resolveVariable(param.value, variables);
             } else
                 // Otherwise just pass in the param
-                vmap[v] = param.value;
+                vmap[v.name] = param.value;
         });
 
         // Return the object and process the call

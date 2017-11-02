@@ -149,6 +149,10 @@ ParamList
         {$$ = [''];}
     | Text
         {$$ = [{ type: 'TEXT', value: $1}];}
+    | Number
+        {$$ = [{ type: 'NUMBER', value: $1}];}
+    | Boolean
+        {$$ = [{ type: 'BOOLEAN', value: $1}];}
     | Variable
         {$$ = [{ type: 'VARIABLE', value: $1}];}
     | ParamList ',' QueryCall
