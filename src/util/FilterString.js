@@ -50,9 +50,9 @@ class FilterString {
     /**
      * Handles case where node is a call to a neighboring query (document)
      *
-     * @param docroot      Document docroot
-     * @param node      Current node
-     * @param flavor    Flavor to use for SQL (postgres, mysql, mssql)
+     * @param docroot       Document docroot
+     * @param node          Current node
+     * @param flavor        Flavor to use for SQL (postgres, mysql, mssql)
      * @returns {{text: string, variables: [null]}}
      * @private
      */
@@ -67,8 +67,12 @@ class FilterString {
             let param_list = [];
 
             node.params.forEach(param => {
-                if (param.type === Nodes.VARIABLE)
+                if (param.type && param.type === Nodes.VARIABLE)
                     param_list.push(resolveVariable(param.value, variables));
+                else if (param.type === Nodes.BOOLEAN)
+                    param_list.push(param.value.toString().toUpperCase());
+                else if (param.type === Nodes.STRING)
+                    param_list.push(`'${param.value}'`);
                 else param_list.push(param.value);
             });
 
@@ -90,9 +94,9 @@ class FilterString {
 
             // If the param passed at the end of that variable is itself
             // a variable, resolve it before passing it in
-            if (param.type === Nodes.VARIABLE) {
+            if (param.type === Nodes.VARIABLE)
                 vmap[v.name] = resolveVariable(param.value, variables);
-            } else
+            else
                 // Otherwise just pass in the param
                 vmap[v.name] = param.value;
         });

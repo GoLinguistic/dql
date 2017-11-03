@@ -83,8 +83,8 @@
       }
     }
 
-# Selection with a Neighboring Query Call w/ Variables
-# ====================================================
+# Selection with a Query Call w/ Variables
+# ========================================
 - name: select with a query call with variables
   expected: SELECT users.name FROM users WHERE (id = (SELECT users.id FROM users WHERE (id = 3)))
   document: |
@@ -117,10 +117,10 @@
 # Selection with a Built-In Function Call #2
 # ==========================================
 - name: select with a built-in function call (2)
-  expected: SELECT users.name FROM users WHERE (created != MYFUNC(1))
+  expected: SELECT users.name FROM users WHERE (created != MYFUNC('Tyler', 1, FALSE))
   document: |
     query getBookmarksForUser {
-      users(created != MYFUNC(1)) {
+      users(created != MYFUNC("Tyler", 1, false)) {
         name
       }
     }

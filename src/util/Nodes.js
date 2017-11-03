@@ -1,6 +1,7 @@
 // @flow
 export default {
     TABLE: 'TABLE',
+    BOOLEAN: 'BOOLEAN',
     JOIN: 'JOIN',
     QUERY: 'QUERY',
     QUERY_CALL: 'QUERY_CALL',
@@ -9,5 +10,6 @@ export default {
     OPERATION: 'OPERATION',
     VARIABLE: 'VARIABLE',
     BUILT_IN: 'BUILT_IN',
-    MUTATION: 'MUTATION'
+    MUTATION: 'MUTATION',
+    STRING: 'STRING'
 };

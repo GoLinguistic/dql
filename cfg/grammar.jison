@@ -41,27 +41,41 @@ false|true\b                    return 'BOOLEAN';
  * BASIC TYPES *
  ***************/
 
-// Text
-// ====
-// Any single string without spaces
-Text
+// RawString
+// =========
+// A string without quotation marks
+RawString
     : STRING
-        {$$ = $1;}
-    | Text '.' STRING
-        {$$ = $1 + '.' + $3;}
+        {$$ = { type: 'RAW', value: $1 };}
 ;
 
-// Text String
+// String
+// ======
+// Any single string without spaces
+String
+    : '"' STRING '"'
+        {$$ = { type: 'STRING', value: $2 };}
+;
+
+// Field Reference
+// ===============
+// Any reference to a table-specific field using dot notation
+FieldRef
+    : STRING '.' STRING
+            {$$ = { type: 'FIELD_REF', value: $1 + '.' + $3 };}
+;
+
+// Long String
 // ===========
-// String of text or number objects
-TextString
-    : Text
+// Collection of strings or numbers
+LongString
+    : STRING
         {$$ = $1;}
-    | Number
+    | NUMBER
         {$$ = $1;}
-    | TextString Number
+    | LongString NUMBER
         {$$ = $1 + ' ' + $2;}
-    | TextString Text
+    | LongString STRING
         {$$ = $1 + ' ' + $2;}
 ;
 
@@ -70,7 +84,7 @@ TextString
 // Any number
 Number
     : NUMBER
-        {$$ = Number($1);}
+        {$$ = { type: 'NUMBER', value: Number($1) };}
 ;
 
 // Boolean
@@ -78,7 +92,7 @@ Number
 // True or false
 Boolean
     : BOOLEAN
-        {$$ = $1;}
+        {$$ = { type: 'BOOLEAN', value: $1 === 'true' };}
 ;
 
 // Join
@@ -113,9 +127,9 @@ Root
 // ========
 // Any block in the form of [definition] [name] ( [params] ) {
 Document
-    : Definition Text Variables Block
+    : Definition STRING Variables Block
         {$$ = { type: $1.toUpperCase(), name: $2, variables: $3, nodes: $4 };}
-    | Definition Text Block
+    | Definition STRING Block
         {$$ = { type: $1.toUpperCase(), name: $2, variables: [], nodes: $3 };}
 ;
 
@@ -137,7 +151,7 @@ DocumentList
 // ==========
 // A query call is a call to a nested query
 QueryCall
-    : Text Params
+    : STRING Params
         {$$ = { type: 'QUERY_CALL', name: $1, params: $2 };}
 ;
 
@@ -147,17 +161,9 @@ QueryCall
 ParamList
     :
         {$$ = [''];}
-    | Text
-        {$$ = [{ type: 'TEXT', value: $1}];}
-    | Number
-        {$$ = [{ type: 'NUMBER', value: $1}];}
-    | Boolean
-        {$$ = [{ type: 'BOOLEAN', value: $1}];}
-    | Variable
-        {$$ = [{ type: 'VARIABLE', value: $1}];}
-    | ParamList ',' QueryCall
-        {$$ = $1; $1.push($3);}
-    | ParamList ',' Text
+    | Param
+        {$$ = [$1];}
+    | ParamList ',' Param
         {$$ = $1; $1.push($3);}
 ;
 
@@ -169,16 +175,40 @@ Params
         {$$ = $2;}
 ;
 
+// Parameter
+// =========
+// Single parameter type
+Param
+    : String
+        {$$ = $1;}
+    | Number
+        {$$ = $1;}
+    | Boolean
+        {$$ = $1;}
+    | Variable
+        {$$ = $1;}
+    | QueryCall
+        {$$ = $1;}
+;
+
 /*************
  * VARIABLES *
  *************/
+
+// VARIABLE
+// ========
+// A raw variable type that allows extracting of the variable name
+VARIABLE
+    : '$' STRING
+        {$$ = $2;}
+;
 
 // Variable
 // ========
 // A single variable is any string that begins with $
 Variable
-    : '$' Text
-        {$$ = $2;}
+    : VARIABLE
+        {$$ = { type: 'VARIABLE', value: $1 };}
 ;
 
 // Variables
@@ -195,13 +225,13 @@ Variables
 // =============
 // A comma-separated list of variables
 VariableList
-    : Variable
+    : VARIABLE
         {$$ = [{ required: false, name: $1}];}
-    | Variable '!'
+    | VARIABLE '!'
         {$$ = [{ required: true, name: $1 }]}
-    | VariableList ',' Variable
+    | VariableList ',' VARIABLE
         {$$ = $1; $1.push({ required: false, name: $3 });}
-    | VariableList ',' Variable '!'
+    | VariableList ',' VARIABLE '!'
         {$$ = $1; $1.push({ required: true, name: $3 });}
 ;
 
@@ -209,8 +239,8 @@ VariableList
 // =================
 // Function built-in to SQL like INTERVAL
 BuiltInFunc
-    : Text "'" TextString "'"
-        {$$ = $1 + " '" + $3 + "'";}
+    : STRING "'" LongString "'"
+        {$$ = { type: 'BUILT_IN', value: $1 + " '" + $3 + "'"};}
 ;
 
 /*************
@@ -221,18 +251,20 @@ BuiltInFunc
 // ========
 // Formal equation that can be surrounded by parens () or square brackets []
 Equation
-    : Text
-        {$$ = { type: 'RAW', value: $1 };}
-    | '"' Text '"'
-        {$$ = { type: 'TEXT', value: $2 };}
+    : RawString
+        {$$ = $1;}
+    | String
+        {$$ = $1;}
     | Number
-        {$$ = { type: 'NUMBER', value: $1 };}
+        {$$ = $1;}
+    | FieldRef
+        {$$ = $1;}
     | Variable
-        {$$ = { type: 'VARIABLE', value: $1 };}
+        {$$ = $1;}
     | QueryCall
         {$$ = $1;}
     | BuiltInFunc
-        {$$ = { type: 'BUILT_IN', value: $1 };}
+        {$$ = $1;}
     | Equation OPERATOR Equation
         {$$ = { type: 'OPERATION', a: $1, op: $2, b: $3 };}
     | '(' Equation ')'
@@ -291,20 +323,20 @@ Content
         {$$ = $1;}
     | TableOperation
         {$$ = $1;}
-    | Text
+    | STRING
         {$$ = { type: 'FIELD', name: $1, value: null, alias: null };}
-    | Text '[' Text ']'
+    | STRING '[' STRING ']'
         {$$ = { type: 'FIELD', name: $1, value: null, alias: $3 };}
-    | Text ':' Boolean
-            {$$ = { type: 'FIELD', name: $1, value: { type: 'BOOLEAN', value: $3 === 'true' }, alias: null };}
-    | Text ':' '"' Text '"'
-        {$$ = { type: 'FIELD', name: $1, value: { type: 'TEXT', value: $4 }, alias: null };}
-    | Text ':' Text
-        {$$ = { type: 'FIELD', name: $1, value: { type: 'RAW', value: $3 }, alias: null };}
-    | Text ':' Number
-        {$$ = { type: 'FIELD', name: $1, value: { type: 'NUMBER', value: $3 }, alias: null };}
-    | Text ':' Variable
-        {$$ = { type: 'FIELD', name: $1, value: { type: 'VARIABLE', value: $3 }, alias: null };}
+    | STRING ':' Boolean
+        {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
+    | STRING ':' String
+        {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
+    | STRING ':' RawString
+        {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
+    | STRING ':' Number
+        {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
+    | STRING ':' Variable
+        {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
 ;
 
 /**************
@@ -315,9 +347,9 @@ Content
 // ===============
 // Describes which table the document op (mutation/query/etc) will be run on
 TableOperation
-    : Text Selectors Block
+    : STRING Selectors Block
         {$$ = { type: 'TABLE', name: $1.trim(), params: $2, nodes: $3 };}
-    | Text Block
+    | STRING Block
         {$$ = { type: 'TABLE', name: $1.trim(), params: [], nodes: $2 };}
 ;
 
@@ -325,6 +357,6 @@ TableOperation
 // ==============
 // Describes a join operation
 JoinOperation
-    : Join Text Selectors Block
+    : Join STRING Selectors Block
         {$$ = { type: 'JOIN', table: $2.trim(), on: $3, nodes: $4 };}
 ;
