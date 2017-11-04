@@ -77,21 +77,23 @@ class QueryProcessor extends Processor {
     ) {
         // Get the name and parameters associated with the table
         const { name } = node;
+        const del = node.delete;
 
         // Initialize qb
         let qb = this._qb.select().from(name);
+        if (del) throw new Error('Delete statements cannot exist in queries');
+        else {
+            // Add fields from table
+            this._addTableFields(node, qb);
 
-        // Add fields from table
-        this._addTableFields(node, qb);
+            // Iterate through each join and add it to the QueryBuilder
+            qb = JoinProcessor(this._qb).process(docroot, node, variables, qb);
 
-        // Iterate through each join and add it to the QueryBuilder
-        qb = JoinProcessor(this._qb).process(docroot, node, variables, qb);
+            // Apply a WHERE statement if applicable
+            Helpers.applyWhereStatement(docroot, node, variables, qb);
 
-        // Apply a WHERE statement if applicable
-        Helpers.applyWhereStatement(docroot, node, variables, qb);
-
-        this._addConfigOptions(options, qb);
-
+            this._addConfigOptions(options, qb);
+        }
         return qb;
     }
 

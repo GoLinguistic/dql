@@ -411,6 +411,40 @@
   config:
     limit: 1
 
+# Deleting
+# ========
+- name: deleting
+  expected: >
+    DELETE FROM users WHERE (name = 'Tyler') ORDER BY name DESC LIMIT 1
+  document: |
+    mutation deleteUser($name) {
+      - users(name = $name)
+    }
+  config:
+    variables:
+      name: Tyler
+    limit: 1
+    orderBy: name
+    descending: true
+
+# Deleting w/ Nodes
+# =================
+- name: deleting (w/ nodes)
+  document: |
+    mutation deleteUser {
+      - users(name = "Tyler") {
+        id
+      }
+    }
+
+# Deleting on a Query
+# ===================
+- name: deleting (on a query)
+  document: |
+    query deleteUser {
+      - users(name = "Tyler")
+    }
+
 #########################
 # VALUE EXPERIMENTATION #
 #########################

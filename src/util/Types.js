@@ -74,7 +74,8 @@ export type TableNode = {
     type: 'TABLE',
     name: string,
     params: string[],
-    nodes: FieldNode[] | JoinNode[]
+    nodes: FieldNode[] | JoinNode[],
+    delete: boolean
 };
 
 export type DocumentNode = {

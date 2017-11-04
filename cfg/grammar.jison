@@ -5,33 +5,34 @@
 %lex
 %%
 
-\s+                             /* skip whitespace */
-\d+\b                           return 'NUMBER';
-query|mutation\b                return 'DEFINITION';
-false|true\b                    return 'BOOLEAN';
-[\w\_\d]+                       return 'STRING';
-([\+\-*\/%&|^=><]+)|(\![=<>]+)  return 'OPERATOR';
-"{"                             return '{';
-"}"                             return '}';
-"("                             return '(';
-")"                             return ')';
-\.{3}\s*on                      return 'JOIN_OP';
-","                             return ',';
-"'"                             return '\'';
-\"                              return '"';
-"."                             return '.';
-"$"                             return '$';
-"["                             return '[';
-"]"                             return ']';
-":"                             return ':';
-"!"                             return '!';
+\s+                                 /* skip whitespace */
+\d+\b                               return 'NUMBER';
+query|mutation\b                    return 'DEFINITION';
+false|true\b                        return 'BOOLEAN';
+[\w\_\d]+                           return 'STRING';
+"-"                                 return '-';
+([\+*\/%&|^=><]+)|(\![=<>]+)|(\-=)  return 'OPERATOR';
+"{"                                 return '{';
+"}"                                 return '}';
+"("                                 return '(';
+")"                                 return ')';
+\.{3}\s*on                          return 'JOIN_OP';
+","                                 return ',';
+"'"                                 return '\'';
+\"                                  return '"';
+"."                                 return '.';
+"$"                                 return '$';
+"["                                 return '[';
+"]"                                 return ']';
+":"                                 return ':';
+"!"                                 return '!';
 
 /lex
 
 /* operator associations and precedence */
 
-%left 'OPERATOR'
-%right 'OPERATOR'
+%left 'OPERATOR', '-'
+%right 'OPERATOR', '-'
 
 %start Root
 
@@ -267,6 +268,8 @@ Equation
         {$$ = $1;}
     | Equation OPERATOR Equation
         {$$ = { type: 'OPERATION', a: $1, op: $2, b: $3 };}
+    | Equation '-' Equation
+        {$$ = { type: 'OPERATION', a: $1, op: $2, b: $3 };}
     | '(' Equation ')'
         {$$ = $2;}
     | '[' Equation ']'
@@ -348,9 +351,13 @@ Content
 // Describes which table the document op (mutation/query/etc) will be run on
 TableOperation
     : STRING Selectors Block
-        {$$ = { type: 'TABLE', name: $1.trim(), params: $2, nodes: $3 };}
+        {$$ = { type: 'TABLE', name: $1.trim(), params: $2, nodes: $3, delete: false };}
     | STRING Block
-        {$$ = { type: 'TABLE', name: $1.trim(), params: [], nodes: $2 };}
+        {$$ = { type: 'TABLE', name: $1.trim(), params: [], nodes: $2, delete: false };}
+    | '-' STRING Selectors
+        {$$ = { type: 'TABLE', name: $2.trim(), params: $3, nodes: [], delete: true };}
+    | '-' STRING Selectors Block
+        {$$ = { type: 'TABLE', name: $2.trim(), params: $3, nodes: $4, delete: true };}
 ;
 
 // Join Operation

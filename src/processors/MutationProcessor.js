@@ -88,9 +88,7 @@ class MutationProcessor extends Processor {
         docroot: DocumentNode[],
         node: TableNode,
         variables: {},
-        options: {
-            returning: string
-        }
+        options: Config
     ) {
         const { name } = node;
         const { returning } = options;
@@ -141,6 +139,40 @@ class MutationProcessor extends Processor {
         return qb;
     }
 
+    _processDelete(
+        docroot: DocumentNode[],
+        node: TableNode,
+        variables: {},
+        options: Config
+    ) {
+        const { params, nodes, name } = node;
+        const { orderBy, limit, descending } = options;
+
+        if (params.length === 0)
+            throw new Error(
+                'A selector statement is required for all delete statements'
+            );
+        else if (nodes.length > 0)
+            throw new Error('Children are not allowed in delete statements');
+        else {
+            let qb = this._qb.delete().from(name);
+
+            // Add WHERE statement
+            Helpers.applyWhereStatement(docroot, node, variables, qb);
+
+            // Add order
+            if (typeof orderBy !== 'undefined' && orderBy !== null)
+                qb.order(orderBy, !descending);
+
+            // Add limit
+            if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
+
+            return qb;
+        }
+
+        return null;
+    }
+
     /**
      * Processes a table node
      *
@@ -155,26 +187,23 @@ class MutationProcessor extends Processor {
         docroot: DocumentNode[],
         node: TableNode,
         variables: {},
-        options: {
-            returning: string,
-            orderBy: boolean,
-            descending: boolean,
-            limit: number
-        }
+        options: Config
     ) {
         // Get the name and parameters associated with the table
         const { params, nodes } = node;
-
-        if (nodes.filter(x => x.type === Nodes.JOIN).length > 0)
-            throw new Error('Join statements are not allowed in mutations');
+        const del = node.delete;
 
         let qb;
 
-        // If we have selectors, then we're updating a row
-        if (params.length > 0) {
-            qb = this._processUpdate(docroot, node, variables, options);
-        } else {
-            qb = this._processInsert(docroot, node, variables, options);
+        if (del) qb = this._processDelete(docroot, node, variables, options);
+        else {
+            if (nodes.filter(x => x.type === Nodes.JOIN).length > 0)
+                throw new Error('Join statements are not allowed in mutations');
+
+            // If we have selectors, then we're updating a row
+            if (params.length > 0)
+                qb = this._processUpdate(docroot, node, variables, options);
+            else qb = this._processInsert(docroot, node, variables, options);
         }
 
         return qb;
