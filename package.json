@@ -45,7 +45,7 @@
         "lint-staged": "^4.3.0",
         "nyc": "^11.2.1",
         "prettier": "^1.7.4",
-        "rollup": "^0.50.0",
+        "rollup": "^0.51.0",
         "rollup-plugin-babel": "^3.0.2",
         "rollup-plugin-commonjs": "^8.2.4",
         "rollup-plugin-node-resolve": "^3.0.0",
