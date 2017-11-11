@@ -2,8 +2,8 @@
     <img src="https://github.com/Nickersoft/dql/raw/master/logo.png" width="400" /><br/><br/>
 
 [![Travis](https://img.shields.io/travis/Nickersoft/dql.svg)](https://travis-ci.org/Nickersoft/dql)
-[![Maintainability](https://api.codeclimate.com/v1/badges/78ac0fa85c83fea5213a/maintainability)](https://codeclimate.com/github/Nickersoft/dql/maintainability)
-[![Code Climate](https://img.shields.io/codeclimate/coverage/github/Nickersoft/dql.svg)]()
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/Nickersoft/dql.svg)]()
+[![Code Climate](https://img.shields.io/codeclimate/c/Nickersoft/dql.svg)]()
 [![Github file size](https://img.shields.io/github/size/Nickersoft/dql/bin/dql.js.svg)](https://github.com/Nickersoft/dql)
 
 [![Greenkeeper badge](https://img.shields.io/badge/Greenkeeper-enabled-brightgreen.svg)](https://greenkeeper.io/)
