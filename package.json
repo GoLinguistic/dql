@@ -1,6 +1,6 @@
 {
     "name": "dql",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "description": "A GraphQL-inspired markup for querying databases",
     "main": "bin/dql.js",
     "author": "Tyler Nickerson",
