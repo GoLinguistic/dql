@@ -62,17 +62,18 @@ query getUserTextMessages($conversation_id) {
 ```
 
 ### Installing
+*It is strongly recommended that you also use the [Dracula](https://github.com/Nickersoft/dracula) package for running DQL queries on your database directly*
+
 DatQL has the super-slick `dql` package name thanks to [@maxogden](https://github.com/maxogden) and can be installed via
 NPM or Yarn:
 
 ```bash
-$ npm install dql@beta --save-dev
-$ yarn add dql@beta --dev
+$ npm install dql --save-dev
+$ yarn add dql@ --dev
 ```
 
 Currently, DatQL is only accessible as a CommonJS module that can be used in Node 8+ (maybe earlier, but that's the Babel 
-preset it uses, *sooo*..). It is also in beta (so a `beta` tag is required), and must be v0.2.0+, otherwise you'll get 
-the old library, which can be found [here](https://github.com/maxogden/dql).
+preset it uses, *sooo*..). You must also install v0.2.0 and up, otherwise you'll get the old library, which can now be found [here](https://github.com/maxogden/dql).
 
 It is also important to note that [@maxogden](https://github.com/maxogden) happens to (coincidentally) be the a prominent 
 contributor of the [Dat Project](https://github.com/datproject), a "distributed data community" that is in no way 
