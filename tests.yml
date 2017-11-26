@@ -147,6 +147,18 @@
       }
     }
 
+# Selection with a JOIN and no ON clause
+# ======================================
+- name: select with join and no on clause
+  document: |
+    query getBookmarksForUser {
+      users {
+        ...on bookmarks() {
+          name[bookmark_name]
+        }
+      }
+    }
+
 # Selection with a Single Aliased JOIN
 # ====================================
 - name: select with simple aliased join
@@ -165,6 +177,28 @@
         }
       }
     }
+
+# Selection with a Filtered JOIN
+# ==============================
+- name: select with a filtered join
+  expected: >
+    SELECT bookmarks.name AS bookmark_name
+    FROM users
+        INNER JOIN (SELECT
+                      bookmarks.name,
+                      bookmarks.user_id
+                    FROM bookmarks WHERE (name = 'Example' AND age = 12)) AS bookmarks ON (bookmarks.user_id = users.id)
+  document: |
+    query getBookmarksForUser($age!) {
+      users {
+        ...on bookmarks(user_id = users.id, name = "Example", age = $age) {
+          name[bookmark_name]
+        }
+      }
+    }
+  config:
+    variables:
+      age: 12
 
 # Selection with a Nested Aliased JOINs
 # =====================================
@@ -208,6 +242,41 @@
               ...on chapters(page_id = pages.id) {
                 name[chapter_name]
               }
+          }
+        }
+      }
+    }
+
+# Selection with a Nested Filtered JOIN
+# =====================================
+- name: select with nested aliased joins
+  expected: >
+    SELECT
+      users.name,
+      bookmarks.name AS bookmark_name,
+      page_number
+    FROM users
+      INNER JOIN (SELECT
+                    bookmarks.name,
+                    pages.number AS page_number,
+                    bookmarks.user_id
+                  FROM bookmarks
+                    INNER JOIN (SELECT
+                                  pages.number,
+                                  pages.bookmark_id
+                                FROM pages WHERE (page = 2)) AS pages ON (pages.bookmark_id = bookmarks.id)
+                                WHERE (name = 'Example')) AS bookmarks
+        ON (bookmarks.user_id = users.id)
+  document: |
+    query getBookmarksForUser {
+      users {
+        name
+
+        ...on bookmarks(user_id = users.id, name = "Example") {
+          name[bookmark_name]
+
+          ...on pages(bookmark_id = bookmarks.id, page = 2) {
+              number[page_number]
           }
         }
       }

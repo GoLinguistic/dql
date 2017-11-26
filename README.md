@@ -154,12 +154,24 @@ query getBookmarksForUser($user_id) {
     users(id = $user_id) {
         id
         
-        ...on bookmarks(user_id = users.id) {
+        ...on bookmarks(user_id = users.id, name = "MyBookmark") {
             name[bookmark_name]
         }
     }
 }
 ```
+
+It is important to note tht only the first item in the `on` parenthetical is considered to be an "ON" statement. Every 
+subsequent item is considered to belong to the "WHERE" statement. Therefore the above output would look something like 
+this:
+
+```sql 
+SELECT users.id 
+FROM users 
+    INNER JOIN (SELECT * name AS bookmark_name 
+                FROM bookmarks WHERE (name = 'MyBookmark')) 
+                    AS bookmarks ON (bookmarks.user_id = users.id)
+``` 
 
 ### INSERT & UPDATE
 INSERT and UPDATE statements are both grouped under mutation documents. Whether the resultant query uses INSERT or UPDATE

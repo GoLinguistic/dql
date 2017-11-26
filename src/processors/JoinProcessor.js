@@ -52,21 +52,39 @@ class JoinProcessor extends Processor {
      * @private
      */
     _getOnString(docroot, node, variables, aliases) {
-        const { on } = node;
-        return on
-            .map(x => {
-                const op = Helpers.buildFilterString(
-                    docroot,
-                    node.table,
-                    x,
-                    variables,
-                    aliases,
-                    this._qb.flavour
-                );
+        const op = Helpers.buildFilterString(
+            docroot,
+            node.table,
+            node.on[0],
+            variables,
+            aliases,
+            this._qb.flavour
+        );
 
-                return Helpers.interpolateVariables(op.text, op.variables);
-            })
-            .join(' AND ');
+        return Helpers.interpolateVariables(op.text, op.variables);
+    }
+
+    /**
+     * Gets the "on" selector string from an operation tree
+     *
+     * @param docroot       Document root
+     * @param node          Join node
+     * @param variables     Global variable map
+     * @returns {string}
+     * @private
+     */
+    _addSelectors(docroot, node, variables, qb) {
+        const where = node.on.slice(1);
+
+        // Spoof a table node and add a where statement
+        Helpers.applyWhereStatement(
+            docroot,
+            {
+                params: where
+            },
+            variables,
+            qb
+        );
     }
 
     /**
@@ -109,13 +127,15 @@ class JoinProcessor extends Processor {
         // Get just field values
         const field_vals = fields.map(x => x.value);
 
-        on
-            .map(x => Helpers.getFieldsFromOperationString(x, variables, []))
-            .reduce((a, b) => a.concat(b))
-            .forEach(field => {
-                const name = `${table}.${field.value}`;
-                if (!field_vals.includes(name)) qb.field(name);
-            });
+        // Apply fields from the 'on' selector
+        Helpers.getFieldsFromOperationString(
+            on[0],
+            variables,
+            []
+        ).forEach(field => {
+            const name = `${table}.${field.value}`;
+            if (!field_vals.includes(name)) qb.field(name);
+        });
 
         // Add all sub-joins to the query
         joins.forEach(join => qb.join(join.qb, join.table, join.on));
@@ -159,11 +179,14 @@ class JoinProcessor extends Processor {
         // Get basic information associated with join
         const { table } = node;
 
+        // Start a new QueryBuilder
+        const qb = this._qb.select().from(table);
+
         // Get 'on' selector as interpolated string
         const on = this._getOnString(docroot, node, variables, aliases);
 
-        // Start a new QueryBuilder
-        const qb = this._qb.select().from(table);
+        // Add 'where' statement if applicable
+        this._addSelectors(docroot, node, variables, qb);
 
         // Gets and applies all fields contained in this join
         const fields = this._addAllFieldsAndJoins(

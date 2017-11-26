@@ -121,7 +121,7 @@ class Helpers {
         // Recursively match all question marks in the string
         while (match !== null) {
             // Get the variable at that index
-            const v = variables[iterator];
+            let v = variables[iterator];
 
             // If there isn't a variable available, error
             if (typeof v === 'undefined')
