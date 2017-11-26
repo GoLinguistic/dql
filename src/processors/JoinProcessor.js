@@ -65,11 +65,12 @@ class JoinProcessor extends Processor {
     }
 
     /**
-     * Gets the "on" selector string from an operation tree
+     * Adds "where" selectors to QueryBuilder if possible
      *
      * @param docroot       Document root
      * @param node          Join node
      * @param variables     Global variable map
+     * @param qb            QueryBuilder
      * @returns {string}
      * @private
      */
