@@ -122,6 +122,7 @@ class JoinProcessor extends Processor {
             qb.field(field.name);
         });
 
+        if (qb.field == null) console.log('fuck');
         // All sub-join fields to query
         joins.forEach(join => this._applyFields(qb, join.fields, aliases));
 
@@ -230,8 +231,9 @@ class JoinProcessor extends Processor {
                 this._processJoin(docroot, x, variables, aliases)
             );
 
-        // Add fields from joins
-        joins.forEach(join => this._applyFields(qb, join.fields, aliases));
+        if (qb.field != null)
+            // Add fields from joins
+            joins.forEach(join => this._applyFields(qb, join.fields, aliases));
 
         // Add JOIN statements from joins
         joins.forEach(join => qb.join(join.qb, join.table, join.on));

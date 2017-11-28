@@ -79,10 +79,11 @@ class QueryProcessor extends Processor {
         const { name } = node;
         const del = node.delete;
 
-        // Initialize qb
-        let qb = this._qb.select().from(name);
-        if (del) throw new Error('Delete statements cannot exist in queries');
+        if (del) throw new Error('Queries cannot contain delete statements');
         else {
+            // Initialize qb
+            let qb = this._qb.select().from(name);
+
             // Add fields from table
             this._addTableFields(node, qb);
 
@@ -93,8 +94,9 @@ class QueryProcessor extends Processor {
             Helpers.applyWhereStatement(docroot, node, variables, qb);
 
             this._addConfigOptions(options, qb);
+
+            return qb;
         }
-        return qb;
     }
 
     /**
@@ -133,6 +135,7 @@ class QueryProcessor extends Processor {
                     throw new Error(`Missing required variable ${v.name}`);
             }
         });
+
         const tables = nodes.filter(x => x.type === Nodes.TABLE);
 
         if (tables.length < 1)

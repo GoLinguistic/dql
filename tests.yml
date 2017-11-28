@@ -498,7 +498,7 @@
 
 # Deleting w/ Nodes
 # =================
-- name: deleting (w/ nodes)
+- name: deleting (w/ fields)
   document: |
     mutation deleteUser {
       - users(name = "Tyler") {
@@ -512,6 +512,49 @@
   document: |
     query deleteUser {
       - users(name = "Tyler")
+    }
+
+# Deleting with a JOIN
+# ====================
+- name: deleting (with a join)
+  expected: |
+    DELETE FROM users INNER JOIN (SELECT bookmarks.page, bookmarks.id FROM bookmarks) AS bookmarks ON (bookmarks.id = users.bookmark_id) WHERE (page = 3)
+  document: |
+    mutation deleteUser {
+      - users(page = 3) {
+        ...on bookmarks(id = users.bookmark_id) {
+          page
+        }
+      }
+    }
+
+# Deleting with Nested JOINs
+# ==========================
+- name: deleting (with nested joins)
+  expected: |
+    DELETE FROM users
+      INNER JOIN (SELECT
+                    bookmarks.page,
+                    pages.number,
+                    bookmarks.id
+                  FROM bookmarks
+                  INNER JOIN (SELECT
+                                pages.number,
+                                pages.id
+                              FROM pages) AS pages
+                         ON (pages.id = bookmarks.page)) AS bookmarks ON (bookmarks.id = users.bookmark_id)
+                         WHERE (page = 3)
+  document: |
+    mutation deleteUser {
+      - users(page = 3) {
+        ...on bookmarks(id = users.bookmark_id) {
+            page
+
+            ...on pages(id = bookmarks.page) {
+              number
+            }
+        }
+      }
     }
 
 #########################

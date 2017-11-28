@@ -189,7 +189,7 @@ mutation getBookmarksForUser($user_id, $user_name) {
 
 ### DELETE
 DELETE statements can only be run on mutations and consist of a single table entry, prefixed with a minus sign (-). 
-Deletes *must* contain a selector clause and *cannot* contain any children:
+Deletes *must* contain a selector clause and can *only* contain join statements (but don't necessarily have to):
 ```
 mutation deleteUser($name) {
     - users(name = $name)
@@ -368,9 +368,9 @@ Support Table
         <td>✘</td>
     </tr>
     <tr>
-        <td rowspan="4">Deleting (75% completed)</td>
+        <td rowspan="4">Deleting (100% completed)</td>
         <td>Joins</td>
-        <td>✘</td>
+        <td>✔</td>
     </tr>
     <tr>
         <td>Filtering</td>

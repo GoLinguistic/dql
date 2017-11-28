@@ -3,6 +3,7 @@ import Processor from './Processor';
 import QueryBuilder from '../util/QueryBuilder';
 import Nodes from '../util/Nodes';
 import Helpers from '../util/Helpers';
+import JoinProcessor from './JoinProcessor';
 import type { TableNode, Config, DocumentNode, FieldNode } from '../util/Types';
 
 /**
@@ -152,10 +153,13 @@ class MutationProcessor extends Processor {
             throw new Error(
                 'A selector statement is required for all delete statements'
             );
-        else if (nodes.length > 0)
-            throw new Error('Children are not allowed in delete statements');
+        else if (nodes.filter(x => x.type === Nodes.FIELD).length > 0)
+            throw new Error('Fields are not allowed in delete statements');
         else {
             let qb = this._qb.delete().from(name);
+
+            // Add JOIN statements
+            qb = JoinProcessor(this._qb).process(docroot, node, variables, qb);
 
             // Add WHERE statement
             Helpers.applyWhereStatement(docroot, node, variables, qb);
