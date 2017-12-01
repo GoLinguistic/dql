@@ -147,7 +147,7 @@ class MutationProcessor extends Processor {
         options: Config
     ) {
         const { params, nodes, name } = node;
-        const { orderBy, limit, descending } = options;
+        const { orderBy, limit, returning, descending } = options;
 
         if (params.length === 0)
             throw new Error(
@@ -170,6 +170,10 @@ class MutationProcessor extends Processor {
 
             // Add limit
             if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
+
+            // Add returning
+            if (typeof returning !== 'undefined' && returning !== null)
+                qb.returning(returning);
 
             return qb;
         }

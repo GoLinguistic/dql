@@ -514,6 +514,17 @@
       - users(name = "Tyler")
     }
 
+# Deleting with Return
+# ====================
+- name: deleting (w/ returning)
+  expected: DELETE FROM users WHERE (name = 'Tyler') RETURNING name
+  document: |
+    mutation deleteUser {
+      - users(name = "Tyler")
+    }
+  config:
+    returning: name
+
 # Deleting with a JOIN
 # ====================
 - name: deleting (with a join)
