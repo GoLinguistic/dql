@@ -1,7 +1,7 @@
 // @flow
 import Nodes from './util/Nodes';
 
-import parser from './_parser';
+import parser from './parser';
 
 import QueryProcessor from './processors/QueryProcessor';
 import MutationProcessor from './processors/MutationProcessor';
@@ -103,8 +103,18 @@ const getFunction = (flavor, trees) =>
     };
 
 const dql = flavor =>
-    function(strings: string[]) {
+    function(arg: string[] | object) {
         const args = Array.from(arguments);
+
+        // Process as an AST if it is already parsed data
+        if (
+            args.length === 1 &&
+            args[0].length > 0 &&
+            typeof args[0][0] === 'object' &&
+            args[0][0].hasOwnProperty('type')
+        )
+            return getFunction(flavor, arg);
+
         const literals = args[0];
 
         // We always get literals[0] and then matching post literals for each arg given
@@ -125,3 +135,4 @@ const dql = flavor =>
 export const postgres = dql('postgres');
 export const mysql = dql('mysql');
 export const mssql = dql('mssql');
+export { parser };

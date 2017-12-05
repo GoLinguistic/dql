@@ -23,6 +23,6 @@ ratings:
   - "**.rb"
 exclude_paths:
 - node_modules/
-- src/_parser.js
+- src/parser.js
 - bin/
 - flow-typed/
