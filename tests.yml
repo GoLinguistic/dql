@@ -480,6 +480,21 @@
   config:
     limit: 1
 
+# Returning for Updating
+# ======================
+- name: returning (mutations)
+  expected: >
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) RETURNING name
+  document: |
+    mutation getUsers {
+      users(id = 9) {
+        name: "John"
+        age: 45
+      }
+    }
+  config:
+    returning: name
+
 # Deleting
 # ========
 - name: deleting

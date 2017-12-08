@@ -51,8 +51,9 @@ class MutationProcessor extends Processor {
                 }
             } catch (e) {
                 console.error(
-                    `Value \`${field.value
-                        .value}\` for field \`${field.name}\` is invalid`
+                    `Value \`${field.value.value}\` for field \`${
+                        field.name
+                    }\` is invalid`
                 );
             }
         });
@@ -119,7 +120,7 @@ class MutationProcessor extends Processor {
         options: Config
     ) {
         const { name } = node;
-        const { descending, orderBy, limit } = options;
+        const { descending, orderBy, returning, limit } = options;
 
         // Initialize the query builder
         let qb = this._qb.update().table(name);
@@ -136,6 +137,10 @@ class MutationProcessor extends Processor {
 
         // Add limit
         if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
+
+        // Add returning
+        if (typeof returning !== 'undefined' && returning !== null)
+            qb.returning(returning);
 
         return qb;
     }
