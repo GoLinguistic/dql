@@ -1,7 +1,7 @@
 <div align="center">
     <img src="https://github.com/Nickersoft/dql/raw/master/logo.png" width="400" /><br/><br/>
 
-[![Travis](https://img.shields.io/travis/Nickersoft/dql.svg)](https://travis-ci.org/Nickersoft/dql)
+[![Travis](https://img.shields.io/travis/golinguistic/dql.svg)](https://travis-ci.org/Nickersoft/dql)
 [![Code Climate](https://img.shields.io/codeclimate/maintainability/Nickersoft/dql.svg)]()
 [![Code Climate](https://img.shields.io/codeclimate/c/Nickersoft/dql.svg)]()
 [![Github file size](https://img.shields.io/github/size/Nickersoft/dql/bin/dql.js.svg)](https://github.com/Nickersoft/dql)
