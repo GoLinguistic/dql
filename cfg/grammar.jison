@@ -54,8 +54,8 @@ RawString
 // ======
 // Any single string without spaces
 String
-    : '"' STRING '"'
-        {$$ = { type: 'STRING', value: $2 };}
+    : '"' RawString '"'
+        {$$ = $2.type = 'STRING'; return $2;}
 ;
 
 // Field Reference
@@ -66,18 +66,37 @@ FieldRef
             {$$ = { type: 'FIELD_REF', value: $1 + '.' + $3 };}
 ;
 
-// Long String
-// ===========
-// Collection of strings or numbers
-LongString
+// RawLongString
+// =============
+// Collection of unquoted strings or numbers
+RawLongString
     : STRING
         {$$ = $1;}
     | NUMBER
         {$$ = $1;}
-    | LongString NUMBER
+    | RawLongString NUMBER
         {$$ = $1 + ' ' + $2;}
-    | LongString STRING
+    | RawLongString STRING
         {$$ = $1 + ' ' + $2;}
+;
+
+// RawEverything
+// ==============
+// Allows repeating of every character
+// Used for LongString exclusively
+RawEverything
+    : EVERYTHING
+        {$$ = $1;}
+    | LongEverything EVERYTHING
+        {$$ = $1 + ' ' + $2;}
+;
+
+// LongString
+// ==========
+// Collection of quoted strings or numbers
+LongString
+    : '"' RawEverything '"'
+        {$$ = $2.type = 'LONG_STRING'; return $2;}
 ;
 
 // Number
@@ -240,7 +259,7 @@ VariableList
 // =================
 // Function built-in to SQL like INTERVAL
 BuiltInFunc
-    : STRING "'" LongString "'"
+    : STRING "'" RawLongString "'"
         {$$ = { type: 'BUILT_IN', value: $1 + " '" + $3 + "'"};}
 ;
 
@@ -252,19 +271,19 @@ BuiltInFunc
 // ========
 // Formal equation that can be surrounded by parens () or square brackets []
 Equation
-    : RawString
-        {$$ = $1;}
-    | String
-        {$$ = $1;}
-    | Number
-        {$$ = $1;}
-    | FieldRef
+    : FieldRef
         {$$ = $1;}
     | Variable
         {$$ = $1;}
     | QueryCall
         {$$ = $1;}
     | BuiltInFunc
+        {$$ = $1;}
+    | Number
+        {$$ = $1;}
+    | LongString
+        {$$ = $1;}
+    | RawString
         {$$ = $1;}
     | Equation OPERATOR Equation
         {$$ = { type: 'OPERATION', a: $1, op: $2, b: $3 };}
