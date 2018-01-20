@@ -113,597 +113,597 @@
         name
       }
     }
-#
-## Selection with a Built-In Function Call #2
-## ==========================================
-#- name: select with a built-in function call (2)
-#  expected: SELECT users.name FROM users WHERE (created != MYFUNC('Tyler', 1, FALSE))
-#  document: |
-#    query getBookmarksForUser {
-#      users(created != MYFUNC("Tyler", 1, false)) {
-#        name
-#      }
-#    }
-#
-## Selection with a Built-In Constant
-## ==================================
-#- name: select with a built-in constant
-#  expected: SELECT users.name FROM users WHERE (created < CURRENT_TIMESTAMP)
-#  document: |
-#    query getBookmarksForUser {
-#      users(created < CURRENT_TIMESTAMP) {
-#        name
-#      }
-#    }
-#
-## Selection with a Selector Constant
-## ==================================
-#- name: select with a selector constant
-#  expected: SELECT users.name FROM users WHERE (name = 'Tyler')
-#  document: |
-#    query getBookmarksForUser {
-#      users(name = "Tyler") {
-#        name
-#      }
-#    }
-#
-## Selection with a JOIN and no ON clause
-## ======================================
-#- name: select with join and no on clause
-#  document: |
-#    query getBookmarksForUser {
-#      users {
-#        ...on bookmarks() {
-#          name[bookmark_name]
-#        }
-#      }
-#    }
-#
-## Selection with a Single Aliased JOIN
-## ====================================
-#- name: select with simple aliased join
-#  expected: >
-#    SELECT bookmarks.name AS bookmark_name
-#    FROM users
-#        INNER JOIN (SELECT
-#                      bookmarks.name,
-#                      bookmarks.user_id
-#                    FROM bookmarks) AS bookmarks ON (bookmarks.user_id = users.id)
-#  document: |
-#    query getBookmarksForUser {
-#      users {
-#        ...on bookmarks(user_id = users.id) {
-#          name[bookmark_name]
-#        }
-#      }
-#    }
-#
-## Selection with a Filtered JOIN
-## ==============================
-#- name: select with a filtered join
-#  expected: >
-#    SELECT bookmarks.name AS bookmark_name
-#    FROM users
-#        INNER JOIN (SELECT
-#                      bookmarks.name,
-#                      bookmarks.user_id
-#                    FROM bookmarks WHERE (name = 'Example' AND age = 12)) AS bookmarks ON (bookmarks.user_id = users.id)
-#  document: |
-#    query getBookmarksForUser($age!) {
-#      users {
-#        ...on bookmarks(user_id = users.id, name = "Example", age = $age) {
-#          name[bookmark_name]
-#        }
-#      }
-#    }
-#  config:
-#    variables:
-#      age: 12
-#
-## Selection with a Nested Aliased JOINs
-## =====================================
-#- name: select with nested aliased joins
-#  expected: >
-#    SELECT
-#      users.name,
-#      bookmarks.name AS bookmark_name,
-#      page_number,
-#      chapter_name
-#    FROM users
-#      INNER JOIN (SELECT
-#                    bookmarks.name,
-#                    pages.number AS page_number,
-#                    chapter_name,
-#                    bookmarks.user_id
-#                  FROM bookmarks
-#                    INNER JOIN (SELECT
-#                                  pages.number,
-#                                  chapters.name AS chapter_name,
-#                                  pages.bookmark_id
-#                                FROM pages
-#                                  INNER JOIN (SELECT
-#                                                chapters.name,
-#                                                chapters.page_id
-#                                              FROM chapters) AS
-#                                             chapters ON (chapters.page_id = pages.id)) AS pages ON (pages.bookmark_id =
-#                                                                                                     bookmarks.id)) AS bookmarks
-#        ON (bookmarks.user_id = users.id)
-#  document: |
-#    query getBookmarksForUser {
-#      users {
-#        name
-#
-#        ...on bookmarks(user_id = users.id) {
-#          name[bookmark_name]
-#
-#          ...on pages(bookmark_id = bookmarks.id) {
-#              number[page_number]
-#
-#              ...on chapters(page_id = pages.id) {
-#                name[chapter_name]
-#              }
-#          }
-#        }
-#      }
-#    }
-#
-## Selection with a Nested Filtered JOIN
-## =====================================
-#- name: select with nested aliased joins
-#  expected: >
-#    SELECT
-#      users.name,
-#      bookmarks.name AS bookmark_name,
-#      page_number
-#    FROM users
-#      INNER JOIN (SELECT
-#                    bookmarks.name,
-#                    pages.number AS page_number,
-#                    bookmarks.user_id
-#                  FROM bookmarks
-#                    INNER JOIN (SELECT
-#                                  pages.number,
-#                                  pages.bookmark_id
-#                                FROM pages WHERE (page = 2)) AS pages ON (pages.bookmark_id = bookmarks.id)
-#                                WHERE (name = 'Example')) AS bookmarks
-#        ON (bookmarks.user_id = users.id)
-#  document: |
-#    query getBookmarksForUser {
-#      users {
-#        name
-#
-#        ...on bookmarks(user_id = users.id, name = "Example") {
-#          name[bookmark_name]
-#
-#          ...on pages(bookmark_id = bookmarks.id, page = 2) {
-#              number[page_number]
-#          }
-#        }
-#      }
-#    }
-#
-## Limiting for Queries
-## ====================
-#- name: limiting (queries)
-#  expected: >
-#    SELECT users.name, users.created FROM users LIMIT 1
-#  document: |
-#    query getUsers {
-#      users {
-#        name
-#        created
-#      }
-#    }
-#  config:
-#    limit: 1
-#
-## Offset for Queries
-## ==================
-#- name: offset (queries)
-#  expected: >
-#    SELECT users.name, users.created FROM users OFFSET 1
-#  document: |
-#    query getUsers {
-#      users {
-#        name
-#        created
-#      }
-#    }
-#  config:
-#    offset: 1
-#
-## Sorting for Queries (ASC)
-## =========================
-#- name: sorting (queries) (ascending)
-#  expected: >
-#    SELECT users.name, users.created FROM users ORDER BY created ASC
-#  document: |
-#    query getUsers {
-#      users {
-#        name
-#        created
-#      }
-#    }
-#  config:
-#    orderBy: created
-#
-## Sorting for Queries (DESC)
-## ==========================
-#- name: sorting (queries) (descending)
-#  expected: >
-#    SELECT users.name, users.created FROM users ORDER BY created DESC
-#  document: |
-#    query getUsers {
-#      users {
-#        name
-#        created
-#      }
-#    }
-#  config:
-#    orderBy: created
-#    descending: true
-#
-## Attempting to Assign Values in Query
-## ====================================
-#- name: attempting to assign values in a query
-#  document: |
-#    query getUsers {
-#      users {
-#        name: "Tyler"
-#        created: CURRENT_TIMESTAMP
-#      }
-#    }
-#
-##############
-## MUTATIONS #
-##############
-#
-## Inserting
-## =========
-#- name: inserting
-#  expected: >
-#    INSERT INTO users (name, age) VALUES ('John', 45)
-#  document: |
-#    mutation getUsers {
-#      users {
-#        name: "John"
-#        age: 45
-#      }
-#    }
-#
-## Inserting Using Variables
-## =========================
-#- name: inserting using variables
-#  expected: >
-#    INSERT INTO users (name, age) VALUES ('John', 45)
-#  document: |
-#    mutation getUsers($name, $age) {
-#      users {
-#        name: $name
-#        age: $age
-#      }
-#    }
-#  config:
-#    variables:
-#      name: John
-#      age: 45
-#
-## Inserting Using 'Returning' (Postgres Only)
-## ===========================================
-#- name: inserting using 'returning' (Postgres only)
-#  expected: >
-#    INSERT INTO users (name, age) VALUES ('John', 45) RETURNING id
-#  document: |
-#    mutation getUsers {
-#      users {
-#        name: "John"
-#        age: 45
-#      }
-#    }
-#  config:
-#    returning: id
-#
-## Updating
-## ========
-#- name: updating
-#  expected: >
-#    UPDATE users SET name = 'John', age = 45 WHERE (id = 9)
-#  document: |
-#    mutation getUsers {
-#      users(id = 9) {
-#        name: "John"
-#        age: 45
-#      }
-#    }
-#
-## Updating Using Variables
-## ========================
-#- name: updating using variables
-#  expected: >
-#    UPDATE users SET name = 'John', age = 45 WHERE (id = 9)
-#  document: |
-#    mutation getUsers($id, $name, $age) {
-#      users(id = $id) {
-#        name: $name
-#        age: $age
-#      }
-#    }
-#  config:
-#    variables:
-#      id: 9
-#      name: John
-#      age: 45
-#
-## Sorting for Updating (ASC)
-## ==========================
-#- name: sorting (mutations) (ascending)
-#  expected: >
-#    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) ORDER BY created ASC
-#  document: |
-#    mutation getUsers {
-#      users(id = 9) {
-#        name: "John"
-#        age: 45
-#      }
-#    }
-#  config:
-#    orderBy: created
-#
-## Sorting for Updating (DESC)
-## ===========================
-#- name: sorting (mutations) (descending)
-#  expected: >
-#    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) ORDER BY created DESC
-#  document: |
-#    mutation getUsers {
-#      users(id = 9) {
-#        name: "John"
-#        age: 45
-#      }
-#    }
-#  config:
-#    orderBy: created
-#    descending: true
-#
-## Limiting for Updating
-## =====================
-#- name: limiting (mutations)
-#  expected: >
-#    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) LIMIT 1
-#  document: |
-#    mutation getUsers {
-#      users(id = 9) {
-#        name: "John"
-#        age: 45
-#      }
-#    }
-#  config:
-#    limit: 1
-#
-## Returning for Updating
-## ======================
-#- name: returning (mutations)
-#  expected: >
-#    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) RETURNING name
-#  document: |
-#    mutation getUsers {
-#      users(id = 9) {
-#        name: "John"
-#        age: 45
-#      }
-#    }
-#  config:
-#    returning: name
-#
-## Deleting
-## ========
-#- name: deleting
-#  expected: >
-#    DELETE FROM users WHERE (name = 'Tyler') ORDER BY name DESC LIMIT 1
-#  document: |
-#    mutation deleteUser($name) {
-#      - users(name = $name)
-#    }
-#  config:
-#    variables:
-#      name: Tyler
-#    limit: 1
-#    orderBy: name
-#    descending: true
-#
-## Deleting w/ Nodes
-## =================
-#- name: deleting (w/ fields)
-#  document: |
-#    mutation deleteUser {
-#      - users(name = "Tyler") {
-#        id
-#      }
-#    }
-#
-## Deleting on a Query
-## ===================
-#- name: deleting (on a query)
-#  document: |
-#    query deleteUser {
-#      - users(name = "Tyler")
-#    }
-#
-## Deleting with Return
-## ====================
-#- name: deleting (w/ returning)
-#  expected: DELETE FROM users WHERE (name = 'Tyler') RETURNING name
-#  document: |
-#    mutation deleteUser {
-#      - users(name = "Tyler")
-#    }
-#  config:
-#    returning: name
-#
-## Deleting with a JOIN
-## ====================
-#- name: deleting (with a join)
-#  expected: |
-#    DELETE FROM users INNER JOIN (SELECT bookmarks.page, bookmarks.id FROM bookmarks) AS bookmarks ON (bookmarks.id = users.bookmark_id) WHERE (page = 3)
-#  document: |
-#    mutation deleteUser {
-#      - users(page = 3) {
-#        ...on bookmarks(id = users.bookmark_id) {
-#          page
-#        }
-#      }
-#    }
-#
-## Deleting with Nested JOINs
-## ==========================
-#- name: deleting (with nested joins)
-#  expected: |
-#    DELETE FROM users
-#      INNER JOIN (SELECT
-#                    bookmarks.page,
-#                    pages.number,
-#                    bookmarks.id
-#                  FROM bookmarks
-#                  INNER JOIN (SELECT
-#                                pages.number,
-#                                pages.id
-#                              FROM pages) AS pages
-#                         ON (pages.id = bookmarks.page)) AS bookmarks ON (bookmarks.id = users.bookmark_id)
-#                         WHERE (page = 3)
-#  document: |
-#    mutation deleteUser {
-#      - users(page = 3) {
-#        ...on bookmarks(id = users.bookmark_id) {
-#            page
-#
-#            ...on pages(id = bookmarks.page) {
-#              number
-#            }
-#        }
-#      }
-#    }
-#
-##########################
-## VALUE EXPERIMENTATION #
-##########################
-#
-## Query with Different Scalars
-## ============================
-#- name: query with different scalar types
-#  expected: SELECT * FROM users WHERE (id = 101 AND name = 'Tyler')
-#  document: |
-#    query getBookmarksForUser {
-#      users(id = 101, name = "Tyler") { }
-#    }
-#
-## Update with Different Scalars
-## =============================
-#- name: update with different scalar types
-#  expected: UPDATE users SET id = 101, name = 'Tyler', description = (NULL), created = (CURRENT_TIMESTAMP) WHERE (id = 101 AND name = 'Tyler')
-#  document: |
-#    mutation getBookmarksForUser {
-#      users(id = 101, name = "Tyler") {
-#        id: 101
-#        name: "Tyler"
-#        description: NULL
-#        created: CURRENT_TIMESTAMP
-#      }
-#    }
-#
-## Insert with Different Scalars
-## =============================
-#- name: insert with different scalar types
-#  expected: INSERT INTO users (id, name, description, created) VALUES (101, 'Tyler', (NULL), (CURRENT_TIMESTAMP))
-#  document: |
-#    mutation getBookmarksForUser {
-#      users {
-#        id: 101
-#        name: "Tyler"
-#        description: NULL
-#        created: CURRENT_TIMESTAMP
-#      }
-#    }
-#
-## Query with Different Variable Scalars
-## =====================================
-#- name: query with different scalar types
-#  expected: SELECT * FROM users WHERE (id = 101 AND name = 'Tyler' AND description = NULL AND available = FALSE)
-#  document: |
-#    query getBookmarksForUser($id, $name, $desc, $available) {
-#      users(id = $id, name = $name, description = $desc, available = $available) { }
-#    }
-#  config:
-#    variables:
-#      id: 101
-#      name: Tyler
-#      desc: null
-#      available: false
-#
-## Update with Different Scalars
-## =============================
-#- name: update with different scalar types
-#  expected: UPDATE users SET id = 101, name = 'Tyler', description = NULL, available = FALSE WHERE (id = 101 AND name = 'Tyler')
-#  document: |
-#    mutation getBookmarksForUser($id, $name, $desc, $available) {
-#      users(id = $id, name = $name) {
-#        id: $id
-#        name: $name
-#        description: $desc
-#        available: $available
-#      }
-#    }
-#  config:
-#    variables:
-#      id: 101
-#      name: Tyler
-#      desc: null
-#      available: false
-#
-## Insert with Different Scalars
-## =============================
-#- name: insert with different scalar types
-#  expected: INSERT INTO users (id, name, description, available) VALUES (101, 'Tyler', NULL, FALSE)
-#  document: |
-#    mutation getBookmarksForUser($id, $name, $desc, $available) {
-#      users {
-#        id: $id
-#        name: $name
-#        description: $desc
-#        available: $available
-#      }
-#    }
-#  config:
-#    variables:
-#      id: 101
-#      name: Tyler
-#      desc: null
-#      available: false
-#
-## Mutation With Required Variable
-## ===============================
-#- name: mutation with required variable
-#  expected: INSERT INTO users (id) VALUES (101)
-#  document: |
-#    mutation getBookmarksForUser($id!, $name, $desc, $available) {
-#       users {
-#         id: $id
-#         name: $name
-#         description: $desc
-#         available: $available
-#       }
-#     }
-#  config:
-#    variables:
-#      id: 101
-#
-## Query With Optional Variable in Selector
-## ========================================
-#- name: query with optional variable in selector
-#  document: |
-#    query getBookmarksForUser($id, $name, $desc, $available) {
-#       users(name = $name) { }
-#     }
-#
+
+# Selection with a Built-In Function Call #2
+# ==========================================
+- name: select with a built-in function call (2)
+  expected: SELECT users.name FROM users WHERE (created != MYFUNC('Tyler', 1, FALSE))
+  document: |
+    query getBookmarksForUser {
+      users(created != MYFUNC("Tyler", 1, false)) {
+        name
+      }
+    }
+
+# Selection with a Built-In Constant
+# ==================================
+- name: select with a built-in constant
+  expected: SELECT users.name FROM users WHERE (created < CURRENT_TIMESTAMP)
+  document: |
+    query getBookmarksForUser {
+      users(created < CURRENT_TIMESTAMP) {
+        name
+      }
+    }
+
+# Selection with a Selector Constant
+# ==================================
+- name: select with a selector constant
+  expected: SELECT users.name FROM users WHERE (name = 'Tyler')
+  document: |
+    query getBookmarksForUser {
+      users(name = "Tyler") {
+        name
+      }
+    }
+
+# Selection with a JOIN and no ON clause
+# ======================================
+- name: select with join and no on clause
+  document: |
+    query getBookmarksForUser {
+      users {
+        ...on bookmarks() {
+          name[bookmark_name]
+        }
+      }
+    }
+
+# Selection with a Single Aliased JOIN
+# ====================================
+- name: select with simple aliased join
+  expected: >
+    SELECT bookmarks.name AS bookmark_name
+    FROM users
+        INNER JOIN (SELECT
+                      bookmarks.name,
+                      bookmarks.user_id
+                    FROM bookmarks) AS bookmarks ON (bookmarks.user_id = users.id)
+  document: |
+    query getBookmarksForUser {
+      users {
+        ...on bookmarks(user_id = users.id) {
+          name[bookmark_name]
+        }
+      }
+    }
+
+# Selection with a Filtered JOIN
+# ==============================
+- name: select with a filtered join
+  expected: >
+    SELECT bookmarks.name AS bookmark_name
+    FROM users
+        INNER JOIN (SELECT
+                      bookmarks.name,
+                      bookmarks.user_id
+                    FROM bookmarks WHERE (name = 'Example' AND age = 12)) AS bookmarks ON (bookmarks.user_id = users.id)
+  document: |
+    query getBookmarksForUser($age!) {
+      users {
+        ...on bookmarks(user_id = users.id, name = "Example", age = $age) {
+          name[bookmark_name]
+        }
+      }
+    }
+  config:
+    variables:
+      age: 12
+
+# Selection with a Nested Aliased JOINs
+# =====================================
+- name: select with nested aliased joins
+  expected: >
+    SELECT
+      users.name,
+      bookmarks.name AS bookmark_name,
+      page_number,
+      chapter_name
+    FROM users
+      INNER JOIN (SELECT
+                    bookmarks.name,
+                    pages.number AS page_number,
+                    chapter_name,
+                    bookmarks.user_id
+                  FROM bookmarks
+                    INNER JOIN (SELECT
+                                  pages.number,
+                                  chapters.name AS chapter_name,
+                                  pages.bookmark_id
+                                FROM pages
+                                  INNER JOIN (SELECT
+                                                chapters.name,
+                                                chapters.page_id
+                                              FROM chapters) AS
+                                             chapters ON (chapters.page_id = pages.id)) AS pages ON (pages.bookmark_id =
+                                                                                                     bookmarks.id)) AS bookmarks
+        ON (bookmarks.user_id = users.id)
+  document: |
+    query getBookmarksForUser {
+      users {
+        name
+
+        ...on bookmarks(user_id = users.id) {
+          name[bookmark_name]
+
+          ...on pages(bookmark_id = bookmarks.id) {
+              number[page_number]
+
+              ...on chapters(page_id = pages.id) {
+                name[chapter_name]
+              }
+          }
+        }
+      }
+    }
+
+# Selection with a Nested Filtered JOIN
+# =====================================
+- name: select with nested aliased joins
+  expected: >
+    SELECT
+      users.name,
+      bookmarks.name AS bookmark_name,
+      page_number
+    FROM users
+      INNER JOIN (SELECT
+                    bookmarks.name,
+                    pages.number AS page_number,
+                    bookmarks.user_id
+                  FROM bookmarks
+                    INNER JOIN (SELECT
+                                  pages.number,
+                                  pages.bookmark_id
+                                FROM pages WHERE (page = 2)) AS pages ON (pages.bookmark_id = bookmarks.id)
+                                WHERE (name = 'Example')) AS bookmarks
+        ON (bookmarks.user_id = users.id)
+  document: |
+    query getBookmarksForUser {
+      users {
+        name
+
+        ...on bookmarks(user_id = users.id, name = "Example") {
+          name[bookmark_name]
+
+          ...on pages(bookmark_id = bookmarks.id, page = 2) {
+              number[page_number]
+          }
+        }
+      }
+    }
+
+# Limiting for Queries
+# ====================
+- name: limiting (queries)
+  expected: >
+    SELECT users.name, users.created FROM users LIMIT 1
+  document: |
+    query getUsers {
+      users {
+        name
+        created
+      }
+    }
+  config:
+    limit: 1
+
+# Offset for Queries
+# ==================
+- name: offset (queries)
+  expected: >
+    SELECT users.name, users.created FROM users OFFSET 1
+  document: |
+    query getUsers {
+      users {
+        name
+        created
+      }
+    }
+  config:
+    offset: 1
+
+# Sorting for Queries (ASC)
+# =========================
+- name: sorting (queries) (ascending)
+  expected: >
+    SELECT users.name, users.created FROM users ORDER BY created ASC
+  document: |
+    query getUsers {
+      users {
+        name
+        created
+      }
+    }
+  config:
+    orderBy: created
+
+# Sorting for Queries (DESC)
+# ==========================
+- name: sorting (queries) (descending)
+  expected: >
+    SELECT users.name, users.created FROM users ORDER BY created DESC
+  document: |
+    query getUsers {
+      users {
+        name
+        created
+      }
+    }
+  config:
+    orderBy: created
+    descending: true
+
+# Attempting to Assign Values in Query
+# ====================================
+- name: attempting to assign values in a query
+  document: |
+    query getUsers {
+      users {
+        name: "Tyler"
+        created: CURRENT_TIMESTAMP
+      }
+    }
+
+#############
+# MUTATIONS #
+#############
+
+# Inserting
+# =========
+- name: inserting
+  expected: >
+    INSERT INTO users (name, age) VALUES ('John', 45)
+  document: |
+    mutation getUsers {
+      users {
+        name: "John"
+        age: 45
+      }
+    }
+
+# Inserting Using Variables
+# =========================
+- name: inserting using variables
+  expected: >
+    INSERT INTO users (name, age) VALUES ('John', 45)
+  document: |
+    mutation getUsers($name, $age) {
+      users {
+        name: $name
+        age: $age
+      }
+    }
+  config:
+    variables:
+      name: John
+      age: 45
+
+# Inserting Using 'Returning' (Postgres Only)
+# ===========================================
+- name: inserting using 'returning' (Postgres only)
+  expected: >
+    INSERT INTO users (name, age) VALUES ('John', 45) RETURNING id
+  document: |
+    mutation getUsers {
+      users {
+        name: "John"
+        age: 45
+      }
+    }
+  config:
+    returning: id
+
+# Updating
+# ========
+- name: updating
+  expected: >
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9)
+  document: |
+    mutation getUsers {
+      users(id = 9) {
+        name: "John"
+        age: 45
+      }
+    }
+
+# Updating Using Variables
+# ========================
+- name: updating using variables
+  expected: >
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9)
+  document: |
+    mutation getUsers($id, $name, $age) {
+      users(id = $id) {
+        name: $name
+        age: $age
+      }
+    }
+  config:
+    variables:
+      id: 9
+      name: John
+      age: 45
+
+# Sorting for Updating (ASC)
+# ==========================
+- name: sorting (mutations) (ascending)
+  expected: >
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) ORDER BY created ASC
+  document: |
+    mutation getUsers {
+      users(id = 9) {
+        name: "John"
+        age: 45
+      }
+    }
+  config:
+    orderBy: created
+
+# Sorting for Updating (DESC)
+# ===========================
+- name: sorting (mutations) (descending)
+  expected: >
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) ORDER BY created DESC
+  document: |
+    mutation getUsers {
+      users(id = 9) {
+        name: "John"
+        age: 45
+      }
+    }
+  config:
+    orderBy: created
+    descending: true
+
+# Limiting for Updating
+# =====================
+- name: limiting (mutations)
+  expected: >
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) LIMIT 1
+  document: |
+    mutation getUsers {
+      users(id = 9) {
+        name: "John"
+        age: 45
+      }
+    }
+  config:
+    limit: 1
+
+# Returning for Updating
+# ======================
+- name: returning (mutations)
+  expected: >
+    UPDATE users SET name = 'John', age = 45 WHERE (id = 9) RETURNING name
+  document: |
+    mutation getUsers {
+      users(id = 9) {
+        name: "John"
+        age: 45
+      }
+    }
+  config:
+    returning: name
+
+# Deleting
+# ========
+- name: deleting
+  expected: >
+    DELETE FROM users WHERE (name = 'Tyler') ORDER BY name DESC LIMIT 1
+  document: |
+    mutation deleteUser($name) {
+      - users(name = $name)
+    }
+  config:
+    variables:
+      name: Tyler
+    limit: 1
+    orderBy: name
+    descending: true
+
+# Deleting w/ Nodes
+# =================
+- name: deleting (w/ fields)
+  document: |
+    mutation deleteUser {
+      - users(name = "Tyler") {
+        id
+      }
+    }
+
+# Deleting on a Query
+# ===================
+- name: deleting (on a query)
+  document: |
+    query deleteUser {
+      - users(name = "Tyler")
+    }
+
+# Deleting with Return
+# ====================
+- name: deleting (w/ returning)
+  expected: DELETE FROM users WHERE (name = 'Tyler') RETURNING name
+  document: |
+    mutation deleteUser {
+      - users(name = "Tyler")
+    }
+  config:
+    returning: name
+
+# Deleting with a JOIN
+# ====================
+- name: deleting (with a join)
+  expected: |
+    DELETE FROM users INNER JOIN (SELECT bookmarks.page, bookmarks.id FROM bookmarks) AS bookmarks ON (bookmarks.id = users.bookmark_id) WHERE (page = 3)
+  document: |
+    mutation deleteUser {
+      - users(page = 3) {
+        ...on bookmarks(id = users.bookmark_id) {
+          page
+        }
+      }
+    }
+
+# Deleting with Nested JOINs
+# ==========================
+- name: deleting (with nested joins)
+  expected: |
+    DELETE FROM users
+      INNER JOIN (SELECT
+                    bookmarks.page,
+                    pages.number,
+                    bookmarks.id
+                  FROM bookmarks
+                  INNER JOIN (SELECT
+                                pages.number,
+                                pages.id
+                              FROM pages) AS pages
+                         ON (pages.id = bookmarks.page)) AS bookmarks ON (bookmarks.id = users.bookmark_id)
+                         WHERE (page = 3)
+  document: |
+    mutation deleteUser {
+      - users(page = 3) {
+        ...on bookmarks(id = users.bookmark_id) {
+            page
+
+            ...on pages(id = bookmarks.page) {
+              number
+            }
+        }
+      }
+    }
+
+#########################
+# VALUE EXPERIMENTATION #
+#########################
+
+# Query with Different Scalars
+# ============================
+- name: query with different scalar types
+  expected: SELECT * FROM users WHERE (id = 101 AND name = 'Tyler')
+  document: |
+    query getBookmarksForUser {
+      users(id = 101, name = "Tyler") { }
+    }
+
+# Update with Different Scalars
+# =============================
+- name: update with different scalar types
+  expected: UPDATE users SET id = 101, name = 'Tyler', description = (NULL), created = (CURRENT_TIMESTAMP) WHERE (id = 101 AND name = 'Tyler')
+  document: |
+    mutation getBookmarksForUser {
+      users(id = 101, name = "Tyler") {
+        id: 101
+        name: "Tyler"
+        description: NULL
+        created: CURRENT_TIMESTAMP
+      }
+    }
+
+# Insert with Different Scalars
+# =============================
+- name: insert with different scalar types
+  expected: INSERT INTO users (id, name, description, created) VALUES (101, 'Tyler', (NULL), (CURRENT_TIMESTAMP))
+  document: |
+    mutation getBookmarksForUser {
+      users {
+        id: 101
+        name: "Tyler"
+        description: NULL
+        created: CURRENT_TIMESTAMP
+      }
+    }
+
+# Query with Different Variable Scalars
+# =====================================
+- name: query with different scalar types
+  expected: SELECT * FROM users WHERE (id = 101 AND name = 'Tyler' AND description = NULL AND available = FALSE)
+  document: |
+    query getBookmarksForUser($id, $name, $desc, $available) {
+      users(id = $id, name = $name, description = $desc, available = $available) { }
+    }
+  config:
+    variables:
+      id: 101
+      name: Tyler
+      desc: null
+      available: false
+
+# Update with Different Scalars
+# =============================
+- name: update with different scalar types
+  expected: UPDATE users SET id = 101, name = 'Tyler', description = NULL, available = FALSE WHERE (id = 101 AND name = 'Tyler')
+  document: |
+    mutation getBookmarksForUser($id, $name, $desc, $available) {
+      users(id = $id, name = $name) {
+        id: $id
+        name: $name
+        description: $desc
+        available: $available
+      }
+    }
+  config:
+    variables:
+      id: 101
+      name: Tyler
+      desc: null
+      available: false
+
+# Insert with Different Scalars
+# =============================
+- name: insert with different scalar types
+  expected: INSERT INTO users (id, name, description, available) VALUES (101, 'Tyler', NULL, FALSE)
+  document: |
+    mutation getBookmarksForUser($id, $name, $desc, $available) {
+      users {
+        id: $id
+        name: $name
+        description: $desc
+        available: $available
+      }
+    }
+  config:
+    variables:
+      id: 101
+      name: Tyler
+      desc: null
+      available: false
+
+# Mutation With Required Variable
+# ===============================
+- name: mutation with required variable
+  expected: INSERT INTO users (id) VALUES (101)
+  document: |
+    mutation getBookmarksForUser($id!, $name, $desc, $available) {
+       users {
+         id: $id
+         name: $name
+         description: $desc
+         available: $available
+       }
+     }
+  config:
+    variables:
+      id: 101
+
+# Query With Optional Variable in Selector
+# ========================================
+- name: query with optional variable in selector
+  document: |
+    query getBookmarksForUser($id, $name, $desc, $available) {
+       users(name = $name) { }
+     }
+
 # Query with Variable That Naturally Includes ?
 # =============================================
 - name: query with variable that naturally includes question mark
@@ -712,15 +712,15 @@
     query getBookmarksForUser() {
       messages(content = "Where are you going?") { }
     }
-#
-## Query with Variable That Uses ?
-## ===============================
-#- name: query with variable that uses question mark
-#  expected: SELECT * FROM messages WHERE (content = 'Where are you going?')
-#  document: |
-#    query getBookmarksForUser($content) {
-#      messages(content = $content) { }
-#    }
-#  config:
-#    variables:
-#      content: Where are you going?
+
+# Query with Variable That Uses ?
+# ===============================
+- name: query with variable that uses question mark
+  expected: SELECT * FROM messages WHERE (content = 'Where are you going?')
+  document: |
+    query getBookmarksForUser($content) {
+      messages(content = $content) { }
+    }
+  config:
+    variables:
+      content: Where are you going?
