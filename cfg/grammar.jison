@@ -6,6 +6,7 @@
 %%
 
 \s+                                 /* skip whitespace */
+\"(.*?)\"                           return 'LONG_STRING';
 \d+\b                               return 'NUMBER';
 query|mutation\b                    return 'DEFINITION';
 false|true\b                        return 'BOOLEAN';
@@ -80,23 +81,12 @@ RawLongString
         {$$ = $1 + ' ' + $2;}
 ;
 
-// RawEverything
-// ==============
-// Allows repeating of every character
-// Used for LongString exclusively
-RawEverything
-    : EVERYTHING
-        {$$ = $1;}
-    | LongEverything EVERYTHING
-        {$$ = $1 + ' ' + $2;}
-;
-
 // LongString
 // ==========
 // Collection of quoted strings or numbers
 LongString
-    : '"' RawEverything '"'
-        {$$ = $2.type = 'LONG_STRING'; return $2;}
+    : LONG_STRING
+        {$$ = { type: 'LONG_STRING', value: $1.substr(1, $1.length - 2) };}
 ;
 
 // Number
@@ -199,7 +189,7 @@ Params
 // =========
 // Single parameter type
 Param
-    : String
+    : LongString
         {$$ = $1;}
     | Number
         {$$ = $1;}
@@ -351,7 +341,7 @@ Content
         {$$ = { type: 'FIELD', name: $1, value: null, alias: $3 };}
     | STRING ':' Boolean
         {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
-    | STRING ':' String
+    | STRING ':' LongString
         {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
     | STRING ':' RawString
         {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
