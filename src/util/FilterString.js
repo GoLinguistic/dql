@@ -222,7 +222,7 @@ class FilterString {
             case Nodes.QUERY_CALL:
                 value = this._handleQueryCall(docroot, node, variables, flavor);
                 break;
-            case Nodes.RAW_TEXT:
+            case Nodes.RAW_TEXT_LONG:
                 value = this._handleLeftSide(table, node, aliases);
                 break;
             default:
