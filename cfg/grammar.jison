@@ -6,6 +6,7 @@
 %%
 
 \s+                                 /* skip whitespace */
+\"(.*?)\"                           return 'LONG_STRING';
 \d+\b                               return 'NUMBER';
 query|mutation\b                    return 'DEFINITION';
 false|true\b                        return 'BOOLEAN';
@@ -50,14 +51,6 @@ RawString
         {$$ = { type: 'RAW', value: $1 };}
 ;
 
-// String
-// ======
-// Any single string without spaces
-String
-    : '"' STRING '"'
-        {$$ = { type: 'STRING', value: $2 };}
-;
-
 // Field Reference
 // ===============
 // Any reference to a table-specific field using dot notation
@@ -66,18 +59,26 @@ FieldRef
             {$$ = { type: 'FIELD_REF', value: $1 + '.' + $3 };}
 ;
 
-// Long String
-// ===========
-// Collection of strings or numbers
-LongString
+// RawLongString
+// =============
+// Collection of unquoted strings or numbers
+RawLongString
     : STRING
         {$$ = $1;}
     | NUMBER
         {$$ = $1;}
-    | LongString NUMBER
+    | RawLongString NUMBER
         {$$ = $1 + ' ' + $2;}
-    | LongString STRING
+    | RawLongString STRING
         {$$ = $1 + ' ' + $2;}
+;
+
+// LongString
+// ==========
+// Collection of quoted strings or numbers
+LongString
+    : LONG_STRING
+        {$$ = { type: 'LONG_STRING', value: $1.substr(1, $1.length - 2) };}
 ;
 
 // Number
@@ -180,7 +181,7 @@ Params
 // =========
 // Single parameter type
 Param
-    : String
+    : LongString
         {$$ = $1;}
     | Number
         {$$ = $1;}
@@ -240,7 +241,7 @@ VariableList
 // =================
 // Function built-in to SQL like INTERVAL
 BuiltInFunc
-    : STRING "'" LongString "'"
+    : STRING "'" RawLongString "'"
         {$$ = { type: 'BUILT_IN', value: $1 + " '" + $3 + "'"};}
 ;
 
@@ -252,19 +253,19 @@ BuiltInFunc
 // ========
 // Formal equation that can be surrounded by parens () or square brackets []
 Equation
-    : RawString
-        {$$ = $1;}
-    | String
-        {$$ = $1;}
-    | Number
-        {$$ = $1;}
-    | FieldRef
+    : FieldRef
         {$$ = $1;}
     | Variable
         {$$ = $1;}
     | QueryCall
         {$$ = $1;}
     | BuiltInFunc
+        {$$ = $1;}
+    | Number
+        {$$ = $1;}
+    | LongString
+        {$$ = $1;}
+    | RawString
         {$$ = $1;}
     | Equation OPERATOR Equation
         {$$ = { type: 'OPERATION', a: $1, op: $2, b: $3 };}
@@ -332,7 +333,7 @@ Content
         {$$ = { type: 'FIELD', name: $1, value: null, alias: $3 };}
     | STRING ':' Boolean
         {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
-    | STRING ':' String
+    | STRING ':' LongString
         {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}
     | STRING ':' RawString
         {$$ = { type: 'FIELD', name: $1, value: $3, alias: null };}

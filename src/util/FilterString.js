@@ -71,7 +71,7 @@ class FilterString {
                     param_list.push(resolveVariable(param.value, variables));
                 else if (param.type === Nodes.BOOLEAN)
                     param_list.push(param.value.toString().toUpperCase());
-                else if (param.type === Nodes.STRING)
+                else if (param.type === Nodes.LONG_TEXT)
                     param_list.push(`'${param.value}'`);
                 else param_list.push(param.value);
             });

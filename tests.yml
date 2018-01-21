@@ -703,3 +703,12 @@
     query getBookmarksForUser($id, $name, $desc, $available) {
        users(name = $name) { }
      }
+
+# Query with Long Quoted Text
+# ===========================
+- name: query with long quoted text
+  expected: SELECT * FROM messages WHERE (content = 'This is a test')
+  document: |
+    query getBookmarksForUser() {
+      messages(content = "This is a test") { }
+    }
