@@ -7,7 +7,7 @@ export default {
     QUERY_CALL: 'QUERY_CALL',
     FIELD: 'FIELD',
     RAW_TEXT: 'RAW',
-    LONG_TEXT: 'LONG_TEXT',
+    LONG_TEXT: 'LONG_STRING',
     OPERATION: 'OPERATION',
     VARIABLE: 'VARIABLE',
     BUILT_IN: 'BUILT_IN',
