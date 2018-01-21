@@ -4,12 +4,8 @@ import commonjs from 'rollup-plugin-commonjs';
 import uglify from 'rollup-plugin-uglify';
 import { minify } from 'uglify-es';
 
-export default {
+const common = {
     input: 'src/index.js',
-    output: {
-        file: 'bin/dql.js',
-        format: 'cjs'
-    },
     plugins: [
         babel({
             babelrc: false,
@@ -20,7 +16,7 @@ export default {
                     {
                         modules: false,
                         targets: {
-                            node: '8'
+                            node: '6'
                         }
                     }
                 ],
@@ -31,8 +27,25 @@ export default {
             runtimeHelpers: true
         }),
         commonjs(),
-        resolve(),
-        uglify({}, minify)
+        resolve()
     ],
     external: ['fs', 'path']
 };
+
+export default [
+    {
+        ...common,
+        output: {
+            file: 'bin/dql.js',
+            format: 'cjs'
+        }
+    },
+    {
+        ...common,
+        output: {
+            file: 'bin/dql.min.js',
+            format: 'cjs'
+        },
+        plugins: [...common.plugins, uglify({}, minify)]
+    }
+];

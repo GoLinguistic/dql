@@ -1,1 +1,5860 @@
-"use strict";function _interopDefault(t){return t&&"object"==typeof t&&"default"in t?t.default:t}function commonjsRequire(){throw new Error("Dynamic requires are not currently supported by rollup-plugin-commonjs")}function createCommonjsModule(t,e){return e={exports:{}},t(e,e.exports),e.exports}function resolveVariable(t,e){const r=e[t];if(void 0===r)throw new Error(`Could not find variable: ${t}`);return r.value}Object.defineProperty(exports,"__esModule",{value:!0});var fs=_interopDefault(require("fs")),path=_interopDefault(require("path")),Nodes={TABLE:"TABLE",BOOLEAN:"BOOLEAN",JOIN:"JOIN",QUERY:"QUERY",QUERY_CALL:"QUERY_CALL",FIELD:"FIELD",RAW_TEXT:"RAW",LONG_TEXT:"LONG_STRING",OPERATION:"OPERATION",VARIABLE:"VARIABLE",BUILT_IN:"BUILT_IN",MUTATION:"MUTATION"},commonjsGlobal="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:{},parser_1=createCommonjsModule(function(t,e){var r=function(){function t(){this.yy={}}var e=function(t,e,r,n){for(r=r||{},n=t.length;n--;r[t[n]]=e);return r},r=[1,5],n=[1,17],i=[1,11],o=[1,16],s=[1,22],a=[1,25],l=[1,24],u=[27,29],c=[1,4,15,17,39,46],h=[4,15,39,46],f=[1,36],d=[1,49],p=[1,47],_=[1,46],y=[1,63],v=[1,61],g=[1,62],m=[4,15,27,29,38,39,41,46],b=[2,1],k=[1,70],O=[1,71],B=[27,29,38,39,41],w=[1,77],P=[1,96],S=[27,29,41],E=[4,8,36],F={trace:function(){},yy:{},symbols_:{error:2,RawString:3,STRING:4,FieldRef:5,".":6,RawLongString:7,NUMBER:8,LongString:9,LONG_STRING:10,Number:11,Boolean:12,BOOLEAN:13,Join:14,JOIN_OP:15,Definition:16,DEFINITION:17,Root:18,DocumentList:19,Document:20,Variables:21,Block:22,QueryCall:23,Params:24,ParamList:25,Param:26,",":27,"(":28,")":29,Variable:30,VARIABLE:31,$:32,VariableList:33,"!":34,BuiltInFunc:35,"'":36,Equation:37,OPERATOR:38,"-":39,"[":40,"]":41,EquationList:42,Selectors:43,"{":44,BlockContent:45,"}":46,Content:47,JoinOperation:48,TableOperation:49,":":50,$accept:0,$end:1},terminals_:{2:"error",4:"STRING",6:".",8:"NUMBER",10:"LONG_STRING",13:"BOOLEAN",15:"JOIN_OP",17:"DEFINITION",27:",",28:"(",29:")",32:"$",34:"!",36:"'",38:"OPERATOR",39:"-",40:"[",41:"]",44:"{",46:"}",50:":"},productions_:[0,[3,1],[5,3],[7,1],[7,1],[7,2],[7,2],[9,1],[11,1],[12,1],[14,1],[16,1],[18,1],[20,4],[20,3],[19,2],[19,1],[23,2],[25,0],[25,1],[25,3],[24,3],[26,1],[26,1],[26,1],[26,1],[26,1],[31,2],[30,1],[21,2],[21,3],[33,1],[33,2],[33,3],[33,4],[35,4],[37,1],[37,1],[37,1],[37,1],[37,1],[37,1],[37,1],[37,3],[37,3],[37,3],[37,3],[42,1],[42,3],[43,3],[22,3],[22,2],[45,1],[45,2],[47,1],[47,1],[47,1],[47,4],[47,3],[47,3],[47,3],[47,3],[47,3],[49,3],[49,2],[49,3],[49,4],[48,4]],performAction:function(t,e,r,n,i,o,s){var a=o.length-1;switch(i){case 1:this.$={type:"RAW",value:o[a]};break;case 2:this.$={type:"FIELD_REF",value:o[a-2]+"."+o[a]};break;case 3:case 4:case 10:case 11:case 22:case 23:case 24:case 25:case 26:case 27:case 36:case 37:case 38:case 39:case 40:case 41:case 42:case 54:case 55:this.$=o[a];break;case 5:case 6:this.$=o[a-1]+" "+o[a];break;case 7:this.$={type:"LONG_STRING",value:o[a].substr(1,o[a].length-2)};break;case 8:this.$={type:"NUMBER",value:Number(o[a])};break;case 9:this.$={type:"BOOLEAN",value:"true"===o[a]};break;case 12:return this.$=o[a];case 13:this.$={type:o[a-3].toUpperCase(),name:o[a-2],variables:o[a-1],nodes:o[a]};break;case 14:this.$={type:o[a-2].toUpperCase(),name:o[a-1],variables:[],nodes:o[a]};break;case 15:case 53:this.$=o[a-1],o[a-1].push(o[a]);break;case 16:case 19:case 47:case 52:this.$=[o[a]];break;case 17:this.$={type:"QUERY_CALL",name:o[a-1],params:o[a]};break;case 18:this.$=[""];break;case 20:case 48:this.$=o[a-2],o[a-2].push(o[a]);break;case 21:case 30:case 45:case 46:case 49:case 50:this.$=o[a-1];break;case 28:this.$={type:"VARIABLE",value:o[a]};break;case 29:case 51:this.$=[];break;case 31:this.$=[{required:!1,name:o[a]}];break;case 32:this.$=[{required:!0,name:o[a-1]}];break;case 33:this.$=o[a-2],o[a-2].push({required:!1,name:o[a]});break;case 34:this.$=o[a-3],o[a-3].push({required:!0,name:o[a-1]});break;case 35:this.$={type:"BUILT_IN",value:o[a-3]+" '"+o[a-1]+"'"};break;case 43:case 44:this.$={type:"OPERATION",a:o[a-2],op:o[a-1],b:o[a]};break;case 56:this.$={type:"FIELD",name:o[a],value:null,alias:null};break;case 57:this.$={type:"FIELD",name:o[a-3],value:null,alias:o[a-1]};break;case 58:case 59:case 60:case 61:case 62:this.$={type:"FIELD",name:o[a-2],value:o[a],alias:null};break;case 63:this.$={type:"TABLE",name:o[a-2].trim(),params:o[a-1],nodes:o[a],delete:!1};break;case 64:this.$={type:"TABLE",name:o[a-1].trim(),params:[],nodes:o[a],delete:!1};break;case 65:this.$={type:"TABLE",name:o[a-1].trim(),params:o[a],nodes:[],delete:!0};break;case 66:this.$={type:"TABLE",name:o[a-2].trim(),params:o[a-1],nodes:o[a],delete:!0};break;case 67:this.$={type:"JOIN",table:o[a-2].trim(),on:o[a-1],nodes:o[a]}}},table:[{16:4,17:r,18:1,19:2,20:3},{1:[3]},{1:[2,12],16:4,17:r,20:6},e(n,[2,16]),{4:[1,7]},{4:[2,11]},e(n,[2,15]),{21:8,22:9,28:[1,10],44:i},{22:12,44:i},e(n,[2,14]),{29:[1,13],31:15,32:o,33:14},{4:s,14:23,15:a,39:l,45:17,46:[1,18],47:19,48:20,49:21},e(n,[2,13]),{44:[2,29]},{27:[1,27],29:[1,26]},e(u,[2,31],{34:[1,28]}),{4:[1,29]},{4:s,14:23,15:a,39:l,46:[1,30],47:31,48:20,49:21},e(c,[2,51]),e(h,[2,52]),e(h,[2,54]),e(h,[2,55]),e(h,[2,56],{43:34,22:35,28:f,40:[1,32],44:i,50:[1,33]}),{4:[1,37]},{4:[1,38]},{4:[2,10]},{44:[2,30]},{31:39,32:o},e(u,[2,32]),e([4,15,27,29,34,38,39,41,46],[2,27]),e(c,[2,50]),e(h,[2,53]),{4:[1,40]},{3:43,4:[1,48],8:d,9:42,10:p,11:44,12:41,13:_,30:45,31:50,32:o},{22:51,44:i},e(h,[2,64]),{3:60,4:y,5:54,8:d,9:59,10:p,11:58,23:56,28:v,30:55,31:50,32:o,35:57,37:53,40:g,42:52},{28:f,43:64},{28:f,43:65},e(u,[2,33],{34:[1,66]}),{41:[1,67]},e(h,[2,58]),e(h,[2,59]),e(h,[2,60]),e(h,[2,61]),e(h,[2,62]),e([4,15,27,29,39,46],[2,9]),e(m,[2,7]),e(h,b),e(m,[2,8]),e(m,[2,28]),e(h,[2,63]),{27:[1,69],29:[1,68]},e(u,[2,47],{38:k,39:O}),e(B,[2,36]),e(B,[2,37]),e(B,[2,38]),e(B,[2,39]),e(B,[2,40]),e(B,[2,41]),e(B,[2,42]),{3:60,4:y,5:54,8:d,9:59,10:p,11:58,23:56,28:v,30:55,31:50,32:o,35:57,37:72,40:g},{3:60,4:y,5:54,8:d,9:59,10:p,11:58,23:56,28:v,30:55,31:50,32:o,35:57,37:73,40:g},e(B,b,{24:75,6:[1,74],28:w,36:[1,76]}),{22:78,44:i},e(h,[2,65],{22:79,44:i}),e(u,[2,34]),e(h,[2,57]),e([4,15,39,44,46],[2,49]),{3:60,4:y,5:54,8:d,9:59,10:p,11:58,23:56,28:v,30:55,31:50,32:o,35:57,37:80,40:g},{3:60,4:y,5:54,8:d,9:59,10:p,11:58,23:56,28:v,30:55,31:50,32:o,35:57,37:81,40:g},{3:60,4:y,5:54,8:d,9:59,10:p,11:58,23:56,28:v,30:55,31:50,32:o,35:57,37:82,40:g},{29:[1,83],38:k,39:O},{38:k,39:O,41:[1,84]},{4:[1,85]},e(B,[2,17]),{4:[1,87],7:86,8:[1,88]},e(u,[2,18],{31:50,25:89,26:90,9:91,11:92,12:93,30:94,23:95,4:P,8:d,10:p,13:_,32:o}),e(h,[2,67]),e(h,[2,66]),e(u,[2,48],{38:k,39:O}),e(S,[2,43],{38:k,39:O}),e(S,[2,44],{38:k,39:O}),e(B,[2,45]),e(B,[2,46]),e(B,[2,2]),{4:[1,99],8:[1,98],36:[1,97]},e(E,[2,3]),e(E,[2,4]),{27:[1,101],29:[1,100]},e(u,[2,19]),e(u,[2,22]),e(u,[2,23]),e(u,[2,24]),e(u,[2,25]),e(u,[2,26]),{24:75,28:w},e(B,[2,35]),e(E,[2,5]),e(E,[2,6]),e(B,[2,21]),{4:P,8:d,9:91,10:p,11:92,12:93,13:_,23:95,26:102,30:94,31:50,32:o},e(u,[2,20])],defaultActions:{5:[2,11],13:[2,29],25:[2,10],26:[2,30]},parseError:function(t,e){if(!e.recoverable){var r=new Error(t);throw r.hash=e,r}this.trace(t)},parse:function(t){var e=this,r=[0],n=[null],i=[],o=this.table,s="",a=0,l=0,u=i.slice.call(arguments,1),c=Object.create(this.lexer),h={yy:{}};for(var f in this.yy)Object.prototype.hasOwnProperty.call(this.yy,f)&&(h.yy[f]=this.yy[f]);c.setInput(t,h.yy),h.yy.lexer=c,h.yy.parser=this,void 0===c.yylloc&&(c.yylloc={});var d=c.yylloc;i.push(d);var p=c.options&&c.options.ranges;"function"==typeof h.yy.parseError?this.parseError=h.yy.parseError:this.parseError=Object.getPrototypeOf(this).parseError;for(var _,y,v,g,m,b,k,O,B,w=function(){var t;return"number"!=typeof(t=c.lex()||1)&&(t=e.symbols_[t]||t),t},P={};;){if(v=r[r.length-1],this.defaultActions[v]?g=this.defaultActions[v]:(null!==_&&void 0!==_||(_=w()),g=o[v]&&o[v][_]),void 0===g||!g.length||!g[0]){var S="";B=[];for(b in o[v])this.terminals_[b]&&b>2&&B.push("'"+this.terminals_[b]+"'");S=c.showPosition?"Parse error on line "+(a+1)+":\n"+c.showPosition()+"\nExpecting "+B.join(", ")+", got '"+(this.terminals_[_]||_)+"'":"Parse error on line "+(a+1)+": Unexpected "+(1==_?"end of input":"'"+(this.terminals_[_]||_)+"'"),this.parseError(S,{text:c.match,token:this.terminals_[_]||_,line:c.yylineno,loc:d,expected:B})}if(g[0]instanceof Array&&g.length>1)throw new Error("Parse Error: multiple actions possible at state: "+v+", token: "+_);switch(g[0]){case 1:r.push(_),n.push(c.yytext),i.push(c.yylloc),r.push(g[1]),_=null,y?(_=y,y=null):(l=c.yyleng,s=c.yytext,a=c.yylineno,d=c.yylloc);break;case 2:if(k=this.productions_[g[1]][1],P.$=n[n.length-k],P._$={first_line:i[i.length-(k||1)].first_line,last_line:i[i.length-1].last_line,first_column:i[i.length-(k||1)].first_column,last_column:i[i.length-1].last_column},p&&(P._$.range=[i[i.length-(k||1)].range[0],i[i.length-1].range[1]]),void 0!==(m=this.performAction.apply(P,[s,l,a,h.yy,g[1],n,i].concat(u))))return m;k&&(r=r.slice(0,-1*k*2),n=n.slice(0,-1*k),i=i.slice(0,-1*k)),r.push(this.productions_[g[1]][0]),n.push(P.$),i.push(P._$),O=o[r[r.length-2]][r[r.length-1]],r.push(O);break;case 3:return!0}}return!0}},T={EOF:1,parseError:function(t,e){if(!this.yy.parser)throw new Error(t);this.yy.parser.parseError(t,e)},setInput:function(t,e){return this.yy=e||this.yy||{},this._input=t,this._more=this._backtrack=this.done=!1,this.yylineno=this.yyleng=0,this.yytext=this.matched=this.match="",this.conditionStack=["INITIAL"],this.yylloc={first_line:1,first_column:0,last_line:1,last_column:0},this.options.ranges&&(this.yylloc.range=[0,0]),this.offset=0,this},input:function(){var t=this._input[0];this.yytext+=t,this.yyleng++,this.offset++,this.match+=t,this.matched+=t;return t.match(/(?:\r\n?|\n).*/g)?(this.yylineno++,this.yylloc.last_line++):this.yylloc.last_column++,this.options.ranges&&this.yylloc.range[1]++,this._input=this._input.slice(1),t},unput:function(t){var e=t.length,r=t.split(/(?:\r\n?|\n)/g);this._input=t+this._input,this.yytext=this.yytext.substr(0,this.yytext.length-e),this.offset-=e;var n=this.match.split(/(?:\r\n?|\n)/g);this.match=this.match.substr(0,this.match.length-1),this.matched=this.matched.substr(0,this.matched.length-1),r.length-1&&(this.yylineno-=r.length-1);var i=this.yylloc.range;return this.yylloc={first_line:this.yylloc.first_line,last_line:this.yylineno+1,first_column:this.yylloc.first_column,last_column:r?(r.length===n.length?this.yylloc.first_column:0)+n[n.length-r.length].length-r[0].length:this.yylloc.first_column-e},this.options.ranges&&(this.yylloc.range=[i[0],i[0]+this.yyleng-e]),this.yyleng=this.yytext.length,this},more:function(){return this._more=!0,this},reject:function(){return this.options.backtrack_lexer?(this._backtrack=!0,this):this.parseError("Lexical error on line "+(this.yylineno+1)+". You can only invoke reject() in the lexer when the lexer is of the backtracking persuasion (options.backtrack_lexer = true).\n"+this.showPosition(),{text:"",token:null,line:this.yylineno})},less:function(t){this.unput(this.match.slice(t))},pastInput:function(){var t=this.matched.substr(0,this.matched.length-this.match.length);return(t.length>20?"...":"")+t.substr(-20).replace(/\n/g,"")},upcomingInput:function(){var t=this.match;return t.length<20&&(t+=this._input.substr(0,20-t.length)),(t.substr(0,20)+(t.length>20?"...":"")).replace(/\n/g,"")},showPosition:function(){var t=this.pastInput(),e=new Array(t.length+1).join("-");return t+this.upcomingInput()+"\n"+e+"^"},test_match:function(t,e){var r,n,i;if(this.options.backtrack_lexer&&(i={yylineno:this.yylineno,yylloc:{first_line:this.yylloc.first_line,last_line:this.last_line,first_column:this.yylloc.first_column,last_column:this.yylloc.last_column},yytext:this.yytext,match:this.match,matches:this.matches,matched:this.matched,yyleng:this.yyleng,offset:this.offset,_more:this._more,_input:this._input,yy:this.yy,conditionStack:this.conditionStack.slice(0),done:this.done},this.options.ranges&&(i.yylloc.range=this.yylloc.range.slice(0))),(n=t[0].match(/(?:\r\n?|\n).*/g))&&(this.yylineno+=n.length),this.yylloc={first_line:this.yylloc.last_line,last_line:this.yylineno+1,first_column:this.yylloc.last_column,last_column:n?n[n.length-1].length-n[n.length-1].match(/\r?\n?/)[0].length:this.yylloc.last_column+t[0].length},this.yytext+=t[0],this.match+=t[0],this.matches=t,this.yyleng=this.yytext.length,this.options.ranges&&(this.yylloc.range=[this.offset,this.offset+=this.yyleng]),this._more=!1,this._backtrack=!1,this._input=this._input.slice(t[0].length),this.matched+=t[0],r=this.performAction.call(this,this.yy,this,e,this.conditionStack[this.conditionStack.length-1]),this.done&&this._input&&(this.done=!1),r)return r;if(this._backtrack){for(var o in i)this[o]=i[o];return!1}return!1},next:function(){if(this.done)return this.EOF;this._input||(this.done=!0);var t,e,r,n;this._more||(this.yytext="",this.match="");for(var i=this._currentRules(),o=0;o<i.length;o++)if((r=this._input.match(this.rules[i[o]]))&&(!e||r[0].length>e[0].length)){if(e=r,n=o,this.options.backtrack_lexer){if(!1!==(t=this.test_match(r,i[o])))return t;if(this._backtrack){e=!1;continue}return!1}if(!this.options.flex)break}return e?!1!==(t=this.test_match(e,i[n]))&&t:""===this._input?this.EOF:this.parseError("Lexical error on line "+(this.yylineno+1)+". Unrecognized text.\n"+this.showPosition(),{text:"",token:null,line:this.yylineno})},lex:function(){var t=this.next();return t||this.lex()},begin:function(t){this.conditionStack.push(t)},popState:function(){return this.conditionStack.length-1>0?this.conditionStack.pop():this.conditionStack[0]},_currentRules:function(){return this.conditionStack.length&&this.conditionStack[this.conditionStack.length-1]?this.conditions[this.conditionStack[this.conditionStack.length-1]].rules:this.conditions.INITIAL.rules},topState:function(t){return(t=this.conditionStack.length-1-Math.abs(t||0))>=0?this.conditionStack[t]:"INITIAL"},pushState:function(t){this.begin(t)},stateStackSize:function(){return this.conditionStack.length},options:{},performAction:function(t,e,r,n){switch(r){case 0:break;case 1:return 10;case 2:return 8;case 3:return 17;case 4:return 13;case 5:return 4;case 6:return 39;case 7:return 38;case 8:return 44;case 9:return 46;case 10:return 28;case 11:return 29;case 12:return 15;case 13:return 27;case 14:return"'";case 15:return'"';case 16:return 6;case 17:return 32;case 18:return 40;case 19:return 41;case 20:return 50;case 21:return 34}},rules:[/^(?:\s+)/,/^(?:"(.*?)")/,/^(?:\d+\b)/,/^(?:query|mutation\b)/,/^(?:false|true\b)/,/^(?:[\w\_\d]+)/,/^(?:-)/,/^(?:([\+*\/%&|^=><]+)|(![=<>]+)|(-))/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:\.{3}\s*on\b)/,/^(?:,)/,/^(?:')/,/^(?:")/,/^(?:\.)/,/^(?:\$)/,/^(?:\[)/,/^(?:\])/,/^(?::)/,/^(?:!)/],conditions:{INITIAL:{rules:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21],inclusive:!0}}};return F.lexer=T,t.prototype=F,F.Parser=t,new t}();void 0!==commonjsRequire&&(e.parser=r,e.Parser=r.Parser,e.parse=function(){return r.parse.apply(r,arguments)},e.main=function(t){t[1]||(console.log("Usage: "+t[0]+" FILE"),process.exit(1));var r=fs.readFileSync(path.normalize(t[1]),"utf8");return e.parser.parse(r)},commonjsRequire.main===t&&e.main(process.argv.slice(1)))}),parser_2=parser_1.parser,parser_3=parser_1.Parser,parser_4=parser_1.parse,parser_5=parser_1.main,squel=createCommonjsModule(function(t,e){!function(e,r){t.exports=r()}(0,function(){function t(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function e(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}function r(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function n(t,e){return t.length?t+e:t}function i(t){for(var e=arguments.length,r=Array(e>1?e-1:0),n=1;n<e;n++)r[n-1]=arguments[n];if(t&&r){var i=!0,o=!1,s=void 0;try{for(var a,l=function(){var e=a.value;"object"===(void 0===e?"undefined":p(e))&&Object.getOwnPropertyNames(e).forEach(function(r){t[r]=e[r]})},u=r[Symbol.iterator]();!(i=(a=u.next()).done);i=!0)l()}catch(t){o=!0,s=t}finally{try{!i&&u.return&&u.return()}finally{if(o)throw s}}}return t}function o(t){return t&&t.constructor.prototype===Object.prototype}function s(t){return t&&t.constructor.prototype===Array.prototype}function a(t){if(!t)return t;if("function"==typeof t.clone)return t.clone();if(o(t)||s(t)){var e=new t.constructor;return Object.getOwnPropertyNames(t).forEach(function(r){"function"!=typeof t[r]&&(e[r]=a(t[r]))}),e}return JSON.parse(JSON.stringify(t))}function l(t,e,r){var n=void 0===e?"undefined":p(e);if("function"!==n&&"string"!==n)throw new Error("type must be a class constructor or string");if("function"!=typeof r)throw new Error("handler must be a function");var i=!0,o=!1,s=void 0;try{for(var a,l=t[Symbol.iterator]();!(i=(a=l.next()).done);i=!0){var u=a.value;if(u.type===e)return void(u.handler=r)}}catch(t){o=!0,s=t}finally{try{!i&&l.return&&l.return()}finally{if(o)throw s}}t.push({type:e,handler:r})}function u(t,e,r){return c(t,e)||c(t,r)}function c(t,e){for(var r=0;r<e.length;r++){var n=e[r];if((void 0===t?"undefined":p(t))===n.type||"string"!=typeof n.type&&t instanceof n.type)return n.handler}}function h(){var c=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null,h={isSquelBuilder:function(t){return t&&!!t._toParamString}},_=function(t){return!h.isSquelBuilder(t)||!t.options.rawNesting};h.DefaultQueryBuilderOptions={autoQuoteTableNames:!1,autoQuoteFieldNames:!1,autoQuoteAliasNames:!0,useAsForTableAliasNames:!1,nameQuoteCharacter:"`",tableAliasQuoteCharacter:"`",fieldAliasQuoteCharacter:'"',valueHandlers:[],parameterCharacter:"?",numberedParameters:!1,numberedParametersPrefix:"$",numberedParametersStartAt:1,replaceSingleQuotes:!1,singleQuoteReplacement:"''",separator:" ",stringFormatter:null,rawNesting:!1},h.globalValueHandlers=[],h.registerValueHandler=function(t,e){l(h.globalValueHandlers,t,e)},h.Cloneable=function(){function t(){r(this,t)}return d(t,[{key:"clone",value:function(){return i(new this.constructor,a(i({},this)))}}]),t}(),h.BaseBuilder=function(n){function o(e){r(this,o);var n=t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this)),s=JSON.parse(JSON.stringify(h.DefaultQueryBuilderOptions));return["stringFormatter"].forEach(function(t){s[t]=h.DefaultQueryBuilderOptions[t]}),n.options=i({},s,e),n}return e(o,h.Cloneable),d(o,[{key:"registerValueHandler",value:function(t,e){return l(this.options.valueHandlers,t,e),this}},{key:"_sanitizeExpression",value:function(t){if(!h.isSquelBuilder(t)&&"string"!=typeof t)throw new Error("expression must be a string or builder instance");return t}},{key:"_sanitizeName",value:function(t,e){if("string"!=typeof t)throw new Error(e+" must be a string");return t}},{key:"_sanitizeField",value:function(t){return h.isSquelBuilder(t)||(t=this._sanitizeName(t,"field name")),t}},{key:"_sanitizeBaseBuilder",value:function(t){if(h.isSquelBuilder(t))return t;throw new Error("must be a builder instance")}},{key:"_sanitizeTable",value:function(t){if("string"!=typeof t)try{t=this._sanitizeBaseBuilder(t)}catch(t){throw new Error("table name must be a string or a builder")}else t=this._sanitizeName(t,"table");return t}},{key:"_sanitizeTableAlias",value:function(t){return this._sanitizeName(t,"table alias")}},{key:"_sanitizeFieldAlias",value:function(t){return this._sanitizeName(t,"field alias")}},{key:"_sanitizeLimitOffset",value:function(t){if(0>(t=parseInt(t))||isNaN(t))throw new Error("limit/offset must be >= 0");return t}},{key:"_sanitizeValue",value:function(t){var e=void 0===t?"undefined":p(t);if(null===t);else if("string"===e||"number"===e||"boolean"===e);else if(h.isSquelBuilder(t));else{if(!!!u(t,this.options.valueHandlers,h.globalValueHandlers))throw new Error("field value must be a string, number, boolean, null or one of the registered custom value types")}return t}},{key:"_escapeValue",value:function(t){return this.options.replaceSingleQuotes?t.replace(/\'/g,this.options.singleQuoteReplacement):t}},{key:"_formatTableName",value:function(t){if(this.options.autoQuoteTableNames){var e=this.options.nameQuoteCharacter;t=""+e+t+e}return t}},{key:"_formatFieldAlias",value:function(t){if(this.options.autoQuoteAliasNames){var e=this.options.fieldAliasQuoteCharacter;t=""+e+t+e}return t}},{key:"_formatTableAlias",value:function(t){if(this.options.autoQuoteAliasNames){var e=this.options.tableAliasQuoteCharacter;t=""+e+t+e}return this.options.useAsForTableAliasNames?"AS "+t:t}},{key:"_formatFieldName",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(this.options.autoQuoteFieldNames){var r=this.options.nameQuoteCharacter;t=e.ignorePeriodsForFieldNameQuotes?""+r+t+r:t.split(".").map(function(t){return"*"===t?t:""+r+t+r}).join(".")}return t}},{key:"_formatCustomValue",value:function(t,e,r){var n=u(t,this.options.valueHandlers,h.globalValueHandlers);return n&&(t=n(t,e,r))&&t.rawNesting?{formatted:!0,rawNesting:!0,value:t.value}:{formatted:!!n,value:t}}},{key:"_formatValueForParamArray",value:function(t){var e=this,r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};return s(t)?t.map(function(t){return e._formatValueForParamArray(t,r)}):this._formatCustomValue(t,!0,r).value}},{key:"_formatValueForQueryString",value:function(t){var e=this,r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},n=this._formatCustomValue(t,!1,r),i=n.rawNesting,o=n.formatted,a=n.value;if(o)return i?a:this._applyNestingFormatting(a,_(t));if(s(a))a=a.map(function(t){return e._formatValueForQueryString(t)}),a=this._applyNestingFormatting(a.join(", "),_(a));else{var l=void 0===a?"undefined":p(a);if(null===a)a="NULL";else if("boolean"===l)a=a?"TRUE":"FALSE";else if(h.isSquelBuilder(a))a=this._applyNestingFormatting(a.toString(),_(a));else if("number"!==l){if("string"===l&&this.options.stringFormatter)return this.options.stringFormatter(a);if(r.dontQuote)a=""+a;else{a="'"+this._escapeValue(a)+"'"}}}return a}},{key:"_applyNestingFormatting",value:function(t){var e=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];if(t&&"string"==typeof t&&e&&!this.options.rawNesting){var r="("===t.charAt(0)&&")"===t.charAt(t.length-1);if(r)for(var n=0,i=1;t.length-1>++n;){var o=t.charAt(n);if("("===o)i++;else if(")"===o&&1>--i){r=!1;break}}r||(t="("+t+")")}return t}},{key:"_buildString",value:function(t,e){var r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},n=r.nested,i=r.buildParameterized,o=r.formattingOptions;e=e||[],t=t||"";for(var a="",l=-1,u=[],c=this.options.parameterCharacter,f=0;t.length>f;)if(t.substr(f,c.length)===c){var d=e[++l];if(i)if(h.isSquelBuilder(d)){var p=d._toParamString({buildParameterized:i,nested:!0});a+=p.text,p.values.forEach(function(t){return u.push(t)})}else if(d=this._formatValueForParamArray(d,o),s(d)){a+="("+d.map(function(){return c}).join(", ")+")",d.forEach(function(t){return u.push(t)})}else a+=c,u.push(d);else a+=this._formatValueForQueryString(d,o);f+=c.length}else a+=t.charAt(f),f++;return{text:this._applyNestingFormatting(a,!!n),values:u}}},{key:"_buildManyStrings",value:function(t,e){for(var r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},n=[],i=[],o=0;t.length>o;++o){var s=t[o],a=e[o],l=this._buildString(s,a,{buildParameterized:r.buildParameterized,nested:!1}),u=l.text,c=l.values;n.push(u),c.forEach(function(t){return i.push(t)})}return n=n.join(this.options.separator),{text:n.length?this._applyNestingFormatting(n,!!r.nested):"",values:i}}},{key:"_toParamString",value:function(t){throw new Error("Not yet implemented")}},{key:"toString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};return this._toParamString(t).text}},{key:"toParam",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};return this._toParamString(i({},t,{buildParameterized:!0}))}}]),o}(),h.Expression=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n._nodes=[],n}return e(i,h.BaseBuilder),d(i,[{key:"and",value:function(t){for(var e=arguments.length,r=Array(e>1?e-1:0),n=1;n<e;n++)r[n-1]=arguments[n];return t=this._sanitizeExpression(t),this._nodes.push({type:"AND",expr:t,para:r}),this}},{key:"or",value:function(t){for(var e=arguments.length,r=Array(e>1?e-1:0),n=1;n<e;n++)r[n-1]=arguments[n];return t=this._sanitizeExpression(t),this._nodes.push({type:"OR",expr:t,para:r}),this}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e=[],r=[],n=!0,i=!1,o=void 0;try{for(var s,a=this._nodes[Symbol.iterator]();!(n=(s=a.next()).done);n=!0){var l=s.value,u=l.type,c=l.expr,f=l.para,d=h.isSquelBuilder(c)?c._toParamString({buildParameterized:t.buildParameterized,nested:!0}):this._buildString(c,f,{buildParameterized:t.buildParameterized}),p=d.text,_=d.values;e.length&&e.push(u),e.push(p),_.forEach(function(t){return r.push(t)})}}catch(t){i=!0,o=t}finally{try{!n&&a.return&&a.return()}finally{if(i)throw o}}return e=e.join(" "),{text:this._applyNestingFormatting(e,!!t.nested),values:r}}}]),i}(),h.Case=function(s){function a(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};r(this,a);var s=t(this,(a.__proto__||Object.getPrototypeOf(a)).call(this,n));return o(e)&&(n=e,e=null),e&&(s._fieldName=s._sanitizeField(e)),s.options=i({},h.DefaultQueryBuilderOptions,n),s._cases=[],s._elseValue=null,s}return e(a,h.BaseBuilder),d(a,[{key:"when",value:function(t){for(var e=arguments.length,r=Array(e>1?e-1:0),n=1;n<e;n++)r[n-1]=arguments[n];return this._cases.unshift({expression:t,values:r||[]}),this}},{key:"then",value:function(t){if(0==this._cases.length)throw new Error("when() needs to be called first");return this._cases[0].result=t,this}},{key:"else",value:function(t){return this._elseValue=t,this}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e="",r=[],i=!0,o=!1,s=void 0;try{for(var a,l=this._cases[Symbol.iterator]();!(i=(a=l.next()).done);i=!0){var u=a.value,c=u.expression,h=u.values,f=u.result;e=n(e," ");var d=this._buildString(c,h,{buildParameterized:t.buildParameterized,nested:!0});e+="WHEN "+d.text+" THEN "+this._formatValueForQueryString(f),d.values.forEach(function(t){return r.push(t)})}}catch(t){o=!0,s=t}finally{try{!i&&l.return&&l.return()}finally{if(o)throw s}}return e.length?(e+=" ELSE "+this._formatValueForQueryString(this._elseValue)+" END",this._fieldName&&(e=this._fieldName+" "+e),e="CASE "+e):e=this._formatValueForQueryString(this._elseValue),{text:e,values:r}}}]),a}(),h.Block=function(n){function i(e){return r(this,i),t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e))}return e(i,h.BaseBuilder),d(i,[{key:"exposedMethods",value:function(){for(var t={},e=this;e;)Object.getOwnPropertyNames(e).forEach(function(r){"constructor"===r||"function"!=typeof e[r]||"_"===r.charAt(0)||h.Block.prototype[r]||(t[r]=e[r])}),e=Object.getPrototypeOf(e);return t}}]),i}(),h.StringBlock=function(n){function i(e,n){r(this,i);var o=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return o._str=n,o}return e(i,h.Block),d(i,[{key:"_toParamString",value:function(){return{text:this._str,values:[]}}}]),i}(),h.FunctionBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n._strings=[],n._values=[],n}return e(i,h.Block),d(i,[{key:"function",value:function(t){this._strings.push(t);for(var e=arguments.length,r=Array(e>1?e-1:0),n=1;n<e;n++)r[n-1]=arguments[n];this._values.push(r)}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};return this._buildManyStrings(this._strings,this._values,t)}}]),i}(),h.registerValueHandler(h.FunctionBlock,function(t){return arguments.length>1&&void 0!==arguments[1]&&arguments[1]?t.toParam():t.toString()}),h.AbstractTableBlock=function(i){function o(e,n){r(this,o);var i=t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,e));return i._tables=[],i}return e(o,h.Block),d(o,[{key:"_table",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;e=e?this._sanitizeTableAlias(e):e,t=this._sanitizeTable(t),this.options.singleTable&&(this._tables=[]),this._tables.push({table:t,alias:e})}},{key:"_hasTable",value:function(){return 0<this._tables.length}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e="",r=[];if(this._hasTable()){var i=!0,o=!1,s=void 0;try{for(var a,l=this._tables[Symbol.iterator]();!(i=(a=l.next()).done);i=!0){var u=a.value,c=u.table,f=u.alias;e=n(e,", ");var d=void 0;if(h.isSquelBuilder(c)){var p=c._toParamString({buildParameterized:t.buildParameterized,nested:!0});d=p.text,p.values.forEach(function(t){return r.push(t)})}else d=this._formatTableName(c);f&&(d+=" "+this._formatTableAlias(f)),e+=d}}catch(t){o=!0,s=t}finally{try{!i&&l.return&&l.return()}finally{if(o)throw s}}this.options.prefix&&(e=this.options.prefix+" "+e)}return{text:e,values:r}}}]),o}(),h.TargetTableBlock=function(n){function i(){return r(this,i),t(this,(i.__proto__||Object.getPrototypeOf(i)).apply(this,arguments))}return e(i,h.AbstractTableBlock),d(i,[{key:"target",value:function(t){this._table(t)}}]),i}(),h.UpdateTableBlock=function(n){function i(){return r(this,i),t(this,(i.__proto__||Object.getPrototypeOf(i)).apply(this,arguments))}return e(i,h.AbstractTableBlock),d(i,[{key:"table",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;this._table(t,e)}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};if(!this._hasTable())throw new Error("table() needs to be called");return f(i.prototype.__proto__||Object.getPrototypeOf(i.prototype),"_toParamString",this).call(this,t)}}]),i}(),h.FromTableBlock=function(n){function o(e){return r(this,o),t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,i({},e,{prefix:"FROM"})))}return e(o,h.AbstractTableBlock),d(o,[{key:"from",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;this._table(t,e)}}]),o}(),h.IntoTableBlock=function(n){function o(e){return r(this,o),t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,i({},e,{prefix:"INTO",singleTable:!0})))}return e(o,h.AbstractTableBlock),d(o,[{key:"into",value:function(t){this._table(t)}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};if(!this._hasTable())throw new Error("into() needs to be called");return f(o.prototype.__proto__||Object.getPrototypeOf(o.prototype),"_toParamString",this).call(this,t)}}]),o}(),h.GetFieldBlock=function(i){function o(e){r(this,o);var n=t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,e));return n._fields=[],n}return e(o,h.Block),d(o,[{key:"fields",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(s(t)){var r=!0,n=!1,i=void 0;try{for(var o,a=t[Symbol.iterator]();!(r=(o=a.next()).done);r=!0){var l=o.value;this.field(l,null,e)}}catch(t){n=!0,i=t}finally{try{!r&&a.return&&a.return()}finally{if(n)throw i}}}else for(var u in t){var c=t[u];this.field(u,c,e)}}},{key:"field",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{};e=e?this._sanitizeFieldAlias(e):e,t=this._sanitizeField(t);if(this._fields.filter(function(r){return r.name===t&&r.alias===e}).length)return this;this._fields.push({name:t,alias:e,options:r})}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e=t.queryBuilder,r=t.buildParameterized,i="",o=[],s=!0,a=!1,l=void 0;try{for(var u,c=this._fields[Symbol.iterator]();!(s=(u=c.next()).done);s=!0){var f=u.value;i=n(i,", ");var d=f.name,p=f.alias,_=f.options;if("string"==typeof d)i+=this._formatFieldName(d,_);else{var y=d._toParamString({nested:!0,buildParameterized:r});i+=y.text,y.values.forEach(function(t){return o.push(t)})}p&&(i+=" AS "+this._formatFieldAlias(p))}}catch(t){a=!0,l=t}finally{try{!s&&c.return&&c.return()}finally{if(a)throw l}}if(!i.length){var v=e&&e.getBlock(h.FromTableBlock);v&&v._hasTable()&&(i="*")}return{text:i,values:o}}}]),o}(),h.AbstractSetFieldBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n._reset(),n}return e(i,h.Block),d(i,[{key:"_reset",value:function(){this._fields=[],this._values=[[]],this._valueOptions=[[]]}},{key:"_set",value:function(t,e){var r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{};if(this._values.length>1)throw new Error("Cannot set multiple rows of fields this way.");void 0!==e&&(e=this._sanitizeValue(e)),t=this._sanitizeField(t);var n=this._fields.indexOf(t);-1===n&&(this._fields.push(t),n=this._fields.length-1),this._values[0][n]=e,this._valueOptions[0][n]=r}},{key:"_setFields",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if("object"!==(void 0===t?"undefined":p(t)))throw new Error("Expected an object but got "+(void 0===t?"undefined":p(t)));for(var r in t)this._set(r,t[r],e)}},{key:"_setFieldsRows",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(!s(t))throw new Error("Expected an array of objects but got "+(void 0===t?"undefined":p(t)));this._reset();for(var r=0;t.length>r;++r){var n=t[r];for(var i in n){var o=n[i];i=this._sanitizeField(i),o=this._sanitizeValue(o);var a=this._fields.indexOf(i);if(0<r&&-1===a)throw new Error("All fields in subsequent rows must match the fields in the first row");-1===a&&(this._fields.push(i),a=this._fields.length-1),s(this._values[r])||(this._values[r]=[],this._valueOptions[r]=[]),this._values[r][a]=o,this._valueOptions[r][a]=e}}}}]),i}(),h.SetFieldBlock=function(i){function o(){return r(this,o),t(this,(o.__proto__||Object.getPrototypeOf(o)).apply(this,arguments))}return e(o,h.AbstractSetFieldBlock),d(o,[{key:"set",value:function(t,e,r){this._set(t,e,r)}},{key:"setFields",value:function(t,e){this._setFields(t,e)}},{key:"_toParamString",value:function(){var t=(arguments.length>0&&void 0!==arguments[0]?arguments[0]:{}).buildParameterized;if(0>=this._fields.length)throw new Error("set() needs to be called");for(var e="",r=[],i=0;i<this._fields.length;++i){e=n(e,", ");var o=this._formatFieldName(this._fields[i]),s=this._values[0][i];0>o.indexOf("=")&&(o=o+" = "+this.options.parameterCharacter);var a=this._buildString(o,[s],{buildParameterized:t,formattingOptions:this._valueOptions[0][i]});e+=a.text,a.values.forEach(function(t){return r.push(t)})}return{text:"SET "+e,values:r}}}]),o}(),h.InsertFieldValueBlock=function(i){function o(){return r(this,o),t(this,(o.__proto__||Object.getPrototypeOf(o)).apply(this,arguments))}return e(o,h.AbstractSetFieldBlock),d(o,[{key:"set",value:function(t,e){var r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{};this._set(t,e,r)}},{key:"setFields",value:function(t,e){this._setFields(t,e)}},{key:"setFieldsRows",value:function(t,e){this._setFieldsRows(t,e)}},{key:"_toParamString",value:function(){for(var t=this,e=(arguments.length>0&&void 0!==arguments[0]?arguments[0]:{}).buildParameterized,r=this._fields.map(function(e){return t._formatFieldName(e)}).join(", "),i=[],o=[],s=0;s<this._values.length;++s){i[s]="";for(var a=0;a<this._values[s].length;++a){var l=this._buildString(this.options.parameterCharacter,[this._values[s][a]],{buildParameterized:e,formattingOptions:this._valueOptions[s][a]});l.values.forEach(function(t){return o.push(t)}),i[s]=n(i[s],", "),i[s]+=l.text}}return{text:r.length?"("+r+") VALUES ("+i.join("), (")+")":"",values:o}}}]),o}(),h.InsertFieldsFromQueryBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n._fields=[],n._query=null,n}return e(i,h.Block),d(i,[{key:"fromQuery",value:function(t,e){var r=this;this._fields=t.map(function(t){return r._sanitizeField(t)}),this._query=this._sanitizeBaseBuilder(e)}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e="",r=[];if(this._fields.length&&this._query){var n=this._query._toParamString({buildParameterized:t.buildParameterized,nested:!0}),i=n.text,o=n.values;e="("+this._fields.join(", ")+") "+this._applyNestingFormatting(i),r=o}return{text:e,values:r}}}]),i}(),h.DistinctBlock=function(n){function i(){return r(this,i),t(this,(i.__proto__||Object.getPrototypeOf(i)).apply(this,arguments))}return e(i,h.Block),d(i,[{key:"distinct",value:function(){this._useDistinct=!0}},{key:"_toParamString",value:function(){return{text:this._useDistinct?"DISTINCT":"",values:[]}}}]),i}(),h.GroupByBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n._groups=[],n}return e(i,h.Block),d(i,[{key:"group",value:function(t){this._groups.push(this._sanitizeField(t))}},{key:"_toParamString",value:function(){return{text:this._groups.length?"GROUP BY "+this._groups.join(", "):"",values:[]}}}]),i}(),h.AbstractVerbSingleValueBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n._value=null,n}return e(i,h.Block),d(i,[{key:"_setValue",value:function(t){this._value=null!==t?this._sanitizeLimitOffset(t):t}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e=null!==this._value?this.options.verb+" "+this.options.parameterCharacter:"",r=null!==this._value?[this._value]:[];return this._buildString(e,r,t)}}]),i}(),h.OffsetBlock=function(n){function o(e){return r(this,o),t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,i({},e,{verb:"OFFSET"})))}return e(o,h.AbstractVerbSingleValueBlock),d(o,[{key:"offset",value:function(t){this._setValue(t)}}]),o}(),h.LimitBlock=function(n){function o(e){return r(this,o),t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,i({},e,{verb:"LIMIT"})))}return e(o,h.AbstractVerbSingleValueBlock),d(o,[{key:"limit",value:function(t){this._setValue(t)}}]),o}(),h.AbstractConditionBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n._conditions=[],n}return e(i,h.Block),d(i,[{key:"_condition",value:function(t){t=this._sanitizeExpression(t);for(var e=arguments.length,r=Array(e>1?e-1:0),n=1;n<e;n++)r[n-1]=arguments[n];this._conditions.push({expr:t,values:r||[]})}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e=[],r=[],n=!0,i=!1,o=void 0;try{for(var s,a=this._conditions[Symbol.iterator]();!(n=(s=a.next()).done);n=!0){var l=s.value,u=l.expr,c=l.values,f=h.isSquelBuilder(u)?u._toParamString({buildParameterized:t.buildParameterized}):this._buildString(u,c,{buildParameterized:t.buildParameterized});f.text.length&&e.push(f.text),f.values.forEach(function(t){return r.push(t)})}}catch(t){i=!0,o=t}finally{try{!n&&a.return&&a.return()}finally{if(i)throw o}}return e.length&&(e=e.join(") AND (")),{text:e.length?this.options.verb+" ("+e+")":"",values:r}}}]),i}(),h.WhereBlock=function(n){function o(e){return r(this,o),t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,i({},e,{verb:"WHERE"})))}return e(o,h.AbstractConditionBlock),d(o,[{key:"where",value:function(t){for(var e=arguments.length,r=Array(e>1?e-1:0),n=1;n<e;n++)r[n-1]=arguments[n];this._condition.apply(this,[t].concat(r))}}]),o}(),h.HavingBlock=function(n){function o(e){return r(this,o),t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,i({},e,{verb:"HAVING"})))}return e(o,h.AbstractConditionBlock),d(o,[{key:"having",value:function(t){for(var e=arguments.length,r=Array(e>1?e-1:0),n=1;n<e;n++)r[n-1]=arguments[n];this._condition.apply(this,[t].concat(r))}}]),o}(),h.OrderByBlock=function(i){function o(e){r(this,o);var n=t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,e));return n._orders=[],n}return e(o,h.Block),d(o,[{key:"order",value:function(t,e){t=this._sanitizeField(t),"string"!=typeof e&&(void 0===e?e="ASC":null!==e&&(e=e?"ASC":"DESC"));for(var r=arguments.length,n=Array(r>2?r-2:0),i=2;i<r;i++)n[i-2]=arguments[i];this._orders.push({field:t,dir:e,values:n||[]})}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e="",r=[],i=!0,o=!1,a=void 0;try{for(var l,u=this._orders[Symbol.iterator]();!(i=(l=u.next()).done);i=!0){var c=l.value,h=c.field,f=c.dir,d=c.values;e=n(e,", ");var p=this._buildString(h,d,{buildParameterized:t.buildParameterized});e+=p.text,s(p.values)&&p.values.forEach(function(t){return r.push(t)}),null!==f&&(e+=" "+f)}}catch(t){o=!0,a=t}finally{try{!i&&u.return&&u.return()}finally{if(o)throw a}}return{text:e.length?"ORDER BY "+e:"",values:r}}}]),o}(),h.JoinBlock=function(i){function o(e){r(this,o);var n=t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,e));return n._joins=[],n}return e(o,h.Block),d(o,[{key:"join",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null,n=arguments.length>3&&void 0!==arguments[3]?arguments[3]:"INNER";t=this._sanitizeTable(t,!0),e=e?this._sanitizeTableAlias(e):e,r=r?this._sanitizeExpression(r):r,this._joins.push({type:n,table:t,alias:e,condition:r})}},{key:"left_join",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;this.join(t,e,r,"LEFT")}},{key:"right_join",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;this.join(t,e,r,"RIGHT")}},{key:"outer_join",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;this.join(t,e,r,"OUTER")}},{key:"left_outer_join",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;this.join(t,e,r,"LEFT OUTER")}},{key:"full_join",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;this.join(t,e,r,"FULL")}},{key:"cross_join",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;this.join(t,e,r,"CROSS")}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e="",r=[],i=!0,o=!1,s=void 0;try{for(var a,l=this._joins[Symbol.iterator]();!(i=(a=l.next()).done);i=!0){var u=a.value,c=u.type,f=u.table,d=u.alias,p=u.condition;e=n(e,this.options.separator);var _=void 0;if(h.isSquelBuilder(f)){var y=f._toParamString({buildParameterized:t.buildParameterized,nested:!0});y.values.forEach(function(t){return r.push(t)}),_=y.text}else _=this._formatTableName(f);if(e+=c+" JOIN "+_,d&&(e+=" "+this._formatTableAlias(d)),p){e+=" ON ";var v=void 0;v=h.isSquelBuilder(p)?p._toParamString({buildParameterized:t.buildParameterized}):this._buildString(p,[],{buildParameterized:t.buildParameterized}),e+=this._applyNestingFormatting(v.text),v.values.forEach(function(t){return r.push(t)})}}}catch(t){o=!0,s=t}finally{try{!i&&l.return&&l.return()}finally{if(o)throw s}}return{text:e,values:r}}}]),o}(),h.UnionBlock=function(i){function o(e){r(this,o);var n=t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,e));return n._unions=[],n}return e(o,h.Block),d(o,[{key:"union",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"UNION";t=this._sanitizeTable(t),this._unions.push({type:e,table:t})}},{key:"union_all",value:function(t){this.union(t,"UNION ALL")}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e="",r=[],i=!0,o=!1,s=void 0;try{for(var a,l=this._unions[Symbol.iterator]();!(i=(a=l.next()).done);i=!0){var u=a.value,c=u.type,f=u.table;e=n(e,this.options.separator);var d=void 0;if(f instanceof h.BaseBuilder){var p=f._toParamString({buildParameterized:t.buildParameterized,nested:!0});d=p.text,p.values.forEach(function(t){return r.push(t)})}else e=this._formatTableName(f);e+=c+" "+d}}catch(t){o=!0,s=t}finally{try{!i&&l.return&&l.return()}finally{if(o)throw s}}return{text:e,values:r}}}]),o}(),h.QueryBuilder=function(n){function o(e,n){r(this,o);var i=t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,e));i.blocks=n||[];var s=!0,a=!1,l=void 0;try{for(var u,c=i.blocks[Symbol.iterator]();!(s=(u=c.next()).done);s=!0){var h=u.value,f=h.exposedMethods();for(var d in f){var p=f[d];if(void 0!==i[d])throw new Error("Builder already has a builder method called: "+d);!function(t,e,r){i[d]=function(){for(var e=arguments.length,n=Array(e),o=0;o<e;o++)n[o]=arguments[o];return r.call.apply(r,[t].concat(n)),i}}(h,0,p)}}}catch(t){a=!0,l=t}finally{try{!s&&c.return&&c.return()}finally{if(a)throw l}}return i}return e(o,h.BaseBuilder),d(o,[{key:"registerValueHandler",value:function(t,e){var r=!0,n=!1,i=void 0;try{for(var s,a=this.blocks[Symbol.iterator]();!(r=(s=a.next()).done);r=!0){s.value.registerValueHandler(t,e)}}catch(t){n=!0,i=t}finally{try{!r&&a.return&&a.return()}finally{if(n)throw i}}return f(o.prototype.__proto__||Object.getPrototypeOf(o.prototype),"registerValueHandler",this).call(this,t,e),this}},{key:"updateOptions",value:function(t){this.options=i({},this.options,t);var e=!0,r=!1,n=void 0;try{for(var o,s=this.blocks[Symbol.iterator]();!(e=(o=s.next()).done);e=!0){var a=o.value;a.options=i({},a.options,t)}}catch(t){r=!0,n=t}finally{try{!e&&s.return&&s.return()}finally{if(r)throw n}}}},{key:"_toParamString",value:function(){var t=this,e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};e=i({},this.options,e);var r=this.blocks.map(function(r){return r._toParamString({buildParameterized:e.buildParameterized,queryBuilder:t})}),n=r.map(function(t){return t.text}),o=r.map(function(t){return t.values}),s=n.filter(function(t){return 0<t.length}).join(e.separator),a=[];if(o.forEach(function(t){return t.forEach(function(t){return a.push(t)})}),!e.nested&&e.numberedParameters){var l=void 0!==e.numberedParametersStartAt?e.numberedParametersStartAt:1,u=e.parameterCharacter.replace(/[-[\]{}()*+?.,\\^$|#\s]/g,"\\$&");s=s.replace(new RegExp(u,"g"),function(){return""+e.numberedParametersPrefix+l++})}return{text:this._applyNestingFormatting(s,!!e.nested),values:a}}},{key:"clone",value:function(){var t=this.blocks.map(function(t){return t.clone()});return new this.constructor(this.options,t)}},{key:"getBlock",value:function(t){return this.blocks.filter(function(e){return e instanceof t})[0]}}]),o}(),h.Select=function(n){function i(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,i),n=n||[new h.StringBlock(e,"SELECT"),new h.FunctionBlock(e),new h.DistinctBlock(e),new h.GetFieldBlock(e),new h.FromTableBlock(e),new h.JoinBlock(e),new h.WhereBlock(e),new h.GroupByBlock(e),new h.HavingBlock(e),new h.OrderByBlock(e),new h.LimitBlock(e),new h.OffsetBlock(e),new h.UnionBlock(e)],t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e,n))}return e(i,h.QueryBuilder),i}(),h.Update=function(n){function i(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,i),n=n||[new h.StringBlock(e,"UPDATE"),new h.UpdateTableBlock(e),new h.SetFieldBlock(e),new h.WhereBlock(e),new h.OrderByBlock(e),new h.LimitBlock(e)],t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e,n))}return e(i,h.QueryBuilder),i}(),h.Delete=function(n){function o(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,o),n=n||[new h.StringBlock(e,"DELETE"),new h.TargetTableBlock(e),new h.FromTableBlock(i({},e,{singleTable:!0})),new h.JoinBlock(e),new h.WhereBlock(e),new h.OrderByBlock(e),new h.LimitBlock(e)],t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,e,n))}return e(o,h.QueryBuilder),o}(),h.Insert=function(n){function i(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,i),n=n||[new h.StringBlock(e,"INSERT"),new h.IntoTableBlock(e),new h.InsertFieldValueBlock(e),new h.InsertFieldsFromQueryBlock(e)],t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e,n))}return e(i,h.QueryBuilder),i}();var y={VERSION:"5.12.0",flavour:c,expr:function(t){return new h.Expression(t)},case:function(t,e){return new h.Case(t,e)},select:function(t,e){return new h.Select(t,e)},update:function(t,e){return new h.Update(t,e)},insert:function(t,e){return new h.Insert(t,e)},delete:function(t,e){return new h.Delete(t,e)},str:function(){var t=new h.FunctionBlock;return t.function.apply(t,arguments),t},rstr:function(){var t=new h.FunctionBlock({rawNesting:!0});return t.function.apply(t,arguments),t},registerValueHandler:h.registerValueHandler};return y.remove=y.delete,y.cls=h,y}var f=function t(e,r,n){null===e&&(e=Function.prototype);var i=Object.getOwnPropertyDescriptor(e,r);if(void 0===i){var o=Object.getPrototypeOf(e);return null===o?void 0:t(o,r,n)}if("value"in i)return i.value;var s=i.get;if(void 0!==s)return s.call(n)},d=function(){function t(t,e){for(var r=0;r<e.length;r++){var n=e[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,n.key,n)}}return function(e,r,n){return r&&t(e.prototype,r),n&&t(e,n),e}}(),p="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},_=h();return _.flavours={},_.useFlavour=function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null;if(!t)return _;if(_.flavours[t]instanceof Function){var e=h(t);return _.flavours[t].call(null,e),e.flavours=_.flavours,e.useFlavour=_.useFlavour,e}throw new Error("Flavour not available: "+t)},_.flavours.mssql=function(o){var s=o.cls;s.DefaultQueryBuilderOptions.replaceSingleQuotes=!0,s.DefaultQueryBuilderOptions.autoQuoteAliasNames=!1,s.DefaultQueryBuilderOptions.numberedParametersPrefix="@",o.registerValueHandler(Date,function(t){return"'"+t.getUTCFullYear()+"-"+(t.getUTCMonth()+1)+"-"+t.getUTCDate()+" "+t.getUTCHours()+":"+t.getUTCMinutes()+":"+t.getUTCSeconds()+"'"}),s.MssqlLimitOffsetTopBlock=function(n){function i(n){r(this,i);var o=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,n));o._limits=null,o._offsets=null;var a=function(t){t=this._sanitizeLimitOffset(t),this._parent._limits=t};return o.ParentBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e.options));return n._parent=e,n}return e(i,s.Block),i}(),o.LimitBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n.limit=a,n}return e(i,o.ParentBlock),d(i,[{key:"_toParamString",value:function(){var t="";return this._parent._limits&&this._parent._offsets&&(t="FETCH NEXT "+this._parent._limits+" ROWS ONLY"),{text:t,values:[]}}}]),i}(),o.TopBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n.top=a,n}return e(i,o.ParentBlock),d(i,[{key:"_toParamString",value:function(){var t="";return this._parent._limits&&!this._parent._offsets&&(t="TOP ("+this._parent._limits+")"),{text:t,values:[]}}}]),i}(),o.OffsetBlock=function(n){function i(){return r(this,i),t(this,(i.__proto__||Object.getPrototypeOf(i)).apply(this,arguments))}return e(i,o.ParentBlock),d(i,[{key:"offset",value:function(t){this._parent._offsets=this._sanitizeLimitOffset(t)}},{key:"_toParamString",value:function(){var t="";return this._parent._offsets&&(t="OFFSET "+this._parent._offsets+" ROWS"),{text:t,values:[]}}}]),i}(),o}return e(i,s.Block),d(i,[{key:"LIMIT",value:function(){return new this.LimitBlock(this)}},{key:"TOP",value:function(){return new this.TopBlock(this)}},{key:"OFFSET",value:function(){return new this.OffsetBlock(this)}}]),i}(),s.MssqlUpdateTopBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n._limits=null,n.limit=n.top=function(t){n._limits=n._sanitizeLimitOffset(t)},n}return e(i,s.Block),d(i,[{key:"_toParamString",value:function(){return{text:this._limits?"TOP ("+this._limits+")":"",values:[]}}}]),i}(),s.MssqlInsertFieldValueBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n._outputs=[],n}return e(i,s.InsertFieldValueBlock),d(i,[{key:"output",value:function(t){var e=this;"string"==typeof t?this._outputs.push("INSERTED."+this._sanitizeField(t)):t.forEach(function(t){e._outputs.push("INSERTED."+e._sanitizeField(t))})}},{key:"_toParamString",value:function(t){var e=f(i.prototype.__proto__||Object.getPrototypeOf(i.prototype),"_toParamString",this).call(this,t);if(e.text.length&&0<this._outputs.length){var r="OUTPUT "+this._outputs.join(", ")+" ",n=e.text.indexOf("VALUES");e.text=e.text.substr(0,n)+r+e.text.substr(n)}return e}}]),i}(),s.MssqlUpdateDeleteOutputBlock=function(i){function o(e){r(this,o);var n=t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,e));return n._outputs=[],n}return e(o,s.Block),d(o,[{key:"outputs",value:function(t){for(var e in t)this.output(e,t[e])}},{key:"output",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;t=this._sanitizeField(t),e=e?this._sanitizeFieldAlias(e):e,this._outputs.push({name:this.options.forDelete?"DELETED."+t:"INSERTED."+t,alias:e})}},{key:"_toParamString",value:function(t){var e="";if(this._outputs.length){var r=!0,i=!1,o=void 0;try{for(var s,a=this._outputs[Symbol.iterator]();!(r=(s=a.next()).done);r=!0){var l=s.value;e=n(e,", "),e+=l.name,l.alias&&(e+=" AS "+this._formatFieldAlias(l.alias))}}catch(t){i=!0,o=t}finally{try{!r&&a.return&&a.return()}finally{if(i)throw o}}e="OUTPUT "+e}return{text:e,values:[]}}}]),o}(),s.Select=function(n){function i(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;r(this,i);var o=new s.MssqlLimitOffsetTopBlock(e);return n=n||[new s.StringBlock(e,"SELECT"),new s.DistinctBlock(e),o.TOP(),new s.GetFieldBlock(e),new s.FromTableBlock(e),new s.JoinBlock(e),new s.WhereBlock(e),new s.GroupByBlock(e),new s.OrderByBlock(e),o.OFFSET(),o.LIMIT(),new s.UnionBlock(e)],t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e,n))}return e(i,s.QueryBuilder),i}(),s.Update=function(n){function i(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,i),n=n||[new s.StringBlock(e,"UPDATE"),new s.MssqlUpdateTopBlock(e),new s.UpdateTableBlock(e),new s.SetFieldBlock(e),new s.MssqlUpdateDeleteOutputBlock(e),new s.WhereBlock(e)],t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e,n))}return e(i,s.QueryBuilder),i}(),s.Delete=function(n){function o(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,o),n=n||[new s.StringBlock(e,"DELETE"),new s.TargetTableBlock(e),new s.FromTableBlock(i({},e,{singleTable:!0})),new s.JoinBlock(e),new s.MssqlUpdateDeleteOutputBlock(i({},e,{forDelete:!0})),new s.WhereBlock(e),new s.OrderByBlock(e),new s.LimitBlock(e)],t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,e,n))}return e(o,s.QueryBuilder),o}(),s.Insert=function(n){function i(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,i),n=n||[new s.StringBlock(e,"INSERT"),new s.IntoTableBlock(e),new s.MssqlInsertFieldValueBlock(e),new s.InsertFieldsFromQueryBlock(e)],t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e,n))}return e(i,s.QueryBuilder),i}()},_.flavours.mysql=function(i){var o=i.cls;o.MysqlOnDuplicateKeyUpdateBlock=function(i){function s(){return r(this,s),t(this,(s.__proto__||Object.getPrototypeOf(s)).apply(this,arguments))}return e(s,o.AbstractSetFieldBlock),d(s,[{key:"onDupUpdate",value:function(t,e,r){this._set(t,e,r)}},{key:"_toParamString",value:function(){for(var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e="",r=[],i=0;i<this._fields.length;++i){e=n(e,", ");var o=this._fields[i],s=this._values[0][i],a=this._valueOptions[0][i];if(void 0===s)e+=o;else{var l=this._buildString(o+" = "+this.options.parameterCharacter,[s],{buildParameterized:t.buildParameterized,formattingOptions:a});e+=l.text,l.values.forEach(function(t){return r.push(t)})}}return{text:e.length?"ON DUPLICATE KEY UPDATE "+e:"",values:r}}}]),s}(),o.Insert=function(n){function i(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,i),n=n||[new o.StringBlock(e,"INSERT"),new o.IntoTableBlock(e),new o.InsertFieldValueBlock(e),new o.InsertFieldsFromQueryBlock(e),new o.MysqlOnDuplicateKeyUpdateBlock(e)],t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e,n))}return e(i,o.QueryBuilder),i}(),o.Replace=function(n){function i(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,i),n=n||[new o.StringBlock(e,"REPLACE"),new o.IntoTableBlock(e),new o.InsertFieldValueBlock(e),new o.InsertFieldsFromQueryBlock(e)],t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e,n))}return e(i,o.QueryBuilder),i}(),i.replace=function(t,e){return new o.Replace(t,e)}},_.flavours.postgres=function(o){var a=o.cls;a.DefaultQueryBuilderOptions.numberedParameters=!0,a.DefaultQueryBuilderOptions.numberedParametersStartAt=1,a.DefaultQueryBuilderOptions.autoQuoteAliasNames=!1,a.DefaultQueryBuilderOptions.useAsForTableAliasNames=!0,a.PostgresOnConflictKeyUpdateBlock=function(i){function o(){return r(this,o),t(this,(o.__proto__||Object.getPrototypeOf(o)).apply(this,arguments))}return e(o,a.AbstractSetFieldBlock),d(o,[{key:"onConflict",value:function(t,e){var r=this;this._onConflict=!0,t&&(s(t)||(t=[t]),this._dupFields=t.map(this._sanitizeField.bind(this)),e&&Object.keys(e).forEach(function(t){r._set(t,e[t])}))}},{key:"_toParamString",value:function(){for(var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e="",r=[],i=0;i<this._fields.length;++i){e=n(e,", ");var o=this._fields[i],s=this._values[0][i],a=this._valueOptions[0][i];if(void 0===s)e+=o;else{var l=this._buildString(o+" = "+this.options.parameterCharacter,[s],{buildParameterized:t.buildParameterized,formattingOptions:a});e+=l.text,l.values.forEach(function(t){return r.push(t)})}}var u={text:"",values:r};if(this._onConflict){var c=this._dupFields?"("+this._dupFields.join(", ")+") ":"",h=e.length?"UPDATE SET "+e:"NOTHING";u.text="ON CONFLICT "+c+"DO "+h}return u}}]),o}(),a.ReturningBlock=function(i){function o(e){r(this,o);var n=t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,e));return n._fields=[],n}return e(o,a.Block),d(o,[{key:"returning",value:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,r=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{};e=e?this._sanitizeFieldAlias(e):e,t=this._sanitizeField(t);if(this._fields.filter(function(r){return r.name===t&&r.alias===e}).length)return this;this._fields.push({name:t,alias:e,options:r})}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e=(t.queryBuilder,t.buildParameterized),r="",i=[],o=!0,s=!1,a=void 0;try{for(var l,u=this._fields[Symbol.iterator]();!(o=(l=u.next()).done);o=!0){var c=l.value;r=n(r,", ");var h=c.name,f=c.alias,d=c.options;if("string"==typeof h)r+=this._formatFieldName(h,d);else{var p=h._toParamString({nested:!0,buildParameterized:e});r+=p.text,p.values.forEach(function(t){return i.push(t)})}f&&(r+=" AS "+this._formatFieldAlias(f))}}catch(t){s=!0,a=t}finally{try{!o&&u.return&&u.return()}finally{if(s)throw a}}return{text:r.length>0?"RETURNING "+r:"",values:i}}}]),o}(),a.WithBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n._tables=[],n}return e(i,a.Block),d(i,[{key:"with",value:function(t,e){this._tables.push({alias:t,table:e})}},{key:"_toParamString",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},e=[],r=[],n=!0,i=!1,o=void 0;try{for(var s,a=this._tables[Symbol.iterator]();!(n=(s=a.next()).done);n=!0){var l=s.value,u=l.alias,c=l.table._toParamString({buildParameterized:t.buildParameterized,nested:!0});e.push(u+" AS "+c.text),c.values.forEach(function(t){return r.push(t)})}}catch(t){i=!0,o=t}finally{try{!n&&a.return&&a.return()}finally{if(i)throw o}}return{text:e.length?"WITH "+e.join(", "):"",values:r}}}]),i}(),a.DistinctOnBlock=function(n){function i(e){r(this,i);var n=t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e));return n._distinctFields=[],n}return e(i,a.Block),d(i,[{key:"distinct",value:function(){var t=this;this._useDistinct=!0;for(var e=arguments.length,r=Array(e),n=0;n<e;n++)r[n]=arguments[n];r.forEach(function(e){t._distinctFields.push(t._sanitizeField(e))})}},{key:"_toParamString",value:function(){var t="";return this._useDistinct&&(t="DISTINCT",this._distinctFields.length&&(t+=" ON ("+this._distinctFields.join(", ")+")")),{text:t,values:[]}}}]),i}(),a.Select=function(n){function i(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,i),n=n||[new a.WithBlock(e),new a.StringBlock(e,"SELECT"),new a.FunctionBlock(e),new a.DistinctOnBlock(e),new a.GetFieldBlock(e),new a.FromTableBlock(e),new a.JoinBlock(e),new a.WhereBlock(e),new a.GroupByBlock(e),new a.HavingBlock(e),new a.OrderByBlock(e),new a.LimitBlock(e),new a.OffsetBlock(e),new a.UnionBlock(e)],t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e,n))}return e(i,a.QueryBuilder),i}(),a.Insert=function(n){function i(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,i),n=n||[new a.WithBlock(e),new a.StringBlock(e,"INSERT"),new a.IntoTableBlock(e),new a.InsertFieldValueBlock(e),new a.InsertFieldsFromQueryBlock(e),new a.PostgresOnConflictKeyUpdateBlock(e),new a.ReturningBlock(e)],t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e,n))}return e(i,a.QueryBuilder),i}(),a.Update=function(n){function i(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,i),n=n||[new a.WithBlock(e),new a.StringBlock(e,"UPDATE"),new a.UpdateTableBlock(e),new a.SetFieldBlock(e),new a.FromTableBlock(e),new a.WhereBlock(e),new a.OrderByBlock(e),new a.LimitBlock(e),new a.ReturningBlock(e)],t(this,(i.__proto__||Object.getPrototypeOf(i)).call(this,e,n))}return e(i,a.QueryBuilder),i}(),a.Delete=function(n){function o(e){var n=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return r(this,o),n=n||[new a.WithBlock(e),new a.StringBlock(e,"DELETE"),new a.TargetTableBlock(e),new a.FromTableBlock(i({},e,{singleTable:!0})),new a.JoinBlock(e),new a.WhereBlock(e),new a.OrderByBlock(e),new a.LimitBlock(e),new a.ReturningBlock(e)],t(this,(o.__proto__||Object.getPrototypeOf(o)).call(this,e,n))}return e(o,a.QueryBuilder),o}()},_})}),QueryBuilder=t=>squel.useFlavour(t||"mysql");class Processor{constructor(t){if(void 0===t)throw new Error("A QueryBuilder object is required to initialize a Processor");this._qb=t}process(t,e,r,n){throw new Error("No process() method implemented for this class")}}const getFieldValue=(t,e,r)=>null!==t?void 0!==r[e.value]?e.alias:`${t}.${e.value}`:e.value;class FilterString{_handleQueryCall(t,e,r,n){const i=t.filter(t=>"QUERY"===t.type&&t.name===e.name)[0];if(void 0===i){let t=[];return e.params.forEach(e=>{e.type&&e.type===Nodes.VARIABLE?t.push(resolveVariable(e.value,r)):e.type===Nodes.BOOLEAN?t.push(e.value.toString().toUpperCase()):e.type===Nodes.LONG_TEXT?t.push(`'${e.value}'`):t.push(e.value)}),{text:`${e.name}(${t.join(", ")})`,variables:[]}}const{variables:o}=i,s={};return o.forEach((t,n)=>{const i=e.params[n];i.type===Nodes.VARIABLE?s[t.name]=resolveVariable(i.value,r):s[t.name]=i.value}),{text:"?",variables:[QueryProcessor$1(n).process(t,i,{variables:s})]}}_handleOperation(t,e,r,n,i,o){const s=r.a,a=r.op,l=r.b,u=this._buildString(t,e,s,n,!0,i,o),c=this._buildString(t,null,l,n,!1,i,o);return{text:`${u.text} ${a} ${c.text}`,variables:[...u.variables,...c.variables]}}_buildString(t,e,r,n,i,o,s){let a=null;switch(r.type){case Nodes.OPERATION:a=this._handleOperation(t,e,r,n,o,s);break;case Nodes.VARIABLE:a=this._handleVariable(r,n);break;case Nodes.BUILT_IN:a=this._handleBuiltIn(r);break;case Nodes.QUERY_CALL:a=this._handleQueryCall(t,r,n,s);break;case Nodes.RAW_TEXT:a=this._handleLeftSide(e,r,o);break;default:a=i?this._handleLeftSide(e,r,o):this._handleText(e,r,o)}return a}constructor(t,e,r,n,i,o){_initialiseProps.call(this),this._string=this._buildString(t,e,r,n,!1,i||{},o)}}var _initialiseProps=function(){this._handleText=((t,e,r)=>({text:"?",variables:[getFieldValue(t,e,r)]})),this._handleLeftSide=((t,e,r)=>({text:getFieldValue(t,e,r),variables:[]})),this._handleBuiltIn=(t=>({text:t.value,variables:[]})),this._handleVariable=((t,e)=>({text:"?",variables:[resolveVariable(t.value,e)]})),this.toString=(()=>this._string)},_extends=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var r=arguments[e];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(t[n]=r[n])}return t},objectWithoutProperties=function(t,e){var r={};for(var n in t)e.indexOf(n)>=0||Object.prototype.hasOwnProperty.call(t,n)&&(r[n]=t[n]);return r};class Helpers{static getFieldsFromNode(t){const{type:e,table:r,name:n,nodes:i}=t;return i.filter(t=>t.type===Nodes.FIELD).map(t=>_extends({},t,{name:e===Nodes.JOIN?`${r}.${t.name}`:`${n}.${t.name}`}))}static getFieldsFromOperationString(t,e,r){if(t.type===Nodes.OPERATION){const n=t.a;return r=[...r,...this.getFieldsFromOperationString(n,e,r)]}return t.type===Nodes.VARIABLE?[e[t]]:[t]}static buildFilterString(t,e,r,n,i,o){return new FilterString(t,e,r,n,i,o).toString()}static applyWhereStatement(t,e,r,n){const{params:i}=e,o=i.map(e=>Helpers.buildFilterString(t,null,e,r,[],n.flavour));o.length>0&&(n=n.where(o.map(t=>t.text).join(" AND "),...o.map(t=>t.variables).reduce((t,e)=>t.concat(e))))}static interpolateVariables(t,e){const r=/(\s+\?\s+)|(^\?\s+)|(\s+\?$)/g;let n=0,i=0,o="",s=r.exec(t);for(;null!==s;){let a=e[n];if(void 0===a)throw new Error("Missing variable. Cannot interpolate.");o+=`${t.substring(i,s.index)} ${a}`,i=s.index+(0===s.index?1:2),n++,s=r.exec(t)}return o+=t.substring(i,t.length)}}class JoinProcessor extends Processor{_applyFields(t,e,r){e.forEach(e=>{e.alias?r.includes(e.alias)?t.field(e.alias):(t.field(e.name,e.alias),r.push(e.alias)):t.field(e.name)})}_getOnString(t,e,r,n){const i=Helpers.buildFilterString(t,e.table,e.on[0],r,n,this._qb.flavour);return Helpers.interpolateVariables(i.text,i.variables)}_addSelectors(t,e,r,n){const i=e.on.slice(1);Helpers.applyWhereStatement(t,{params:i},r,n)}_addAllFieldsAndJoins(t,e,r,n,i){const{table:o,on:s}=e,a=Helpers.getFieldsFromNode(e),l=this._getAllSubjoins(t,e,r,n),u=l.length>0?l.map(t=>t.fields).reduce((t,e)=>t.concat(e)):[];a.forEach(t=>{if(t.value)throw new Error("Values cannot be assigned to fields in a query document");i.field(t.name)}),null==i.field&&console.log("fuck"),l.forEach(t=>this._applyFields(i,t.fields,n));const c=a.map(t=>t.value);return Helpers.getFieldsFromOperationString(s[0],r,[]).forEach(t=>{const e=`${o}.${t.value}`;c.includes(e)||i.field(e)}),l.forEach(t=>i.join(t.qb,t.table,t.on)),[...a,...u]}_getAllSubjoins(t,e,r,n){const{nodes:i}=e,o=[];return i.filter(t=>t.type===Nodes.JOIN).forEach(e=>{o.push(this._processJoin(t,e,r,n))}),o}_processJoin(t,e,r,n){const{table:i}=e,o=this._qb.select().from(i),s=this._getOnString(t,e,r,n);this._addSelectors(t,e,r,o);return{qb:o,table:i,fields:this._addAllFieldsAndJoins(t,e,r,n,o),on:s}}process(t,e,r,n){const i=[],o=e.nodes.filter(t=>t.type===Nodes.JOIN).map(e=>this._processJoin(t,e,r,i));return null!=n.field&&o.forEach(t=>this._applyFields(n,t.fields,i)),o.forEach(t=>n.join(t.qb,t.table,t.on)),n}}var JoinProcessor$1=t=>new JoinProcessor(t);class QueryProcessor extends Processor{_addTableFields(t,e){Helpers.getFieldsFromNode(t).forEach(t=>{if(t.value)throw new Error("Values cannot be assigned to fields in a query document");t.alias?e.field(t.name,t.alias):e.field(t.name)})}_addConfigOptions(t,e){const{orderBy:r,descending:n,groupBy:i,limit:o,offset:s}=t,a=t=>void 0!==t&&null!==t;a(i)&&e.group(i),a(r)&&e.order(r,!n),a(s)&&e.offset(s),a(o)&&e.limit(o)}_processTable(t,e,r,n){const{name:i}=e;if(e.delete)throw new Error("Queries cannot contain delete statements");{let o=this._qb.select().from(i);return this._addTableFields(e,o),o=JoinProcessor$1(this._qb).process(t,e,r,o),Helpers.applyWhereStatement(t,e,r,o),this._addConfigOptions(n,o),o}}process(t,e,r,n=this._qb){const{variables:i,nodes:o}=e;let{variables:s}=r,a=objectWithoutProperties(r,["variables"]);if(s=Object.assign({},s),e.type!==Nodes.QUERY)throw new Error("Only a query document node can be passed to a QueryProcessor");i.forEach(t=>{if(s&&s.hasOwnProperty(t.name))s[t.name]={value:s[t.name],required:t.required};else if(t.required)throw new Error(`Missing required variable ${t.name}`)});const l=o.filter(t=>t.type===Nodes.TABLE);if(l.length<1)throw new Error("Query must contain at least one table");return l.forEach(e=>{n=this._processTable(t,e,s||{},a)}),n}}var QueryProcessor$1=t=>new QueryProcessor(QueryBuilder(t));class MutationProcessor extends Processor{_addTableFields(t,e,r){let n=0;if(t.nodes.filter(t=>t.type===Nodes.FIELD).forEach(t=>{this._verifyField(t);try{switch(t.value.type){case Nodes.VARIABLE:const i=t.value.value,o=e[i];void 0!==o&&(r.set(t.name,o.value),n++);break;case Nodes.RAW_TEXT:r.set(t.name,this._qb.str(t.value.value)),n++;break;default:r.set(t.name,t.value.value),n++}}catch(e){console.error(`Value \`${t.value.value}\` for field \`${t.name}\` is invalid`)}}),0===n)throw new Error("At least one field must be set in a mutation")}_verifyField(t){if(t.alias)throw new Error("Aliases not allowed in mutations");if(null===t.value)throw new Error(`Value required for field '${t.name}'`);return!0}_processInsert(t,e,r,n){const{name:i}=e,{returning:o}=n;let s=this._qb.insert().into(i);return this._addTableFields(e,r,s),o&&s.returning(o),s}_processUpdate(t,e,r,n){const{name:i}=e,{descending:o,orderBy:s,returning:a,limit:l}=n;let u=this._qb.update().table(i);return this._addTableFields(e,r,u),Helpers.applyWhereStatement(t,e,r,u),void 0!==s&&null!==s&&u.order(s,!o),void 0!==l&&null!==l&&u.limit(l),void 0!==a&&null!==a&&u.returning(a),u}_processDelete(t,e,r,n){const{params:i,nodes:o,name:s}=e,{orderBy:a,limit:l,returning:u,descending:c}=n;if(0===i.length)throw new Error("A selector statement is required for all delete statements");if(o.filter(t=>t.type===Nodes.FIELD).length>0)throw new Error("Fields are not allowed in delete statements");{let n=this._qb.delete().from(s);return n=JoinProcessor$1(this._qb).process(t,e,r,n),Helpers.applyWhereStatement(t,e,r,n),void 0!==a&&null!==a&&n.order(a,!c),void 0!==l&&null!==l&&n.limit(l),void 0!==u&&null!==u&&n.returning(u),n}}_processTable(t,e,r,n){const{params:i,nodes:o}=e;let s;if(e.delete)s=this._processDelete(t,e,r,n);else{if(o.filter(t=>t.type===Nodes.JOIN).length>0)throw new Error("Join statements are not allowed in mutations");s=i.length>0?this._processUpdate(t,e,r,n):this._processInsert(t,e,r,n)}return s}process(t,e,r,n=this._qb){const{variables:i,nodes:o}=e;let{variables:s}=r,a=objectWithoutProperties(r,["variables"]);if(s=Object.assign({},s),e.type!==Nodes.MUTATION)throw new Error("Only a mutation document node can be passed to a MutationProcessor");i.forEach(t=>{if(s&&s.hasOwnProperty(t.name))s[t.name]={value:s[t.name],required:t.required};else if(t.required)throw new Error(`Missing required variable ${t.name}`)});const l=o.filter(t=>t.type===Nodes.TABLE);if(l.length<1)throw new Error("Mutations must contain at least one table");return l.forEach(e=>{n=this._processTable(t,e,s||{},a)}),n}}var MutationProcessor$1=t=>new MutationProcessor(QueryBuilder(t));const getFunctionArgs=t=>{let e=null,r={},n=!1;switch(t.length){case 1:r=t[0];break;case 2:"string"==typeof t[0]?(e=t[0],r=t[1]):(r=t[0],n=t[1]);break;case 3:e=t[0],r=t[1],n=t[2]}return{name:e,config:r,as_string:n}},getEntryPoint=(t,e)=>{const{name:r}=t,n=null!==r?e.findIndex(t=>t.name===r):e.length-1;if(null!==r&&n<0)throw new Error(`Could not find document \`${r}\``);return e[n]},getProcessedDocument=(t,e,r,n)=>{let{config:i,as_string:o}=n,s=null;switch(t.type){case Nodes.QUERY:s=QueryProcessor$1(r).process(e,t,i);break;case Nodes.MUTATION:s=MutationProcessor$1(r).process(e,t,i);break;default:throw new Error("Unrecognized document type")}if(null!==s)return o?s.toString():s.toParam();throw new Error("An error occurred processing the document")},getFunction=(t,e)=>(function(){const r=getFunctionArgs(Array.from(arguments)),n=getEntryPoint(r,e);return getProcessedDocument(n,e,t,r)}),dql=t=>(function(e){const r=Array.from(arguments);if(1===r.length&&r[0].length>0&&"object"==typeof r[0][0]&&r[0][0].hasOwnProperty("type"))return getFunction(t,e);const n=r[0];let i="string"==typeof n?n:n[0];for(let t=1;t<r.length;t++)i+=r[t],i+=n[t];const o=parser_1.parse(i);return getFunction(t,o)}),postgres=dql("postgres"),mysql=dql("mysql"),mssql=dql("mssql");exports.postgres=postgres,exports.mysql=mysql,exports.mssql=mssql,exports.parser=parser_1;
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var fs = _interopDefault(require('fs'));
+var path = _interopDefault(require('path'));
+
+var Nodes = {
+    TABLE: 'TABLE',
+    BOOLEAN: 'BOOLEAN',
+    JOIN: 'JOIN',
+    QUERY: 'QUERY',
+    QUERY_CALL: 'QUERY_CALL',
+    FIELD: 'FIELD',
+    RAW_TEXT: 'RAW',
+    LONG_TEXT: 'LONG_STRING',
+    OPERATION: 'OPERATION',
+    VARIABLE: 'VARIABLE',
+    BUILT_IN: 'BUILT_IN',
+    MUTATION: 'MUTATION'
+};
+
+var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+function commonjsRequire () {
+	throw new Error('Dynamic requires are not currently supported by rollup-plugin-commonjs');
+}
+
+
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var parser_1 = createCommonjsModule(function (module, exports) {
+/* parser generated by jison 0.4.18 */
+/*
+  Returns a Parser object of the following structure:
+
+  Parser: {
+    yy: {}
+  }
+
+  Parser.prototype: {
+    yy: {},
+    trace: function(),
+    symbols_: {associative list: name ==> number},
+    terminals_: {associative list: number ==> name},
+    productions_: [...],
+    performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate, $$, _$),
+    table: [...],
+    defaultActions: {...},
+    parseError: function(str, hash),
+    parse: function(input),
+
+    lexer: {
+        EOF: 1,
+        parseError: function(str, hash),
+        setInput: function(input),
+        input: function(),
+        unput: function(str),
+        more: function(),
+        less: function(n),
+        pastInput: function(),
+        upcomingInput: function(),
+        showPosition: function(),
+        test_match: function(regex_match_array, rule_index),
+        next: function(),
+        lex: function(),
+        begin: function(condition),
+        popState: function(),
+        _currentRules: function(),
+        topState: function(),
+        pushState: function(condition),
+
+        options: {
+            ranges: boolean           (optional: true ==> token location info will include a .range[] member)
+            flex: boolean             (optional: true ==> flex-like lexing behaviour where the rules are tested exhaustively to find the longest match)
+            backtrack_lexer: boolean  (optional: true ==> lexer regexes are tested in order and for each matching regex the action code is invoked; the lexer terminates the scan when a token is returned by the action code)
+        },
+
+        performAction: function(yy, yy_, $avoiding_name_collisions, YY_START),
+        rules: [...],
+        conditions: {associative list: name ==> set},
+    }
+  }
+
+
+  token location info (@$, _$, etc.): {
+    first_line: n,
+    last_line: n,
+    first_column: n,
+    last_column: n,
+    range: [start_number, end_number]       (where the numbers are indexes into the input string, regular zero-based)
+  }
+
+
+  the parseError function receives a 'hash' object with these members for lexer and parser errors: {
+    text:        (matched text)
+    token:       (the produced terminal token, if any)
+    line:        (yylineno)
+  }
+  while parser (grammar) errors will also provide these members, i.e. parser errors deliver a superset of attributes: {
+    loc:         (yylloc)
+    expected:    (string describing the set of expected tokens)
+    recoverable: (boolean: TRUE when the parser has a error recovery rule available for this particular error)
+  }
+*/
+var parser = function () {
+    var o = function o(k, v, _o, l) {
+        for (_o = _o || {}, l = k.length; l--; _o[k[l]] = v);return _o;
+    },
+        $V0 = [1, 5],
+        $V1 = [1, 17],
+        $V2 = [1, 11],
+        $V3 = [1, 16],
+        $V4 = [1, 22],
+        $V5 = [1, 25],
+        $V6 = [1, 24],
+        $V7 = [27, 29],
+        $V8 = [1, 4, 15, 17, 39, 46],
+        $V9 = [4, 15, 39, 46],
+        $Va = [1, 36],
+        $Vb = [1, 49],
+        $Vc = [1, 47],
+        $Vd = [1, 46],
+        $Ve = [1, 63],
+        $Vf = [1, 61],
+        $Vg = [1, 62],
+        $Vh = [4, 15, 27, 29, 38, 39, 41, 46],
+        $Vi = [2, 1],
+        $Vj = [1, 70],
+        $Vk = [1, 71],
+        $Vl = [27, 29, 38, 39, 41],
+        $Vm = [1, 77],
+        $Vn = [1, 96],
+        $Vo = [27, 29, 41],
+        $Vp = [4, 8, 36];
+    var parser = { trace: function trace() {},
+        yy: {},
+        symbols_: { "error": 2, "RawString": 3, "STRING": 4, "FieldRef": 5, ".": 6, "RawLongString": 7, "NUMBER": 8, "LongString": 9, "LONG_STRING": 10, "Number": 11, "Boolean": 12, "BOOLEAN": 13, "Join": 14, "JOIN_OP": 15, "Definition": 16, "DEFINITION": 17, "Root": 18, "DocumentList": 19, "Document": 20, "Variables": 21, "Block": 22, "QueryCall": 23, "Params": 24, "ParamList": 25, "Param": 26, ",": 27, "(": 28, ")": 29, "Variable": 30, "VARIABLE": 31, "$": 32, "VariableList": 33, "!": 34, "BuiltInFunc": 35, "'": 36, "Equation": 37, "OPERATOR": 38, "-": 39, "[": 40, "]": 41, "EquationList": 42, "Selectors": 43, "{": 44, "BlockContent": 45, "}": 46, "Content": 47, "JoinOperation": 48, "TableOperation": 49, ":": 50, "$accept": 0, "$end": 1 },
+        terminals_: { 2: "error", 4: "STRING", 6: ".", 8: "NUMBER", 10: "LONG_STRING", 13: "BOOLEAN", 15: "JOIN_OP", 17: "DEFINITION", 27: ",", 28: "(", 29: ")", 32: "$", 34: "!", 36: "'", 38: "OPERATOR", 39: "-", 40: "[", 41: "]", 44: "{", 46: "}", 50: ":" },
+        productions_: [0, [3, 1], [5, 3], [7, 1], [7, 1], [7, 2], [7, 2], [9, 1], [11, 1], [12, 1], [14, 1], [16, 1], [18, 1], [20, 4], [20, 3], [19, 2], [19, 1], [23, 2], [25, 0], [25, 1], [25, 3], [24, 3], [26, 1], [26, 1], [26, 1], [26, 1], [26, 1], [31, 2], [30, 1], [21, 2], [21, 3], [33, 1], [33, 2], [33, 3], [33, 4], [35, 4], [37, 1], [37, 1], [37, 1], [37, 1], [37, 1], [37, 1], [37, 1], [37, 3], [37, 3], [37, 3], [37, 3], [42, 1], [42, 3], [43, 3], [22, 3], [22, 2], [45, 1], [45, 2], [47, 1], [47, 1], [47, 1], [47, 4], [47, 3], [47, 3], [47, 3], [47, 3], [47, 3], [49, 3], [49, 2], [49, 3], [49, 4], [48, 4]],
+        performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
+            /* this == yyval */
+
+            var $0 = $$.length - 1;
+            switch (yystate) {
+                case 1:
+                    this.$ = { type: 'RAW', value: $$[$0] };
+                    break;
+                case 2:
+                    this.$ = { type: 'FIELD_REF', value: $$[$0 - 2] + '.' + $$[$0] };
+                    break;
+                case 3:case 4:case 10:case 11:case 22:case 23:case 24:case 25:case 26:case 27:case 36:case 37:case 38:case 39:case 40:case 41:case 42:case 54:case 55:
+                    this.$ = $$[$0];
+                    break;
+                case 5:case 6:
+                    this.$ = $$[$0 - 1] + ' ' + $$[$0];
+                    break;
+                case 7:
+                    this.$ = { type: 'LONG_STRING', value: $$[$0].substr(1, $$[$0].length - 2) };
+                    break;
+                case 8:
+                    this.$ = { type: 'NUMBER', value: Number($$[$0]) };
+                    break;
+                case 9:
+                    this.$ = { type: 'BOOLEAN', value: $$[$0] === 'true' };
+                    break;
+                case 12:
+                    return this.$ = $$[$0];
+                    break;
+                case 13:
+                    this.$ = { type: $$[$0 - 3].toUpperCase(), name: $$[$0 - 2], variables: $$[$0 - 1], nodes: $$[$0] };
+                    break;
+                case 14:
+                    this.$ = { type: $$[$0 - 2].toUpperCase(), name: $$[$0 - 1], variables: [], nodes: $$[$0] };
+                    break;
+                case 15:case 53:
+                    this.$ = $$[$0 - 1];$$[$0 - 1].push($$[$0]);
+                    break;
+                case 16:case 19:case 47:case 52:
+                    this.$ = [$$[$0]];
+                    break;
+                case 17:
+                    this.$ = { type: 'QUERY_CALL', name: $$[$0 - 1], params: $$[$0] };
+                    break;
+                case 18:
+                    this.$ = [''];
+                    break;
+                case 20:case 48:
+                    this.$ = $$[$0 - 2];$$[$0 - 2].push($$[$0]);
+                    break;
+                case 21:case 30:case 45:case 46:case 49:case 50:
+                    this.$ = $$[$0 - 1];
+                    break;
+                case 28:
+                    this.$ = { type: 'VARIABLE', value: $$[$0] };
+                    break;
+                case 29:case 51:
+                    this.$ = [];
+                    break;
+                case 31:
+                    this.$ = [{ required: false, name: $$[$0] }];
+                    break;
+                case 32:
+                    this.$ = [{ required: true, name: $$[$0 - 1] }];
+                    break;
+                case 33:
+                    this.$ = $$[$0 - 2];$$[$0 - 2].push({ required: false, name: $$[$0] });
+                    break;
+                case 34:
+                    this.$ = $$[$0 - 3];$$[$0 - 3].push({ required: true, name: $$[$0 - 1] });
+                    break;
+                case 35:
+                    this.$ = { type: 'BUILT_IN', value: $$[$0 - 3] + " '" + $$[$0 - 1] + "'" };
+                    break;
+                case 43:case 44:
+                    this.$ = { type: 'OPERATION', a: $$[$0 - 2], op: $$[$0 - 1], b: $$[$0] };
+                    break;
+                case 56:
+                    this.$ = { type: 'FIELD', name: $$[$0], value: null, alias: null };
+                    break;
+                case 57:
+                    this.$ = { type: 'FIELD', name: $$[$0 - 3], value: null, alias: $$[$0 - 1] };
+                    break;
+                case 58:case 59:case 60:case 61:case 62:
+                    this.$ = { type: 'FIELD', name: $$[$0 - 2], value: $$[$0], alias: null };
+                    break;
+                case 63:
+                    this.$ = { type: 'TABLE', name: $$[$0 - 2].trim(), params: $$[$0 - 1], nodes: $$[$0], delete: false };
+                    break;
+                case 64:
+                    this.$ = { type: 'TABLE', name: $$[$0 - 1].trim(), params: [], nodes: $$[$0], delete: false };
+                    break;
+                case 65:
+                    this.$ = { type: 'TABLE', name: $$[$0 - 1].trim(), params: $$[$0], nodes: [], delete: true };
+                    break;
+                case 66:
+                    this.$ = { type: 'TABLE', name: $$[$0 - 2].trim(), params: $$[$0 - 1], nodes: $$[$0], delete: true };
+                    break;
+                case 67:
+                    this.$ = { type: 'JOIN', table: $$[$0 - 2].trim(), on: $$[$0 - 1], nodes: $$[$0] };
+                    break;
+            }
+        },
+        table: [{ 16: 4, 17: $V0, 18: 1, 19: 2, 20: 3 }, { 1: [3] }, { 1: [2, 12], 16: 4, 17: $V0, 20: 6 }, o($V1, [2, 16]), { 4: [1, 7] }, { 4: [2, 11] }, o($V1, [2, 15]), { 21: 8, 22: 9, 28: [1, 10], 44: $V2 }, { 22: 12, 44: $V2 }, o($V1, [2, 14]), { 29: [1, 13], 31: 15, 32: $V3, 33: 14 }, { 4: $V4, 14: 23, 15: $V5, 39: $V6, 45: 17, 46: [1, 18], 47: 19, 48: 20, 49: 21 }, o($V1, [2, 13]), { 44: [2, 29] }, { 27: [1, 27], 29: [1, 26] }, o($V7, [2, 31], { 34: [1, 28] }), { 4: [1, 29] }, { 4: $V4, 14: 23, 15: $V5, 39: $V6, 46: [1, 30], 47: 31, 48: 20, 49: 21 }, o($V8, [2, 51]), o($V9, [2, 52]), o($V9, [2, 54]), o($V9, [2, 55]), o($V9, [2, 56], { 43: 34, 22: 35, 28: $Va, 40: [1, 32], 44: $V2, 50: [1, 33] }), { 4: [1, 37] }, { 4: [1, 38] }, { 4: [2, 10] }, { 44: [2, 30] }, { 31: 39, 32: $V3 }, o($V7, [2, 32]), o([4, 15, 27, 29, 34, 38, 39, 41, 46], [2, 27]), o($V8, [2, 50]), o($V9, [2, 53]), { 4: [1, 40] }, { 3: 43, 4: [1, 48], 8: $Vb, 9: 42, 10: $Vc, 11: 44, 12: 41, 13: $Vd, 30: 45, 31: 50, 32: $V3 }, { 22: 51, 44: $V2 }, o($V9, [2, 64]), { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 53, 40: $Vg, 42: 52 }, { 28: $Va, 43: 64 }, { 28: $Va, 43: 65 }, o($V7, [2, 33], { 34: [1, 66] }), { 41: [1, 67] }, o($V9, [2, 58]), o($V9, [2, 59]), o($V9, [2, 60]), o($V9, [2, 61]), o($V9, [2, 62]), o([4, 15, 27, 29, 39, 46], [2, 9]), o($Vh, [2, 7]), o($V9, $Vi), o($Vh, [2, 8]), o($Vh, [2, 28]), o($V9, [2, 63]), { 27: [1, 69], 29: [1, 68] }, o($V7, [2, 47], { 38: $Vj, 39: $Vk }), o($Vl, [2, 36]), o($Vl, [2, 37]), o($Vl, [2, 38]), o($Vl, [2, 39]), o($Vl, [2, 40]), o($Vl, [2, 41]), o($Vl, [2, 42]), { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 72, 40: $Vg }, { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 73, 40: $Vg }, o($Vl, $Vi, { 24: 75, 6: [1, 74], 28: $Vm, 36: [1, 76] }), { 22: 78, 44: $V2 }, o($V9, [2, 65], { 22: 79, 44: $V2 }), o($V7, [2, 34]), o($V9, [2, 57]), o([4, 15, 39, 44, 46], [2, 49]), { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 80, 40: $Vg }, { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 81, 40: $Vg }, { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 82, 40: $Vg }, { 29: [1, 83], 38: $Vj, 39: $Vk }, { 38: $Vj, 39: $Vk, 41: [1, 84] }, { 4: [1, 85] }, o($Vl, [2, 17]), { 4: [1, 87], 7: 86, 8: [1, 88] }, o($V7, [2, 18], { 31: 50, 25: 89, 26: 90, 9: 91, 11: 92, 12: 93, 30: 94, 23: 95, 4: $Vn, 8: $Vb, 10: $Vc, 13: $Vd, 32: $V3 }), o($V9, [2, 67]), o($V9, [2, 66]), o($V7, [2, 48], { 38: $Vj, 39: $Vk }), o($Vo, [2, 43], { 38: $Vj, 39: $Vk }), o($Vo, [2, 44], { 38: $Vj, 39: $Vk }), o($Vl, [2, 45]), o($Vl, [2, 46]), o($Vl, [2, 2]), { 4: [1, 99], 8: [1, 98], 36: [1, 97] }, o($Vp, [2, 3]), o($Vp, [2, 4]), { 27: [1, 101], 29: [1, 100] }, o($V7, [2, 19]), o($V7, [2, 22]), o($V7, [2, 23]), o($V7, [2, 24]), o($V7, [2, 25]), o($V7, [2, 26]), { 24: 75, 28: $Vm }, o($Vl, [2, 35]), o($Vp, [2, 5]), o($Vp, [2, 6]), o($Vl, [2, 21]), { 4: $Vn, 8: $Vb, 9: 91, 10: $Vc, 11: 92, 12: 93, 13: $Vd, 23: 95, 26: 102, 30: 94, 31: 50, 32: $V3 }, o($V7, [2, 20])],
+        defaultActions: { 5: [2, 11], 13: [2, 29], 25: [2, 10], 26: [2, 30] },
+        parseError: function parseError(str, hash) {
+            if (hash.recoverable) {
+                this.trace(str);
+            } else {
+                var error = new Error(str);
+                error.hash = hash;
+                throw error;
+            }
+        },
+        parse: function parse(input) {
+            var self = this,
+                stack = [0],
+                tstack = [],
+                vstack = [null],
+                lstack = [],
+                table = this.table,
+                yytext = '',
+                yylineno = 0,
+                yyleng = 0,
+                recovering = 0,
+                TERROR = 2,
+                EOF = 1;
+            var args = lstack.slice.call(arguments, 1);
+            var lexer = Object.create(this.lexer);
+            var sharedState = { yy: {} };
+            for (var k in this.yy) {
+                if (Object.prototype.hasOwnProperty.call(this.yy, k)) {
+                    sharedState.yy[k] = this.yy[k];
+                }
+            }
+            lexer.setInput(input, sharedState.yy);
+            sharedState.yy.lexer = lexer;
+            sharedState.yy.parser = this;
+            if (typeof lexer.yylloc == 'undefined') {
+                lexer.yylloc = {};
+            }
+            var yyloc = lexer.yylloc;
+            lstack.push(yyloc);
+            var ranges = lexer.options && lexer.options.ranges;
+            if (typeof sharedState.yy.parseError === 'function') {
+                this.parseError = sharedState.yy.parseError;
+            } else {
+                this.parseError = Object.getPrototypeOf(this).parseError;
+            }
+            _token_stack: var lex = function lex() {
+                var token;
+                token = lexer.lex() || EOF;
+                if (typeof token !== 'number') {
+                    token = self.symbols_[token] || token;
+                }
+                return token;
+            };
+            var symbol,
+                preErrorSymbol,
+                state,
+                action,
+                a,
+                r,
+                yyval = {},
+                p,
+                len,
+                newState,
+                expected;
+            while (true) {
+                state = stack[stack.length - 1];
+                if (this.defaultActions[state]) {
+                    action = this.defaultActions[state];
+                } else {
+                    if (symbol === null || typeof symbol == 'undefined') {
+                        symbol = lex();
+                    }
+                    action = table[state] && table[state][symbol];
+                }
+                if (typeof action === 'undefined' || !action.length || !action[0]) {
+                    var errStr = '';
+                    expected = [];
+                    for (p in table[state]) {
+                        if (this.terminals_[p] && p > TERROR) {
+                            expected.push('\'' + this.terminals_[p] + '\'');
+                        }
+                    }
+                    if (lexer.showPosition) {
+                        errStr = 'Parse error on line ' + (yylineno + 1) + ':\n' + lexer.showPosition() + '\nExpecting ' + expected.join(', ') + ', got \'' + (this.terminals_[symbol] || symbol) + '\'';
+                    } else {
+                        errStr = 'Parse error on line ' + (yylineno + 1) + ': Unexpected ' + (symbol == EOF ? 'end of input' : '\'' + (this.terminals_[symbol] || symbol) + '\'');
+                    }
+                    this.parseError(errStr, {
+                        text: lexer.match,
+                        token: this.terminals_[symbol] || symbol,
+                        line: lexer.yylineno,
+                        loc: yyloc,
+                        expected: expected
+                    });
+                }
+                if (action[0] instanceof Array && action.length > 1) {
+                    throw new Error('Parse Error: multiple actions possible at state: ' + state + ', token: ' + symbol);
+                }
+                switch (action[0]) {
+                    case 1:
+                        stack.push(symbol);
+                        vstack.push(lexer.yytext);
+                        lstack.push(lexer.yylloc);
+                        stack.push(action[1]);
+                        symbol = null;
+                        if (!preErrorSymbol) {
+                            yyleng = lexer.yyleng;
+                            yytext = lexer.yytext;
+                            yylineno = lexer.yylineno;
+                            yyloc = lexer.yylloc;
+                            
+                        } else {
+                            symbol = preErrorSymbol;
+                            preErrorSymbol = null;
+                        }
+                        break;
+                    case 2:
+                        len = this.productions_[action[1]][1];
+                        yyval.$ = vstack[vstack.length - len];
+                        yyval._$ = {
+                            first_line: lstack[lstack.length - (len || 1)].first_line,
+                            last_line: lstack[lstack.length - 1].last_line,
+                            first_column: lstack[lstack.length - (len || 1)].first_column,
+                            last_column: lstack[lstack.length - 1].last_column
+                        };
+                        if (ranges) {
+                            yyval._$.range = [lstack[lstack.length - (len || 1)].range[0], lstack[lstack.length - 1].range[1]];
+                        }
+                        r = this.performAction.apply(yyval, [yytext, yyleng, yylineno, sharedState.yy, action[1], vstack, lstack].concat(args));
+                        if (typeof r !== 'undefined') {
+                            return r;
+                        }
+                        if (len) {
+                            stack = stack.slice(0, -1 * len * 2);
+                            vstack = vstack.slice(0, -1 * len);
+                            lstack = lstack.slice(0, -1 * len);
+                        }
+                        stack.push(this.productions_[action[1]][0]);
+                        vstack.push(yyval.$);
+                        lstack.push(yyval._$);
+                        newState = table[stack[stack.length - 2]][stack[stack.length - 1]];
+                        stack.push(newState);
+                        break;
+                    case 3:
+                        return true;
+                }
+            }
+            return true;
+        } };
+    /* generated by jison-lex 0.3.4 */
+    var lexer = function () {
+        var lexer = {
+
+            EOF: 1,
+
+            parseError: function parseError(str, hash) {
+                if (this.yy.parser) {
+                    this.yy.parser.parseError(str, hash);
+                } else {
+                    throw new Error(str);
+                }
+            },
+
+            // resets the lexer, sets new input
+            setInput: function setInput(input, yy) {
+                this.yy = yy || this.yy || {};
+                this._input = input;
+                this._more = this._backtrack = this.done = false;
+                this.yylineno = this.yyleng = 0;
+                this.yytext = this.matched = this.match = '';
+                this.conditionStack = ['INITIAL'];
+                this.yylloc = {
+                    first_line: 1,
+                    first_column: 0,
+                    last_line: 1,
+                    last_column: 0
+                };
+                if (this.options.ranges) {
+                    this.yylloc.range = [0, 0];
+                }
+                this.offset = 0;
+                return this;
+            },
+
+            // consumes and returns one char from the input
+            input: function input() {
+                var ch = this._input[0];
+                this.yytext += ch;
+                this.yyleng++;
+                this.offset++;
+                this.match += ch;
+                this.matched += ch;
+                var lines = ch.match(/(?:\r\n?|\n).*/g);
+                if (lines) {
+                    this.yylineno++;
+                    this.yylloc.last_line++;
+                } else {
+                    this.yylloc.last_column++;
+                }
+                if (this.options.ranges) {
+                    this.yylloc.range[1]++;
+                }
+
+                this._input = this._input.slice(1);
+                return ch;
+            },
+
+            // unshifts one char (or a string) into the input
+            unput: function unput(ch) {
+                var len = ch.length;
+                var lines = ch.split(/(?:\r\n?|\n)/g);
+
+                this._input = ch + this._input;
+                this.yytext = this.yytext.substr(0, this.yytext.length - len);
+                //this.yyleng -= len;
+                this.offset -= len;
+                var oldLines = this.match.split(/(?:\r\n?|\n)/g);
+                this.match = this.match.substr(0, this.match.length - 1);
+                this.matched = this.matched.substr(0, this.matched.length - 1);
+
+                if (lines.length - 1) {
+                    this.yylineno -= lines.length - 1;
+                }
+                var r = this.yylloc.range;
+
+                this.yylloc = {
+                    first_line: this.yylloc.first_line,
+                    last_line: this.yylineno + 1,
+                    first_column: this.yylloc.first_column,
+                    last_column: lines ? (lines.length === oldLines.length ? this.yylloc.first_column : 0) + oldLines[oldLines.length - lines.length].length - lines[0].length : this.yylloc.first_column - len
+                };
+
+                if (this.options.ranges) {
+                    this.yylloc.range = [r[0], r[0] + this.yyleng - len];
+                }
+                this.yyleng = this.yytext.length;
+                return this;
+            },
+
+            // When called from action, caches matched text and appends it on next action
+            more: function more() {
+                this._more = true;
+                return this;
+            },
+
+            // When called from action, signals the lexer that this rule fails to match the input, so the next matching rule (regex) should be tested instead.
+            reject: function reject() {
+                if (this.options.backtrack_lexer) {
+                    this._backtrack = true;
+                } else {
+                    return this.parseError('Lexical error on line ' + (this.yylineno + 1) + '. You can only invoke reject() in the lexer when the lexer is of the backtracking persuasion (options.backtrack_lexer = true).\n' + this.showPosition(), {
+                        text: "",
+                        token: null,
+                        line: this.yylineno
+                    });
+                }
+                return this;
+            },
+
+            // retain first n characters of the match
+            less: function less(n) {
+                this.unput(this.match.slice(n));
+            },
+
+            // displays already matched input, i.e. for error messages
+            pastInput: function pastInput() {
+                var past = this.matched.substr(0, this.matched.length - this.match.length);
+                return (past.length > 20 ? '...' : '') + past.substr(-20).replace(/\n/g, "");
+            },
+
+            // displays upcoming input, i.e. for error messages
+            upcomingInput: function upcomingInput() {
+                var next = this.match;
+                if (next.length < 20) {
+                    next += this._input.substr(0, 20 - next.length);
+                }
+                return (next.substr(0, 20) + (next.length > 20 ? '...' : '')).replace(/\n/g, "");
+            },
+
+            // displays the character position where the lexing error occurred, i.e. for error messages
+            showPosition: function showPosition() {
+                var pre = this.pastInput();
+                var c = new Array(pre.length + 1).join("-");
+                return pre + this.upcomingInput() + "\n" + c + "^";
+            },
+
+            // test the lexed token: return FALSE when not a match, otherwise return token
+            test_match: function test_match(match, indexed_rule) {
+                var token, lines, backup;
+
+                if (this.options.backtrack_lexer) {
+                    // save context
+                    backup = {
+                        yylineno: this.yylineno,
+                        yylloc: {
+                            first_line: this.yylloc.first_line,
+                            last_line: this.last_line,
+                            first_column: this.yylloc.first_column,
+                            last_column: this.yylloc.last_column
+                        },
+                        yytext: this.yytext,
+                        match: this.match,
+                        matches: this.matches,
+                        matched: this.matched,
+                        yyleng: this.yyleng,
+                        offset: this.offset,
+                        _more: this._more,
+                        _input: this._input,
+                        yy: this.yy,
+                        conditionStack: this.conditionStack.slice(0),
+                        done: this.done
+                    };
+                    if (this.options.ranges) {
+                        backup.yylloc.range = this.yylloc.range.slice(0);
+                    }
+                }
+
+                lines = match[0].match(/(?:\r\n?|\n).*/g);
+                if (lines) {
+                    this.yylineno += lines.length;
+                }
+                this.yylloc = {
+                    first_line: this.yylloc.last_line,
+                    last_line: this.yylineno + 1,
+                    first_column: this.yylloc.last_column,
+                    last_column: lines ? lines[lines.length - 1].length - lines[lines.length - 1].match(/\r?\n?/)[0].length : this.yylloc.last_column + match[0].length
+                };
+                this.yytext += match[0];
+                this.match += match[0];
+                this.matches = match;
+                this.yyleng = this.yytext.length;
+                if (this.options.ranges) {
+                    this.yylloc.range = [this.offset, this.offset += this.yyleng];
+                }
+                this._more = false;
+                this._backtrack = false;
+                this._input = this._input.slice(match[0].length);
+                this.matched += match[0];
+                token = this.performAction.call(this, this.yy, this, indexed_rule, this.conditionStack[this.conditionStack.length - 1]);
+                if (this.done && this._input) {
+                    this.done = false;
+                }
+                if (token) {
+                    return token;
+                } else if (this._backtrack) {
+                    // recover context
+                    for (var k in backup) {
+                        this[k] = backup[k];
+                    }
+                    return false; // rule action called reject() implying the next rule should be tested instead.
+                }
+                return false;
+            },
+
+            // return next match in input
+            next: function next() {
+                if (this.done) {
+                    return this.EOF;
+                }
+                if (!this._input) {
+                    this.done = true;
+                }
+
+                var token, match, tempMatch, index;
+                if (!this._more) {
+                    this.yytext = '';
+                    this.match = '';
+                }
+                var rules = this._currentRules();
+                for (var i = 0; i < rules.length; i++) {
+                    tempMatch = this._input.match(this.rules[rules[i]]);
+                    if (tempMatch && (!match || tempMatch[0].length > match[0].length)) {
+                        match = tempMatch;
+                        index = i;
+                        if (this.options.backtrack_lexer) {
+                            token = this.test_match(tempMatch, rules[i]);
+                            if (token !== false) {
+                                return token;
+                            } else if (this._backtrack) {
+                                match = false;
+                                continue; // rule action called reject() implying a rule MISmatch.
+                            } else {
+                                // else: this is a lexer rule which consumes input without producing a token (e.g. whitespace)
+                                return false;
+                            }
+                        } else if (!this.options.flex) {
+                            break;
+                        }
+                    }
+                }
+                if (match) {
+                    token = this.test_match(match, rules[index]);
+                    if (token !== false) {
+                        return token;
+                    }
+                    // else: this is a lexer rule which consumes input without producing a token (e.g. whitespace)
+                    return false;
+                }
+                if (this._input === "") {
+                    return this.EOF;
+                } else {
+                    return this.parseError('Lexical error on line ' + (this.yylineno + 1) + '. Unrecognized text.\n' + this.showPosition(), {
+                        text: "",
+                        token: null,
+                        line: this.yylineno
+                    });
+                }
+            },
+
+            // return next match that has a token
+            lex: function lex() {
+                var r = this.next();
+                if (r) {
+                    return r;
+                } else {
+                    return this.lex();
+                }
+            },
+
+            // activates a new lexer condition state (pushes the new lexer condition state onto the condition stack)
+            begin: function begin(condition) {
+                this.conditionStack.push(condition);
+            },
+
+            // pop the previously active lexer condition state off the condition stack
+            popState: function popState() {
+                var n = this.conditionStack.length - 1;
+                if (n > 0) {
+                    return this.conditionStack.pop();
+                } else {
+                    return this.conditionStack[0];
+                }
+            },
+
+            // produce the lexer rule set which is active for the currently active lexer condition state
+            _currentRules: function _currentRules() {
+                if (this.conditionStack.length && this.conditionStack[this.conditionStack.length - 1]) {
+                    return this.conditions[this.conditionStack[this.conditionStack.length - 1]].rules;
+                } else {
+                    return this.conditions["INITIAL"].rules;
+                }
+            },
+
+            // return the currently active lexer condition state; when an index argument is provided it produces the N-th previous condition state, if available
+            topState: function topState(n) {
+                n = this.conditionStack.length - 1 - Math.abs(n || 0);
+                if (n >= 0) {
+                    return this.conditionStack[n];
+                } else {
+                    return "INITIAL";
+                }
+            },
+
+            // alias for begin(condition)
+            pushState: function pushState(condition) {
+                this.begin(condition);
+            },
+
+            // return the number of states currently on the stack
+            stateStackSize: function stateStackSize() {
+                return this.conditionStack.length;
+            },
+            options: {},
+            performAction: function anonymous(yy, yy_, $avoiding_name_collisions, YY_START) {
+                switch ($avoiding_name_collisions) {
+                    case 0:
+                        /* skip whitespace */
+                        break;
+                    case 1:
+                        return 10;
+                        break;
+                    case 2:
+                        return 8;
+                        break;
+                    case 3:
+                        return 17;
+                        break;
+                    case 4:
+                        return 13;
+                        break;
+                    case 5:
+                        return 4;
+                        break;
+                    case 6:
+                        return 39;
+                        break;
+                    case 7:
+                        return 38;
+                        break;
+                    case 8:
+                        return 44;
+                        break;
+                    case 9:
+                        return 46;
+                        break;
+                    case 10:
+                        return 28;
+                        break;
+                    case 11:
+                        return 29;
+                        break;
+                    case 12:
+                        return 15;
+                        break;
+                    case 13:
+                        return 27;
+                        break;
+                    case 14:
+                        return '\'';
+                        break;
+                    case 15:
+                        return '"';
+                        break;
+                    case 16:
+                        return 6;
+                        break;
+                    case 17:
+                        return 32;
+                        break;
+                    case 18:
+                        return 40;
+                        break;
+                    case 19:
+                        return 41;
+                        break;
+                    case 20:
+                        return 50;
+                        break;
+                    case 21:
+                        return 34;
+                        break;
+                }
+            },
+            rules: [/^(?:\s+)/, /^(?:"(.*?)")/, /^(?:\d+\b)/, /^(?:query|mutation\b)/, /^(?:false|true\b)/, /^(?:[\w\_\d]+)/, /^(?:-)/, /^(?:([\+*\/%&|^=><]+)|(![=<>]+)|(-))/, /^(?:\{)/, /^(?:\})/, /^(?:\()/, /^(?:\))/, /^(?:\.{3}\s*on\b)/, /^(?:,)/, /^(?:')/, /^(?:")/, /^(?:\.)/, /^(?:\$)/, /^(?:\[)/, /^(?:\])/, /^(?::)/, /^(?:!)/],
+            conditions: { "INITIAL": { "rules": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], "inclusive": true } }
+        };
+        return lexer;
+    }();
+    parser.lexer = lexer;
+    function Parser() {
+        this.yy = {};
+    }
+    Parser.prototype = parser;parser.Parser = Parser;
+    return new Parser();
+}();
+
+if (typeof commonjsRequire !== 'undefined' && 'object' !== 'undefined') {
+    exports.parser = parser;
+    exports.Parser = parser.Parser;
+    exports.parse = function () {
+        return parser.parse.apply(parser, arguments);
+    };
+    exports.main = function commonjsMain(args) {
+        if (!args[1]) {
+            console.log('Usage: ' + args[0] + ' FILE');
+            process.exit(1);
+        }
+        var source = fs.readFileSync(path.normalize(args[1]), "utf8");
+        return exports.parser.parse(source);
+    };
+    if ('object' !== 'undefined' && commonjsRequire.main === module) {
+        exports.main(process.argv.slice(1));
+    }
+}
+});
+
+var parser_2 = parser_1.parser;
+var parser_3 = parser_1.Parser;
+var parser_4 = parser_1.parse;
+var parser_5 = parser_1.main;
+
+var squel = createCommonjsModule(function (module, exports) {
+(function(root, factory) {
+  if (typeof undefined === 'function' && undefined.amd) {
+    undefined([], factory);
+  } else {
+    module.exports = factory();
+  }
+}(commonjsGlobal, function() {
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// append to string if non-empty
+function _pad(str, pad) {
+  return str.length ? str + pad : str;
+}
+
+// Extend given object's with other objects' properties, overriding existing ones if necessary
+function _extend(dst) {
+  for (var _len = arguments.length, sources = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    sources[_key - 1] = arguments[_key];
+  }
+
+  if (dst && sources) {
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      var _loop = function _loop() {
+        var src = _step.value;
+
+        if ((typeof src === 'undefined' ? 'undefined' : _typeof(src)) === 'object') {
+          Object.getOwnPropertyNames(src).forEach(function (key) {
+            dst[key] = src[key];
+          });
+        }
+      };
+
+      for (var _iterator = sources[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        _loop();
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+  }
+
+  return dst;
+}
+
+// get whether object is a plain object
+function _isPlainObject(obj) {
+  return obj && obj.constructor.prototype === Object.prototype;
+}
+
+// get whether object is an array
+function _isArray(obj) {
+  return obj && obj.constructor.prototype === Array.prototype;
+}
+
+// clone given item
+function _clone(src) {
+  if (!src) {
+    return src;
+  }
+
+  if (typeof src.clone === 'function') {
+    return src.clone();
+  } else if (_isPlainObject(src) || _isArray(src)) {
+    var ret = new src.constructor();
+
+    Object.getOwnPropertyNames(src).forEach(function (key) {
+      if (typeof src[key] !== 'function') {
+        ret[key] = _clone(src[key]);
+      }
+    });
+
+    return ret;
+  } else {
+    return JSON.parse(JSON.stringify(src));
+  }
+}
+
+/**
+ * Register a value type handler
+ *
+ * Note: this will override any existing handler registered for this value type.
+ */
+function _registerValueHandler(handlers, type, handler) {
+  var typeofType = typeof type === 'undefined' ? 'undefined' : _typeof(type);
+
+  if (typeofType !== 'function' && typeofType !== 'string') {
+    throw new Error("type must be a class constructor or string");
+  }
+
+  if (typeof handler !== 'function') {
+    throw new Error("handler must be a function");
+  }
+
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = handlers[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var typeHandler = _step2.value;
+
+      if (typeHandler.type === type) {
+        typeHandler.handler = handler;
+
+        return;
+      }
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+        _iterator2.return();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
+      }
+    }
+  }
+
+  handlers.push({
+    type: type,
+    handler: handler
+  });
+}
+
+/**
+ * Get value type handler for given type
+ */
+function getValueHandler(value, localHandlers, globalHandlers) {
+  return _getValueHandler(value, localHandlers) || _getValueHandler(value, globalHandlers);
+}
+
+function _getValueHandler(value, handlers) {
+  for (var i = 0; i < handlers.length; i++) {
+    var typeHandler = handlers[i];
+    // if type is a string then use `typeof` or else use `instanceof`
+    if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === typeHandler.type || typeof typeHandler.type !== 'string' && value instanceof typeHandler.type) {
+      return typeHandler.handler;
+    }
+  }
+}
+
+/**
+ * Build base squel classes and methods
+ */
+function _buildSquel() {
+  var flavour = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+  var cls = {
+    // Get whether obj is a query builder
+    isSquelBuilder: function isSquelBuilder(obj) {
+      return obj && !!obj._toParamString;
+    }
+  };
+
+  // Get whether nesting should be applied for given item
+  var _shouldApplyNesting = function _shouldApplyNesting(obj) {
+    return !cls.isSquelBuilder(obj) || !obj.options.rawNesting;
+  };
+
+  // default query builder options
+  cls.DefaultQueryBuilderOptions = {
+    // If true then table names will be rendered inside quotes. The quote character used is configurable via the nameQuoteCharacter option.
+    autoQuoteTableNames: false,
+    // If true then field names will rendered inside quotes. The quote character used is configurable via the nameQuoteCharacter option.
+    autoQuoteFieldNames: false,
+    // If true then alias names will rendered inside quotes. The quote character used is configurable via the `tableAliasQuoteCharacter` and `fieldAliasQuoteCharacter` options.
+    autoQuoteAliasNames: true,
+    // If true then table alias names will rendered after AS keyword.
+    useAsForTableAliasNames: false,
+    // The quote character used for when quoting table and field names
+    nameQuoteCharacter: '`',
+    // The quote character used for when quoting table alias names
+    tableAliasQuoteCharacter: '`',
+    // The quote character used for when quoting table alias names
+    fieldAliasQuoteCharacter: '"',
+    // Custom value handlers where key is the value type and the value is the handler function
+    valueHandlers: [],
+    // Character used to represent a parameter value
+    parameterCharacter: '?',
+    // Numbered parameters returned from toParam() as $1, $2, etc.
+    numberedParameters: false,
+    // Numbered parameters prefix character(s)
+    numberedParametersPrefix: '$',
+    // Numbered parameters start at this number.
+    numberedParametersStartAt: 1,
+    // If true then replaces all single quotes within strings. The replacement string used is configurable via the `singleQuoteReplacement` option.
+    replaceSingleQuotes: false,
+    // The string to replace single quotes with in query strings
+    singleQuoteReplacement: '\'\'',
+    // String used to join individual blocks in a query when it's stringified
+    separator: ' ',
+    // Function for formatting string values prior to insertion into query string
+    stringFormatter: null,
+    // Whether to prevent the addition of brackets () when nesting this query builder's output
+    rawNesting: false
+  };
+
+  // Global custom value handlers for all instances of builder
+  cls.globalValueHandlers = [];
+
+  /*
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+  # Custom value types
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+   */
+
+  // Register a new value handler
+  cls.registerValueHandler = function (type, handler) {
+    _registerValueHandler(cls.globalValueHandlers, type, handler);
+  };
+
+  /*
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+  # Base classes
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+  */
+
+  // Base class for cloneable builders
+  cls.Cloneable = function () {
+    function _class() {
+      _classCallCheck(this, _class);
+    }
+
+    _createClass(_class, [{
+      key: 'clone',
+
+      /**
+       * Clone this builder
+       */
+      value: function clone() {
+        var newInstance = new this.constructor();
+
+        return _extend(newInstance, _clone(_extend({}, this)));
+      }
+    }]);
+
+    return _class;
+  }();
+
+  // Base class for all builders
+  cls.BaseBuilder = function (_cls$Cloneable) {
+    _inherits(_class2, _cls$Cloneable);
+
+    /**
+     * Constructor.
+     * this.param  {Object} options Overriding one or more of `cls.DefaultQueryBuilderOptions`.
+     */
+    function _class2(options) {
+      _classCallCheck(this, _class2);
+
+      var _this = _possibleConstructorReturn(this, (_class2.__proto__ || Object.getPrototypeOf(_class2)).call(this));
+
+      var defaults = JSON.parse(JSON.stringify(cls.DefaultQueryBuilderOptions));
+      // for function values, etc we need to manually copy
+      ['stringFormatter'].forEach(function (p) {
+        defaults[p] = cls.DefaultQueryBuilderOptions[p];
+      });
+
+      _this.options = _extend({}, defaults, options);
+      return _this;
+    }
+
+    /**
+     * Register a custom value handler for this builder instance.
+     *
+     * Note: this will override any globally registered handler for this value type.
+     */
+
+
+    _createClass(_class2, [{
+      key: 'registerValueHandler',
+      value: function registerValueHandler(type, handler) {
+        _registerValueHandler(this.options.valueHandlers, type, handler);
+        return this;
+      }
+
+      /**
+       * Sanitize given expression.
+       */
+
+    }, {
+      key: '_sanitizeExpression',
+      value: function _sanitizeExpression(expr) {
+        // If it's not a base builder instance
+        if (!cls.isSquelBuilder(expr)) {
+          // It must then be a string
+          if (typeof expr !== "string") {
+            throw new Error("expression must be a string or builder instance");
+          }
+        }
+
+        return expr;
+      }
+
+      /**
+       * Sanitize the given name.
+       *
+       * The 'type' parameter is used to construct a meaningful error message in case validation fails.
+       */
+
+    }, {
+      key: '_sanitizeName',
+      value: function _sanitizeName(value, type) {
+        if (typeof value !== "string") {
+          throw new Error(type + ' must be a string');
+        }
+
+        return value;
+      }
+    }, {
+      key: '_sanitizeField',
+      value: function _sanitizeField(item) {
+        if (!cls.isSquelBuilder(item)) {
+          item = this._sanitizeName(item, "field name");
+        }
+
+        return item;
+      }
+    }, {
+      key: '_sanitizeBaseBuilder',
+      value: function _sanitizeBaseBuilder(item) {
+        if (cls.isSquelBuilder(item)) {
+          return item;
+        }
+
+        throw new Error("must be a builder instance");
+      }
+    }, {
+      key: '_sanitizeTable',
+      value: function _sanitizeTable(item) {
+        if (typeof item !== "string") {
+          try {
+            item = this._sanitizeBaseBuilder(item);
+          } catch (e) {
+            throw new Error("table name must be a string or a builder");
+          }
+        } else {
+          item = this._sanitizeName(item, 'table');
+        }
+
+        return item;
+      }
+    }, {
+      key: '_sanitizeTableAlias',
+      value: function _sanitizeTableAlias(item) {
+        return this._sanitizeName(item, "table alias");
+      }
+    }, {
+      key: '_sanitizeFieldAlias',
+      value: function _sanitizeFieldAlias(item) {
+        return this._sanitizeName(item, "field alias");
+      }
+
+      // Sanitize the given limit/offset value.
+
+    }, {
+      key: '_sanitizeLimitOffset',
+      value: function _sanitizeLimitOffset(value) {
+        value = parseInt(value);
+
+        if (0 > value || isNaN(value)) {
+          throw new Error("limit/offset must be >= 0");
+        }
+
+        return value;
+      }
+
+      // Santize the given field value
+
+    }, {
+      key: '_sanitizeValue',
+      value: function _sanitizeValue(item) {
+        var itemType = typeof item === 'undefined' ? 'undefined' : _typeof(item);
+
+        if (null === item) {
+          // null is allowed
+        } else if ("string" === itemType || "number" === itemType || "boolean" === itemType) {
+          // primitives are allowed
+        } else if (cls.isSquelBuilder(item)) {
+          // Builders allowed
+        } else {
+          var typeIsValid = !!getValueHandler(item, this.options.valueHandlers, cls.globalValueHandlers);
+
+          if (!typeIsValid) {
+            throw new Error("field value must be a string, number, boolean, null or one of the registered custom value types");
+          }
+        }
+
+        return item;
+      }
+
+      // Escape a string value, e.g. escape quotes and other characters within it.
+
+    }, {
+      key: '_escapeValue',
+      value: function _escapeValue(value) {
+        return !this.options.replaceSingleQuotes ? value : value.replace(/\'/g, this.options.singleQuoteReplacement);
+      }
+    }, {
+      key: '_formatTableName',
+      value: function _formatTableName(item) {
+        if (this.options.autoQuoteTableNames) {
+          var quoteChar = this.options.nameQuoteCharacter;
+
+          item = '' + quoteChar + item + quoteChar;
+        }
+
+        return item;
+      }
+    }, {
+      key: '_formatFieldAlias',
+      value: function _formatFieldAlias(item) {
+        if (this.options.autoQuoteAliasNames) {
+          var quoteChar = this.options.fieldAliasQuoteCharacter;
+
+          item = '' + quoteChar + item + quoteChar;
+        }
+
+        return item;
+      }
+    }, {
+      key: '_formatTableAlias',
+      value: function _formatTableAlias(item) {
+        if (this.options.autoQuoteAliasNames) {
+          var quoteChar = this.options.tableAliasQuoteCharacter;
+
+          item = '' + quoteChar + item + quoteChar;
+        }
+
+        return this.options.useAsForTableAliasNames ? 'AS ' + item : item;
+      }
+    }, {
+      key: '_formatFieldName',
+      value: function _formatFieldName(item) {
+        var formattingOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        if (this.options.autoQuoteFieldNames) {
+          var quoteChar = this.options.nameQuoteCharacter;
+
+          if (formattingOptions.ignorePeriodsForFieldNameQuotes) {
+            // a.b.c -> `a.b.c`
+            item = '' + quoteChar + item + quoteChar;
+          } else {
+            // a.b.c -> `a`.`b`.`c`
+            item = item.split('.').map(function (v) {
+              // treat '*' as special case (#79)
+              return '*' === v ? v : '' + quoteChar + v + quoteChar;
+            }).join('.');
+          }
+        }
+
+        return item;
+      }
+
+      // Format the given custom value
+
+    }, {
+      key: '_formatCustomValue',
+      value: function _formatCustomValue(value, asParam, formattingOptions) {
+        // user defined custom handlers takes precedence
+        var customHandler = getValueHandler(value, this.options.valueHandlers, cls.globalValueHandlers);
+
+        // use the custom handler if available
+        if (customHandler) {
+          value = customHandler(value, asParam, formattingOptions);
+
+          // custom value handler can instruct caller not to process returned value
+          if (value && value.rawNesting) {
+            return {
+              formatted: true,
+              rawNesting: true,
+              value: value.value
+            };
+          }
+        }
+
+        return {
+          formatted: !!customHandler,
+          value: value
+
+        };
+      }
+
+      /**
+       * Format given value for inclusion into parameter values array.
+       */
+
+    }, {
+      key: '_formatValueForParamArray',
+      value: function _formatValueForParamArray(value) {
+        var _this2 = this;
+
+        var formattingOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        if (_isArray(value)) {
+          return value.map(function (v) {
+            return _this2._formatValueForParamArray(v, formattingOptions);
+          });
+        } else {
+          return this._formatCustomValue(value, true, formattingOptions).value;
+        }
+      }
+
+      /**
+       * Format the given field value for inclusion into the query string
+       */
+
+    }, {
+      key: '_formatValueForQueryString',
+      value: function _formatValueForQueryString(initialValue) {
+        var _this3 = this;
+
+        var formattingOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        // maybe we have a cusotm value handler
+        var _formatCustomValue2 = this._formatCustomValue(initialValue, false, formattingOptions),
+            rawNesting = _formatCustomValue2.rawNesting,
+            formatted = _formatCustomValue2.formatted,
+            value = _formatCustomValue2.value;
+
+        // if formatting took place then return it directly
+
+
+        if (formatted) {
+          if (rawNesting) {
+            return value;
+          } else {
+            return this._applyNestingFormatting(value, _shouldApplyNesting(initialValue));
+          }
+        }
+
+        // if it's an array then format each element separately
+        if (_isArray(value)) {
+          value = value.map(function (v) {
+            return _this3._formatValueForQueryString(v);
+          });
+
+          value = this._applyNestingFormatting(value.join(', '), _shouldApplyNesting(value));
+        } else {
+          var typeofValue = typeof value === 'undefined' ? 'undefined' : _typeof(value);
+
+          if (null === value) {
+            value = "NULL";
+          } else if (typeofValue === "boolean") {
+            value = value ? "TRUE" : "FALSE";
+          } else if (cls.isSquelBuilder(value)) {
+            value = this._applyNestingFormatting(value.toString(), _shouldApplyNesting(value));
+          } else if (typeofValue !== "number") {
+            // if it's a string and we have custom string formatting turned on then use that
+            if ('string' === typeofValue && this.options.stringFormatter) {
+              return this.options.stringFormatter(value);
+            }
+
+            if (formattingOptions.dontQuote) {
+              value = '' + value;
+            } else {
+              var escapedValue = this._escapeValue(value);
+
+              value = '\'' + escapedValue + '\'';
+            }
+          }
+        }
+
+        return value;
+      }
+    }, {
+      key: '_applyNestingFormatting',
+      value: function _applyNestingFormatting(str) {
+        var nesting = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+        if (str && typeof str === 'string' && nesting && !this.options.rawNesting) {
+          // apply brackets if they're not already existing
+          var alreadyHasBrackets = '(' === str.charAt(0) && ')' === str.charAt(str.length - 1);
+
+          if (alreadyHasBrackets) {
+            // check that it's the form "((x)..(y))" rather than "(x)..(y)"
+            var idx = 0,
+                open = 1;
+
+            while (str.length - 1 > ++idx) {
+              var c = str.charAt(idx);
+
+              if ('(' === c) {
+                open++;
+              } else if (')' === c) {
+                open--;
+                if (1 > open) {
+                  alreadyHasBrackets = false;
+
+                  break;
+                }
+              }
+            }
+          }
+
+          if (!alreadyHasBrackets) {
+            str = '(' + str + ')';
+          }
+        }
+
+        return str;
+      }
+
+      /**
+       * Build given string and its corresponding parameter values into
+       * output.
+       *
+       * @param {String} str
+       * @param {Array}  values
+       * @param {Object} [options] Additional options.
+       * @param {Boolean} [options.buildParameterized] Whether to build paramterized string. Default is false.
+       * @param {Boolean} [options.nested] Whether this expression is nested within another.
+       * @param {Boolean} [options.formattingOptions] Formatting options for values in query string.
+       * @return {Object}
+       */
+
+    }, {
+      key: '_buildString',
+      value: function _buildString(str, values) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+        var nested = options.nested,
+            buildParameterized = options.buildParameterized,
+            formattingOptions = options.formattingOptions;
+
+
+        values = values || [];
+        str = str || '';
+
+        var formattedStr = '',
+            curValue = -1,
+            formattedValues = [];
+
+        var paramChar = this.options.parameterCharacter;
+
+        var idx = 0;
+
+        while (str.length > idx) {
+          // param char?
+          if (str.substr(idx, paramChar.length) === paramChar) {
+            var value = values[++curValue];
+
+            if (buildParameterized) {
+              if (cls.isSquelBuilder(value)) {
+                var ret = value._toParamString({
+                  buildParameterized: buildParameterized,
+                  nested: true
+                });
+
+                formattedStr += ret.text;
+                ret.values.forEach(function (value) {
+                  return formattedValues.push(value);
+                });
+              } else {
+                value = this._formatValueForParamArray(value, formattingOptions);
+
+                if (_isArray(value)) {
+                  // Array(6) -> "(??, ??, ??, ??, ??, ??)"
+                  var tmpStr = value.map(function () {
+                    return paramChar;
+                  }).join(', ');
+
+                  formattedStr += '(' + tmpStr + ')';
+
+                  value.forEach(function (val) {
+                    return formattedValues.push(val);
+                  });
+                } else {
+                  formattedStr += paramChar;
+
+                  formattedValues.push(value);
+                }
+              }
+            } else {
+              formattedStr += this._formatValueForQueryString(value, formattingOptions);
+            }
+
+            idx += paramChar.length;
+          } else {
+            formattedStr += str.charAt(idx);
+
+            idx++;
+          }
+        }
+
+        return {
+          text: this._applyNestingFormatting(formattedStr, !!nested),
+          values: formattedValues
+        };
+      }
+
+      /**
+       * Build all given strings and their corresponding parameter values into
+       * output.
+       *
+       * @param {Array} strings
+       * @param {Array}  strValues array of value arrays corresponding to each string.
+       * @param {Object} [options] Additional options.
+       * @param {Boolean} [options.buildParameterized] Whether to build paramterized string. Default is false.
+       * @param {Boolean} [options.nested] Whether this expression is nested within another.
+       * @return {Object}
+       */
+
+    }, {
+      key: '_buildManyStrings',
+      value: function _buildManyStrings(strings, strValues) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+        var totalStr = [],
+            totalValues = [];
+
+        for (var idx = 0; strings.length > idx; ++idx) {
+          var inputString = strings[idx],
+              inputValues = strValues[idx];
+
+          var _buildString2 = this._buildString(inputString, inputValues, {
+            buildParameterized: options.buildParameterized,
+            nested: false
+          }),
+              text = _buildString2.text,
+              values = _buildString2.values;
+
+          totalStr.push(text);
+          values.forEach(function (value) {
+            return totalValues.push(value);
+          });
+        }
+
+        totalStr = totalStr.join(this.options.separator);
+
+        return {
+          text: totalStr.length ? this._applyNestingFormatting(totalStr, !!options.nested) : '',
+          values: totalValues
+        };
+      }
+
+      /**
+       * Get parameterized representation of this instance.
+       *
+       * @param {Object} [options] Options.
+       * @param {Boolean} [options.buildParameterized] Whether to build paramterized string. Default is false.
+       * @param {Boolean} [options.nested] Whether this expression is nested within another.
+       * @return {Object}
+       */
+
+    }, {
+      key: '_toParamString',
+      value: function _toParamString(options) {
+        throw new Error('Not yet implemented');
+      }
+
+      /**
+       * Get the expression string.
+       * @return {String}
+       */
+
+    }, {
+      key: 'toString',
+      value: function toString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        return this._toParamString(options).text;
+      }
+
+      /**
+       * Get the parameterized expression string.
+       * @return {Object}
+       */
+
+    }, {
+      key: 'toParam',
+      value: function toParam() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        return this._toParamString(_extend({}, options, {
+          buildParameterized: true
+        }));
+      }
+    }]);
+
+    return _class2;
+  }(cls.Cloneable);
+
+  /*
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+  # cls.Expressions
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+  */
+
+  /**
+   * An SQL expression builder.
+   *
+   * SQL expressions are used in WHERE and ON clauses to filter data by various criteria.
+   *
+   * Expressions can be nested. Nested expression contains can themselves
+   * contain nested expressions. When rendered a nested expression will be
+   * fully contained within brackets.
+   *
+   * All the build methods in this object return the object instance for chained method calling purposes.
+   */
+  cls.Expression = function (_cls$BaseBuilder) {
+    _inherits(_class3, _cls$BaseBuilder);
+
+    // Initialise the expression.
+    function _class3(options) {
+      _classCallCheck(this, _class3);
+
+      var _this4 = _possibleConstructorReturn(this, (_class3.__proto__ || Object.getPrototypeOf(_class3)).call(this, options));
+
+      _this4._nodes = [];
+      return _this4;
+    }
+
+    // Combine the current expression with the given expression using the intersection operator (AND).
+
+
+    _createClass(_class3, [{
+      key: 'and',
+      value: function and(expr) {
+        for (var _len2 = arguments.length, params = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+          params[_key2 - 1] = arguments[_key2];
+        }
+
+        expr = this._sanitizeExpression(expr);
+
+        this._nodes.push({
+          type: 'AND',
+          expr: expr,
+          para: params
+        });
+
+        return this;
+      }
+
+      // Combine the current expression with the given expression using the union operator (OR).
+
+    }, {
+      key: 'or',
+      value: function or(expr) {
+        for (var _len3 = arguments.length, params = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+          params[_key3 - 1] = arguments[_key3];
+        }
+
+        expr = this._sanitizeExpression(expr);
+
+        this._nodes.push({
+          type: 'OR',
+          expr: expr,
+          para: params
+        });
+
+        return this;
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var totalStr = [],
+            totalValues = [];
+
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+          for (var _iterator3 = this._nodes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            var node = _step3.value;
+            var type = node.type,
+                expr = node.expr,
+                para = node.para;
+
+            var _ref = cls.isSquelBuilder(expr) ? expr._toParamString({
+              buildParameterized: options.buildParameterized,
+              nested: true
+            }) : this._buildString(expr, para, {
+              buildParameterized: options.buildParameterized
+            }),
+                text = _ref.text,
+                values = _ref.values;
+
+            if (totalStr.length) {
+              totalStr.push(type);
+            }
+
+            totalStr.push(text);
+            values.forEach(function (value) {
+              return totalValues.push(value);
+            });
+          }
+        } catch (err) {
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+              _iterator3.return();
+            }
+          } finally {
+            if (_didIteratorError3) {
+              throw _iteratorError3;
+            }
+          }
+        }
+
+        totalStr = totalStr.join(' ');
+
+        return {
+          text: this._applyNestingFormatting(totalStr, !!options.nested),
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class3;
+  }(cls.BaseBuilder);
+
+  /*
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+  # cls.Case
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+  */
+
+  /**
+   * An SQL CASE expression builder.
+   *
+   * SQL cases are used to select proper values based on specific criteria.
+   */
+  cls.Case = function (_cls$BaseBuilder2) {
+    _inherits(_class4, _cls$BaseBuilder2);
+
+    function _class4(fieldName) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      _classCallCheck(this, _class4);
+
+      var _this5 = _possibleConstructorReturn(this, (_class4.__proto__ || Object.getPrototypeOf(_class4)).call(this, options));
+
+      if (_isPlainObject(fieldName)) {
+        options = fieldName;
+
+        fieldName = null;
+      }
+
+      if (fieldName) {
+        _this5._fieldName = _this5._sanitizeField(fieldName);
+      }
+
+      _this5.options = _extend({}, cls.DefaultQueryBuilderOptions, options);
+
+      _this5._cases = [];
+      _this5._elseValue = null;
+      return _this5;
+    }
+
+    _createClass(_class4, [{
+      key: 'when',
+      value: function when(expression) {
+        for (var _len4 = arguments.length, values = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+          values[_key4 - 1] = arguments[_key4];
+        }
+
+        this._cases.unshift({
+          expression: expression,
+          values: values || []
+        });
+
+        return this;
+      }
+    }, {
+      key: 'then',
+      value: function then(result) {
+        if (this._cases.length == 0) {
+          throw new Error("when() needs to be called first");
+        }
+
+        this._cases[0].result = result;
+
+        return this;
+      }
+    }, {
+      key: 'else',
+      value: function _else(elseValue) {
+        this._elseValue = elseValue;
+
+        return this;
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var totalStr = '',
+            totalValues = [];
+
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
+
+        try {
+          for (var _iterator4 = this._cases[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+            var _step4$value = _step4.value,
+                expression = _step4$value.expression,
+                _values = _step4$value.values,
+                result = _step4$value.result;
+
+            totalStr = _pad(totalStr, ' ');
+
+            var ret = this._buildString(expression, _values, {
+              buildParameterized: options.buildParameterized,
+              nested: true
+            });
+
+            totalStr += 'WHEN ' + ret.text + ' THEN ' + this._formatValueForQueryString(result);
+            ret.values.forEach(function (value) {
+              return totalValues.push(value);
+            });
+          }
+        } catch (err) {
+          _didIteratorError4 = true;
+          _iteratorError4 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion4 && _iterator4.return) {
+              _iterator4.return();
+            }
+          } finally {
+            if (_didIteratorError4) {
+              throw _iteratorError4;
+            }
+          }
+        }
+
+        if (totalStr.length) {
+          totalStr += ' ELSE ' + this._formatValueForQueryString(this._elseValue) + ' END';
+
+          if (this._fieldName) {
+            totalStr = this._fieldName + ' ' + totalStr;
+          }
+
+          totalStr = 'CASE ' + totalStr;
+        } else {
+          totalStr = this._formatValueForQueryString(this._elseValue);
+        }
+
+        return {
+          text: totalStr,
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class4;
+  }(cls.BaseBuilder);
+
+  /*
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+  # Building blocks
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+  */
+
+  /*
+  # A building block represents a single build-step within a query building process.
+  #
+  # Query builders consist of one or more building blocks which get run in a particular order. Building blocks can
+  # optionally specify methods to expose through the query builder interface. They can access all the input data for
+  # the query builder and manipulate it as necessary, as well as append to the final query string output.
+  #
+  # If you wish to customize how queries get built or add proprietary query phrases and content then it is recommended
+  # that you do so using one or more custom building blocks.
+  #
+  # Original idea posted in https://github.com/hiddentao/export/issues/10#issuecomment-15016427
+  */
+  cls.Block = function (_cls$BaseBuilder3) {
+    _inherits(_class5, _cls$BaseBuilder3);
+
+    function _class5(options) {
+      _classCallCheck(this, _class5);
+
+      return _possibleConstructorReturn(this, (_class5.__proto__ || Object.getPrototypeOf(_class5)).call(this, options));
+    }
+
+    /**
+    # Get input methods to expose within the query builder.
+    #
+    # By default all methods except the following get returned:
+    #   methods prefixed with _
+    #   constructor and toString()
+    #
+    # @return Object key -> function pairs
+    */
+
+
+    _createClass(_class5, [{
+      key: 'exposedMethods',
+      value: function exposedMethods() {
+        var ret = {};
+
+        var obj = this;
+
+        while (obj) {
+          Object.getOwnPropertyNames(obj).forEach(function (prop) {
+            if ('constructor' !== prop && typeof obj[prop] === "function" && prop.charAt(0) !== '_' && !cls.Block.prototype[prop]) {
+              ret[prop] = obj[prop];
+            }
+          });
+
+          obj = Object.getPrototypeOf(obj);
+        }
+
+        return ret;
+      }
+    }]);
+
+    return _class5;
+  }(cls.BaseBuilder);
+
+  // A fixed string which always gets output
+  cls.StringBlock = function (_cls$Block) {
+    _inherits(_class6, _cls$Block);
+
+    function _class6(options, str) {
+      _classCallCheck(this, _class6);
+
+      var _this7 = _possibleConstructorReturn(this, (_class6.__proto__ || Object.getPrototypeOf(_class6)).call(this, options));
+
+      _this7._str = str;
+      return _this7;
+    }
+
+    _createClass(_class6, [{
+      key: '_toParamString',
+      value: function _toParamString() {
+        return {
+          text: this._str,
+          values: []
+        };
+      }
+    }]);
+
+    return _class6;
+  }(cls.Block);
+
+  // A function string block
+  cls.FunctionBlock = function (_cls$Block2) {
+    _inherits(_class7, _cls$Block2);
+
+    function _class7(options) {
+      _classCallCheck(this, _class7);
+
+      var _this8 = _possibleConstructorReturn(this, (_class7.__proto__ || Object.getPrototypeOf(_class7)).call(this, options));
+
+      _this8._strings = [];
+      _this8._values = [];
+      return _this8;
+    }
+
+    _createClass(_class7, [{
+      key: 'function',
+      value: function _function(str) {
+        this._strings.push(str);
+
+        for (var _len5 = arguments.length, values = Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
+          values[_key5 - 1] = arguments[_key5];
+        }
+
+        this._values.push(values);
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        return this._buildManyStrings(this._strings, this._values, options);
+      }
+    }]);
+
+    return _class7;
+  }(cls.Block);
+
+  // value handler for FunctionValueBlock objects
+  cls.registerValueHandler(cls.FunctionBlock, function (value) {
+    var asParam = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+    return asParam ? value.toParam() : value.toString();
+  });
+
+  /*
+  # Table specifier base class
+  */
+  cls.AbstractTableBlock = function (_cls$Block3) {
+    _inherits(_class8, _cls$Block3);
+
+    /**
+     * @param {Boolean} [options.singleTable] If true then only allow one table spec.
+     * @param {String} [options.prefix] String prefix for output.
+     */
+    function _class8(options, prefix) {
+      _classCallCheck(this, _class8);
+
+      var _this9 = _possibleConstructorReturn(this, (_class8.__proto__ || Object.getPrototypeOf(_class8)).call(this, options));
+
+      _this9._tables = [];
+      return _this9;
+    }
+
+    /**
+    # Update given table.
+    #
+    # An alias may also be specified for the table.
+    #
+    # Concrete subclasses should provide a method which calls this
+    */
+
+
+    _createClass(_class8, [{
+      key: '_table',
+      value: function _table(table) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+        alias = alias ? this._sanitizeTableAlias(alias) : alias;
+        table = this._sanitizeTable(table);
+
+        if (this.options.singleTable) {
+          this._tables = [];
+        }
+
+        this._tables.push({
+          table: table,
+          alias: alias
+        });
+      }
+
+      // get whether a table has been set
+
+    }, {
+      key: '_hasTable',
+      value: function _hasTable() {
+        return 0 < this._tables.length;
+      }
+
+      /**
+       * @override
+       */
+
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var totalStr = '',
+            totalValues = [];
+
+        if (this._hasTable()) {
+          // retrieve the parameterised queries
+          var _iteratorNormalCompletion5 = true;
+          var _didIteratorError5 = false;
+          var _iteratorError5 = undefined;
+
+          try {
+            for (var _iterator5 = this._tables[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+              var _step5$value = _step5.value,
+                  table = _step5$value.table,
+                  alias = _step5$value.alias;
+
+              totalStr = _pad(totalStr, ', ');
+
+              var tableStr = void 0;
+
+              if (cls.isSquelBuilder(table)) {
+                var _table$_toParamString = table._toParamString({
+                  buildParameterized: options.buildParameterized,
+                  nested: true
+                }),
+                    text = _table$_toParamString.text,
+                    values = _table$_toParamString.values;
+
+                tableStr = text;
+                values.forEach(function (value) {
+                  return totalValues.push(value);
+                });
+              } else {
+                tableStr = this._formatTableName(table);
+              }
+
+              if (alias) {
+                tableStr += ' ' + this._formatTableAlias(alias);
+              }
+
+              totalStr += tableStr;
+            }
+          } catch (err) {
+            _didIteratorError5 = true;
+            _iteratorError5 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion5 && _iterator5.return) {
+                _iterator5.return();
+              }
+            } finally {
+              if (_didIteratorError5) {
+                throw _iteratorError5;
+              }
+            }
+          }
+
+          if (this.options.prefix) {
+            totalStr = this.options.prefix + ' ' + totalStr;
+          }
+        }
+
+        return {
+          text: totalStr,
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class8;
+  }(cls.Block);
+
+  // target table for DELETE queries, DELETE <??> FROM
+  cls.TargetTableBlock = function (_cls$AbstractTableBlo) {
+    _inherits(_class9, _cls$AbstractTableBlo);
+
+    function _class9() {
+      _classCallCheck(this, _class9);
+
+      return _possibleConstructorReturn(this, (_class9.__proto__ || Object.getPrototypeOf(_class9)).apply(this, arguments));
+    }
+
+    _createClass(_class9, [{
+      key: 'target',
+      value: function target(table) {
+        this._table(table);
+      }
+    }]);
+
+    return _class9;
+  }(cls.AbstractTableBlock);
+
+  // Update Table
+  cls.UpdateTableBlock = function (_cls$AbstractTableBlo2) {
+    _inherits(_class10, _cls$AbstractTableBlo2);
+
+    function _class10() {
+      _classCallCheck(this, _class10);
+
+      return _possibleConstructorReturn(this, (_class10.__proto__ || Object.getPrototypeOf(_class10)).apply(this, arguments));
+    }
+
+    _createClass(_class10, [{
+      key: 'table',
+      value: function table(_table2) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+        this._table(_table2, alias);
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        if (!this._hasTable()) {
+          throw new Error("table() needs to be called");
+        }
+
+        return _get(_class10.prototype.__proto__ || Object.getPrototypeOf(_class10.prototype), '_toParamString', this).call(this, options);
+      }
+    }]);
+
+    return _class10;
+  }(cls.AbstractTableBlock);
+
+  // FROM table
+  cls.FromTableBlock = function (_cls$AbstractTableBlo3) {
+    _inherits(_class11, _cls$AbstractTableBlo3);
+
+    function _class11(options) {
+      _classCallCheck(this, _class11);
+
+      return _possibleConstructorReturn(this, (_class11.__proto__ || Object.getPrototypeOf(_class11)).call(this, _extend({}, options, {
+        prefix: 'FROM'
+      })));
+    }
+
+    _createClass(_class11, [{
+      key: 'from',
+      value: function from(table) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+        this._table(table, alias);
+      }
+    }]);
+
+    return _class11;
+  }(cls.AbstractTableBlock);
+
+  // INTO table
+  cls.IntoTableBlock = function (_cls$AbstractTableBlo4) {
+    _inherits(_class12, _cls$AbstractTableBlo4);
+
+    function _class12(options) {
+      _classCallCheck(this, _class12);
+
+      return _possibleConstructorReturn(this, (_class12.__proto__ || Object.getPrototypeOf(_class12)).call(this, _extend({}, options, {
+        prefix: 'INTO',
+        singleTable: true
+      })));
+    }
+
+    _createClass(_class12, [{
+      key: 'into',
+      value: function into(table) {
+        this._table(table);
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        if (!this._hasTable()) {
+          throw new Error("into() needs to be called");
+        }
+
+        return _get(_class12.prototype.__proto__ || Object.getPrototypeOf(_class12.prototype), '_toParamString', this).call(this, options);
+      }
+    }]);
+
+    return _class12;
+  }(cls.AbstractTableBlock);
+
+  // (SELECT) Get field
+  cls.GetFieldBlock = function (_cls$Block4) {
+    _inherits(_class13, _cls$Block4);
+
+    function _class13(options) {
+      _classCallCheck(this, _class13);
+
+      var _this14 = _possibleConstructorReturn(this, (_class13.__proto__ || Object.getPrototypeOf(_class13)).call(this, options));
+
+      _this14._fields = [];
+      return _this14;
+    }
+
+    /**
+    # Add the given fields to the final result set.
+    #
+    # The parameter is an Object containing field names (or database functions) as the keys and aliases for the fields
+    # as the values. If the value for a key is null then no alias is set for that field.
+    #
+    # Internally this method simply calls the field() method of this block to add each individual field.
+    #
+    # options.ignorePeriodsForFieldNameQuotes - whether to ignore period (.) when automatically quoting the field name
+    */
+
+
+    _createClass(_class13, [{
+      key: 'fields',
+      value: function fields(_fields) {
+        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        if (_isArray(_fields)) {
+          var _iteratorNormalCompletion6 = true;
+          var _didIteratorError6 = false;
+          var _iteratorError6 = undefined;
+
+          try {
+            for (var _iterator6 = _fields[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+              var field = _step6.value;
+
+              this.field(field, null, options);
+            }
+          } catch (err) {
+            _didIteratorError6 = true;
+            _iteratorError6 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion6 && _iterator6.return) {
+                _iterator6.return();
+              }
+            } finally {
+              if (_didIteratorError6) {
+                throw _iteratorError6;
+              }
+            }
+          }
+        } else {
+          for (var _field2 in _fields) {
+            var alias = _fields[_field2];
+
+            this.field(_field2, alias, options);
+          }
+        }
+      }
+
+      /**
+      # Add the given field to the final result set.
+      #
+      # The 'field' parameter does not necessarily have to be a fieldname. It can use database functions too,
+      # e.g. DATE_FORMAT(a.started, "%H")
+      #
+      # An alias may also be specified for this field.
+      #
+      # options.ignorePeriodsForFieldNameQuotes - whether to ignore period (.) when automatically quoting the field name
+      */
+
+    }, {
+      key: 'field',
+      value: function field(_field) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+        alias = alias ? this._sanitizeFieldAlias(alias) : alias;
+        _field = this._sanitizeField(_field);
+
+        // if field-alias combo already present then don't add
+        var existingField = this._fields.filter(function (f) {
+          return f.name === _field && f.alias === alias;
+        });
+        if (existingField.length) {
+          return this;
+        }
+
+        this._fields.push({
+          name: _field,
+          alias: alias,
+          options: options
+        });
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var queryBuilder = options.queryBuilder,
+            buildParameterized = options.buildParameterized;
+
+
+        var totalStr = '',
+            totalValues = [];
+
+        var _iteratorNormalCompletion7 = true;
+        var _didIteratorError7 = false;
+        var _iteratorError7 = undefined;
+
+        try {
+          for (var _iterator7 = this._fields[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+            var field = _step7.value;
+
+            totalStr = _pad(totalStr, ", ");
+
+            var name = field.name,
+                alias = field.alias,
+                _options = field.options;
+
+
+            if (typeof name === 'string') {
+              totalStr += this._formatFieldName(name, _options);
+            } else {
+              var ret = name._toParamString({
+                nested: true,
+                buildParameterized: buildParameterized
+              });
+
+              totalStr += ret.text;
+              ret.values.forEach(function (value) {
+                return totalValues.push(value);
+              });
+            }
+
+            if (alias) {
+              totalStr += ' AS ' + this._formatFieldAlias(alias);
+            }
+          }
+        } catch (err) {
+          _didIteratorError7 = true;
+          _iteratorError7 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion7 && _iterator7.return) {
+              _iterator7.return();
+            }
+          } finally {
+            if (_didIteratorError7) {
+              throw _iteratorError7;
+            }
+          }
+        }
+
+        if (!totalStr.length) {
+          // if select query and a table is set then all fields wanted
+          var fromTableBlock = queryBuilder && queryBuilder.getBlock(cls.FromTableBlock);
+          if (fromTableBlock && fromTableBlock._hasTable()) {
+            totalStr = "*";
+          }
+        }
+
+        return {
+          text: totalStr,
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class13;
+  }(cls.Block);
+
+  // Base class for setting fields to values (used for INSERT and UPDATE queries)
+  cls.AbstractSetFieldBlock = function (_cls$Block5) {
+    _inherits(_class14, _cls$Block5);
+
+    function _class14(options) {
+      _classCallCheck(this, _class14);
+
+      var _this15 = _possibleConstructorReturn(this, (_class14.__proto__ || Object.getPrototypeOf(_class14)).call(this, options));
+
+      _this15._reset();
+      return _this15;
+    }
+
+    _createClass(_class14, [{
+      key: '_reset',
+      value: function _reset() {
+        this._fields = [];
+        this._values = [[]];
+        this._valueOptions = [[]];
+      }
+
+      // Update the given field with the given value.
+      // This will override any previously set value for the given field.
+
+    }, {
+      key: '_set',
+      value: function _set(field, value) {
+        var valueOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+        if (this._values.length > 1) {
+          throw new Error("Cannot set multiple rows of fields this way.");
+        }
+
+        if (typeof value !== 'undefined') {
+          value = this._sanitizeValue(value);
+        }
+
+        field = this._sanitizeField(field);
+
+        // Explicity overwrite existing fields
+        var index = this._fields.indexOf(field);
+
+        // if field not defined before
+        if (-1 === index) {
+          this._fields.push(field);
+          index = this._fields.length - 1;
+        }
+
+        this._values[0][index] = value;
+        this._valueOptions[0][index] = valueOptions;
+      }
+
+      // Insert fields based on the key/value pairs in the given object
+
+    }, {
+      key: '_setFields',
+      value: function _setFields(fields) {
+        var valueOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        if ((typeof fields === 'undefined' ? 'undefined' : _typeof(fields)) !== 'object') {
+          throw new Error("Expected an object but got " + (typeof fields === 'undefined' ? 'undefined' : _typeof(fields)));
+        }
+
+        for (var field in fields) {
+          this._set(field, fields[field], valueOptions);
+        }
+      }
+
+      // Insert multiple rows for the given fields. Accepts an array of objects.
+      // This will override all previously set values for every field.
+
+    }, {
+      key: '_setFieldsRows',
+      value: function _setFieldsRows(fieldsRows) {
+        var valueOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        if (!_isArray(fieldsRows)) {
+          throw new Error("Expected an array of objects but got " + (typeof fieldsRows === 'undefined' ? 'undefined' : _typeof(fieldsRows)));
+        }
+
+        // Reset the objects stored fields and values
+        this._reset();
+
+        // for each row
+        for (var i = 0; fieldsRows.length > i; ++i) {
+          var fieldRow = fieldsRows[i];
+
+          // for each field
+          for (var field in fieldRow) {
+            var value = fieldRow[field];
+
+            field = this._sanitizeField(field);
+            value = this._sanitizeValue(value);
+
+            var index = this._fields.indexOf(field);
+
+            if (0 < i && -1 === index) {
+              throw new Error('All fields in subsequent rows must match the fields in the first row');
+            }
+
+            // Add field only if it hasn't been added before
+            if (-1 === index) {
+              this._fields.push(field);
+              index = this._fields.length - 1;
+            }
+
+            // The first value added needs to add the array
+            if (!_isArray(this._values[i])) {
+              this._values[i] = [];
+              this._valueOptions[i] = [];
+            }
+
+            this._values[i][index] = value;
+            this._valueOptions[i][index] = valueOptions;
+          }
+        }
+      }
+    }]);
+
+    return _class14;
+  }(cls.Block);
+
+  // (UPDATE) SET field=value
+  cls.SetFieldBlock = function (_cls$AbstractSetField) {
+    _inherits(_class15, _cls$AbstractSetField);
+
+    function _class15() {
+      _classCallCheck(this, _class15);
+
+      return _possibleConstructorReturn(this, (_class15.__proto__ || Object.getPrototypeOf(_class15)).apply(this, arguments));
+    }
+
+    _createClass(_class15, [{
+      key: 'set',
+      value: function set(field, value, options) {
+        this._set(field, value, options);
+      }
+    }, {
+      key: 'setFields',
+      value: function setFields(fields, valueOptions) {
+        this._setFields(fields, valueOptions);
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var buildParameterized = options.buildParameterized;
+
+
+        if (0 >= this._fields.length) {
+          throw new Error("set() needs to be called");
+        }
+
+        var totalStr = '',
+            totalValues = [];
+
+        for (var i = 0; i < this._fields.length; ++i) {
+          totalStr = _pad(totalStr, ', ');
+
+          var field = this._formatFieldName(this._fields[i]);
+          var value = this._values[0][i];
+
+          // e.g. field can be an expression such as `count = count + 1`
+          if (0 > field.indexOf('=')) {
+            field = field + ' = ' + this.options.parameterCharacter;
+          }
+
+          var ret = this._buildString(field, [value], {
+            buildParameterized: buildParameterized,
+            formattingOptions: this._valueOptions[0][i]
+          });
+
+          totalStr += ret.text;
+          ret.values.forEach(function (value) {
+            return totalValues.push(value);
+          });
+        }
+
+        return {
+          text: 'SET ' + totalStr,
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class15;
+  }(cls.AbstractSetFieldBlock);
+
+  // (INSERT INTO) ... field ... value
+  cls.InsertFieldValueBlock = function (_cls$AbstractSetField2) {
+    _inherits(_class16, _cls$AbstractSetField2);
+
+    function _class16() {
+      _classCallCheck(this, _class16);
+
+      return _possibleConstructorReturn(this, (_class16.__proto__ || Object.getPrototypeOf(_class16)).apply(this, arguments));
+    }
+
+    _createClass(_class16, [{
+      key: 'set',
+      value: function set(field, value) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+        this._set(field, value, options);
+      }
+    }, {
+      key: 'setFields',
+      value: function setFields(fields, valueOptions) {
+        this._setFields(fields, valueOptions);
+      }
+    }, {
+      key: 'setFieldsRows',
+      value: function setFieldsRows(fieldsRows, valueOptions) {
+        this._setFieldsRows(fieldsRows, valueOptions);
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var _this18 = this;
+
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var buildParameterized = options.buildParameterized;
+
+
+        var fieldString = this._fields.map(function (f) {
+          return _this18._formatFieldName(f);
+        }).join(', ');
+
+        var valueStrings = [],
+            totalValues = [];
+
+        for (var i = 0; i < this._values.length; ++i) {
+          valueStrings[i] = '';
+
+          for (var j = 0; j < this._values[i].length; ++j) {
+            var ret = this._buildString(this.options.parameterCharacter, [this._values[i][j]], {
+              buildParameterized: buildParameterized,
+              formattingOptions: this._valueOptions[i][j]
+            });
+
+            ret.values.forEach(function (value) {
+              return totalValues.push(value);
+            });
+
+            valueStrings[i] = _pad(valueStrings[i], ', ');
+            valueStrings[i] += ret.text;
+          }
+        }
+
+        return {
+          text: fieldString.length ? '(' + fieldString + ') VALUES (' + valueStrings.join('), (') + ')' : '',
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class16;
+  }(cls.AbstractSetFieldBlock);
+
+  // (INSERT INTO) ... field ... (SELECT ... FROM ...)
+  cls.InsertFieldsFromQueryBlock = function (_cls$Block6) {
+    _inherits(_class17, _cls$Block6);
+
+    function _class17(options) {
+      _classCallCheck(this, _class17);
+
+      var _this19 = _possibleConstructorReturn(this, (_class17.__proto__ || Object.getPrototypeOf(_class17)).call(this, options));
+
+      _this19._fields = [];
+      _this19._query = null;
+      return _this19;
+    }
+
+    _createClass(_class17, [{
+      key: 'fromQuery',
+      value: function fromQuery(fields, selectQuery) {
+        var _this20 = this;
+
+        this._fields = fields.map(function (v) {
+          return _this20._sanitizeField(v);
+        });
+
+        this._query = this._sanitizeBaseBuilder(selectQuery);
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var totalStr = '',
+            totalValues = [];
+
+        if (this._fields.length && this._query) {
+          var _query$_toParamString = this._query._toParamString({
+            buildParameterized: options.buildParameterized,
+            nested: true
+          }),
+              text = _query$_toParamString.text,
+              values = _query$_toParamString.values;
+
+          totalStr = '(' + this._fields.join(', ') + ') ' + this._applyNestingFormatting(text);
+          totalValues = values;
+        }
+
+        return {
+          text: totalStr,
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class17;
+  }(cls.Block);
+
+  // DISTINCT
+  cls.DistinctBlock = function (_cls$Block7) {
+    _inherits(_class18, _cls$Block7);
+
+    function _class18() {
+      _classCallCheck(this, _class18);
+
+      return _possibleConstructorReturn(this, (_class18.__proto__ || Object.getPrototypeOf(_class18)).apply(this, arguments));
+    }
+
+    _createClass(_class18, [{
+      key: 'distinct',
+
+      // Add the DISTINCT keyword to the query.
+      value: function distinct() {
+        this._useDistinct = true;
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        return {
+          text: this._useDistinct ? "DISTINCT" : "",
+          values: []
+        };
+      }
+    }]);
+
+    return _class18;
+  }(cls.Block);
+
+  // GROUP BY
+  cls.GroupByBlock = function (_cls$Block8) {
+    _inherits(_class19, _cls$Block8);
+
+    function _class19(options) {
+      _classCallCheck(this, _class19);
+
+      var _this22 = _possibleConstructorReturn(this, (_class19.__proto__ || Object.getPrototypeOf(_class19)).call(this, options));
+
+      _this22._groups = [];
+      return _this22;
+    }
+
+    // Add a GROUP BY transformation for the given field.
+
+
+    _createClass(_class19, [{
+      key: 'group',
+      value: function group(field) {
+        this._groups.push(this._sanitizeField(field));
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        return {
+          text: this._groups.length ? 'GROUP BY ' + this._groups.join(', ') : '',
+          values: []
+        };
+      }
+    }]);
+
+    return _class19;
+  }(cls.Block);
+
+  cls.AbstractVerbSingleValueBlock = function (_cls$Block9) {
+    _inherits(_class20, _cls$Block9);
+
+    /**
+     * @param options.verb The prefix verb string.
+     */
+    function _class20(options) {
+      _classCallCheck(this, _class20);
+
+      var _this23 = _possibleConstructorReturn(this, (_class20.__proto__ || Object.getPrototypeOf(_class20)).call(this, options));
+
+      _this23._value = null;
+      return _this23;
+    }
+
+    _createClass(_class20, [{
+      key: '_setValue',
+      value: function _setValue(value) {
+        this._value = null !== value ? this._sanitizeLimitOffset(value) : value;
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var expr = null !== this._value ? this.options.verb + ' ' + this.options.parameterCharacter : '';
+
+        var values = null !== this._value ? [this._value] : [];
+
+        return this._buildString(expr, values, options);
+      }
+    }]);
+
+    return _class20;
+  }(cls.Block);
+
+  // OFFSET x
+  cls.OffsetBlock = function (_cls$AbstractVerbSing) {
+    _inherits(_class21, _cls$AbstractVerbSing);
+
+    function _class21(options) {
+      _classCallCheck(this, _class21);
+
+      return _possibleConstructorReturn(this, (_class21.__proto__ || Object.getPrototypeOf(_class21)).call(this, _extend({}, options, {
+        verb: 'OFFSET'
+      })));
+    }
+
+    /**
+    # Set the OFFSET transformation.
+    #
+    # Call this will override the previously set offset for this query. Also note that Passing 0 for 'max' will remove
+    # the offset.
+    */
+
+
+    _createClass(_class21, [{
+      key: 'offset',
+      value: function offset(start) {
+        this._setValue(start);
+      }
+    }]);
+
+    return _class21;
+  }(cls.AbstractVerbSingleValueBlock);
+
+  // LIMIT
+  cls.LimitBlock = function (_cls$AbstractVerbSing2) {
+    _inherits(_class22, _cls$AbstractVerbSing2);
+
+    function _class22(options) {
+      _classCallCheck(this, _class22);
+
+      return _possibleConstructorReturn(this, (_class22.__proto__ || Object.getPrototypeOf(_class22)).call(this, _extend({}, options, {
+        verb: 'LIMIT'
+      })));
+    }
+
+    /**
+    # Set the LIMIT transformation.
+    #
+    # Call this will override the previously set limit for this query. Also note that Passing `null` will remove
+    # the limit.
+    */
+
+
+    _createClass(_class22, [{
+      key: 'limit',
+      value: function limit(_limit2) {
+        this._setValue(_limit2);
+      }
+    }]);
+
+    return _class22;
+  }(cls.AbstractVerbSingleValueBlock);
+
+  // Abstract condition base class
+  cls.AbstractConditionBlock = function (_cls$Block10) {
+    _inherits(_class23, _cls$Block10);
+
+    /**
+     * @param {String} options.verb The condition verb.
+     */
+    function _class23(options) {
+      _classCallCheck(this, _class23);
+
+      var _this26 = _possibleConstructorReturn(this, (_class23.__proto__ || Object.getPrototypeOf(_class23)).call(this, options));
+
+      _this26._conditions = [];
+      return _this26;
+    }
+
+    /**
+    # Add a condition.
+    #
+    # When the final query is constructed all the conditions are combined using the intersection (AND) operator.
+    #
+    # Concrete subclasses should provide a method which calls this
+    */
+
+
+    _createClass(_class23, [{
+      key: '_condition',
+      value: function _condition(condition) {
+        condition = this._sanitizeExpression(condition);
+
+        for (var _len6 = arguments.length, values = Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
+          values[_key6 - 1] = arguments[_key6];
+        }
+
+        this._conditions.push({
+          expr: condition,
+          values: values || []
+        });
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var totalStr = [],
+            totalValues = [];
+
+        var _iteratorNormalCompletion8 = true;
+        var _didIteratorError8 = false;
+        var _iteratorError8 = undefined;
+
+        try {
+          for (var _iterator8 = this._conditions[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+            var _step8$value = _step8.value,
+                expr = _step8$value.expr,
+                _values2 = _step8$value.values;
+
+            var ret = cls.isSquelBuilder(expr) ? expr._toParamString({
+              buildParameterized: options.buildParameterized
+            }) : this._buildString(expr, _values2, {
+              buildParameterized: options.buildParameterized
+            });
+
+            if (ret.text.length) {
+              totalStr.push(ret.text);
+            }
+
+            ret.values.forEach(function (value) {
+              return totalValues.push(value);
+            });
+          }
+        } catch (err) {
+          _didIteratorError8 = true;
+          _iteratorError8 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion8 && _iterator8.return) {
+              _iterator8.return();
+            }
+          } finally {
+            if (_didIteratorError8) {
+              throw _iteratorError8;
+            }
+          }
+        }
+
+        if (totalStr.length) {
+          totalStr = totalStr.join(') AND (');
+        }
+
+        return {
+          text: totalStr.length ? this.options.verb + ' (' + totalStr + ')' : '',
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class23;
+  }(cls.Block);
+
+  // WHERE
+  cls.WhereBlock = function (_cls$AbstractConditio) {
+    _inherits(_class24, _cls$AbstractConditio);
+
+    function _class24(options) {
+      _classCallCheck(this, _class24);
+
+      return _possibleConstructorReturn(this, (_class24.__proto__ || Object.getPrototypeOf(_class24)).call(this, _extend({}, options, {
+        verb: 'WHERE'
+      })));
+    }
+
+    _createClass(_class24, [{
+      key: 'where',
+      value: function where(condition) {
+        for (var _len7 = arguments.length, values = Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {
+          values[_key7 - 1] = arguments[_key7];
+        }
+
+        this._condition.apply(this, [condition].concat(values));
+      }
+    }]);
+
+    return _class24;
+  }(cls.AbstractConditionBlock);
+
+  // HAVING
+  cls.HavingBlock = function (_cls$AbstractConditio2) {
+    _inherits(_class25, _cls$AbstractConditio2);
+
+    function _class25(options) {
+      _classCallCheck(this, _class25);
+
+      return _possibleConstructorReturn(this, (_class25.__proto__ || Object.getPrototypeOf(_class25)).call(this, _extend({}, options, {
+        verb: 'HAVING'
+      })));
+    }
+
+    _createClass(_class25, [{
+      key: 'having',
+      value: function having(condition) {
+        for (var _len8 = arguments.length, values = Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {
+          values[_key8 - 1] = arguments[_key8];
+        }
+
+        this._condition.apply(this, [condition].concat(values));
+      }
+    }]);
+
+    return _class25;
+  }(cls.AbstractConditionBlock);
+
+  // ORDER BY
+  cls.OrderByBlock = function (_cls$Block11) {
+    _inherits(_class26, _cls$Block11);
+
+    function _class26(options) {
+      _classCallCheck(this, _class26);
+
+      var _this29 = _possibleConstructorReturn(this, (_class26.__proto__ || Object.getPrototypeOf(_class26)).call(this, options));
+
+      _this29._orders = [];
+      return _this29;
+    }
+
+    /**
+    # Add an ORDER BY transformation for the given field in the given order.
+    #
+    # To specify descending order pass false for the 'dir' parameter.
+    */
+
+
+    _createClass(_class26, [{
+      key: 'order',
+      value: function order(field, dir) {
+        field = this._sanitizeField(field);
+
+        if (!(typeof dir === 'string')) {
+          if (dir === undefined) {
+            dir = 'ASC'; // Default to asc
+          } else if (dir !== null) {
+            dir = dir ? 'ASC' : 'DESC'; // Convert truthy to asc
+          }
+        }
+
+        for (var _len9 = arguments.length, values = Array(_len9 > 2 ? _len9 - 2 : 0), _key9 = 2; _key9 < _len9; _key9++) {
+          values[_key9 - 2] = arguments[_key9];
+        }
+
+        this._orders.push({
+          field: field,
+          dir: dir,
+          values: values || []
+        });
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var totalStr = '',
+            totalValues = [];
+
+        var _iteratorNormalCompletion9 = true;
+        var _didIteratorError9 = false;
+        var _iteratorError9 = undefined;
+
+        try {
+          for (var _iterator9 = this._orders[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+            var _step9$value = _step9.value,
+                field = _step9$value.field,
+                dir = _step9$value.dir,
+                _values3 = _step9$value.values;
+
+            totalStr = _pad(totalStr, ', ');
+
+            var ret = this._buildString(field, _values3, {
+              buildParameterized: options.buildParameterized
+            });
+
+            totalStr += ret.text, _isArray(ret.values) && ret.values.forEach(function (value) {
+              return totalValues.push(value);
+            });
+
+            if (dir !== null) {
+              totalStr += ' ' + dir;
+            }
+          }
+        } catch (err) {
+          _didIteratorError9 = true;
+          _iteratorError9 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion9 && _iterator9.return) {
+              _iterator9.return();
+            }
+          } finally {
+            if (_didIteratorError9) {
+              throw _iteratorError9;
+            }
+          }
+        }
+
+        return {
+          text: totalStr.length ? 'ORDER BY ' + totalStr : '',
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class26;
+  }(cls.Block);
+
+  // JOIN
+  cls.JoinBlock = function (_cls$Block12) {
+    _inherits(_class27, _cls$Block12);
+
+    function _class27(options) {
+      _classCallCheck(this, _class27);
+
+      var _this30 = _possibleConstructorReturn(this, (_class27.__proto__ || Object.getPrototypeOf(_class27)).call(this, options));
+
+      _this30._joins = [];
+      return _this30;
+    }
+
+    /**
+    # Add a JOIN with the given table.
+    #
+    # 'table' is the name of the table to join with.
+    #
+    # 'alias' is an optional alias for the table name.
+    #
+    # 'condition' is an optional condition (containing an SQL expression) for the JOIN.
+    #
+    # 'type' must be either one of INNER, OUTER, LEFT or RIGHT. Default is 'INNER'.
+    #
+    */
+
+
+    _createClass(_class27, [{
+      key: 'join',
+      value: function join(table) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var condition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+        var type = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'INNER';
+
+        table = this._sanitizeTable(table, true);
+        alias = alias ? this._sanitizeTableAlias(alias) : alias;
+        condition = condition ? this._sanitizeExpression(condition) : condition;
+
+        this._joins.push({
+          type: type,
+          table: table,
+          alias: alias,
+          condition: condition
+        });
+      }
+    }, {
+      key: 'left_join',
+      value: function left_join(table) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var condition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+        this.join(table, alias, condition, 'LEFT');
+      }
+    }, {
+      key: 'right_join',
+      value: function right_join(table) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var condition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+        this.join(table, alias, condition, 'RIGHT');
+      }
+    }, {
+      key: 'outer_join',
+      value: function outer_join(table) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var condition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+        this.join(table, alias, condition, 'OUTER');
+      }
+    }, {
+      key: 'left_outer_join',
+      value: function left_outer_join(table) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var condition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+        this.join(table, alias, condition, 'LEFT OUTER');
+      }
+    }, {
+      key: 'full_join',
+      value: function full_join(table) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var condition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+        this.join(table, alias, condition, 'FULL');
+      }
+    }, {
+      key: 'cross_join',
+      value: function cross_join(table) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var condition = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+        this.join(table, alias, condition, 'CROSS');
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var totalStr = "",
+            totalValues = [];
+
+        var _iteratorNormalCompletion10 = true;
+        var _didIteratorError10 = false;
+        var _iteratorError10 = undefined;
+
+        try {
+          for (var _iterator10 = this._joins[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+            var _step10$value = _step10.value,
+                type = _step10$value.type,
+                table = _step10$value.table,
+                alias = _step10$value.alias,
+                condition = _step10$value.condition;
+
+            totalStr = _pad(totalStr, this.options.separator);
+
+            var tableStr = void 0;
+
+            if (cls.isSquelBuilder(table)) {
+              var ret = table._toParamString({
+                buildParameterized: options.buildParameterized,
+                nested: true
+              });
+
+              ret.values.forEach(function (value) {
+                return totalValues.push(value);
+              });
+              tableStr = ret.text;
+            } else {
+              tableStr = this._formatTableName(table);
+            }
+
+            totalStr += type + ' JOIN ' + tableStr;
+
+            if (alias) {
+              totalStr += ' ' + this._formatTableAlias(alias);
+            }
+
+            if (condition) {
+              totalStr += ' ON ';
+
+              var _ret2 = void 0;
+
+              if (cls.isSquelBuilder(condition)) {
+                _ret2 = condition._toParamString({
+                  buildParameterized: options.buildParameterized
+                });
+              } else {
+                _ret2 = this._buildString(condition, [], {
+                  buildParameterized: options.buildParameterized
+                });
+              }
+
+              totalStr += this._applyNestingFormatting(_ret2.text);
+              _ret2.values.forEach(function (value) {
+                return totalValues.push(value);
+              });
+            }
+          }
+        } catch (err) {
+          _didIteratorError10 = true;
+          _iteratorError10 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion10 && _iterator10.return) {
+              _iterator10.return();
+            }
+          } finally {
+            if (_didIteratorError10) {
+              throw _iteratorError10;
+            }
+          }
+        }
+
+        return {
+          text: totalStr,
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class27;
+  }(cls.Block);
+
+  // UNION
+  cls.UnionBlock = function (_cls$Block13) {
+    _inherits(_class28, _cls$Block13);
+
+    function _class28(options) {
+      _classCallCheck(this, _class28);
+
+      var _this31 = _possibleConstructorReturn(this, (_class28.__proto__ || Object.getPrototypeOf(_class28)).call(this, options));
+
+      _this31._unions = [];
+      return _this31;
+    }
+
+    /**
+    # Add a UNION with the given table/query.
+    #
+    # 'table' is the name of the table or query to union with.
+    #
+    # 'type' must be either one of UNION or UNION ALL.... Default is 'UNION'.
+    */
+
+
+    _createClass(_class28, [{
+      key: 'union',
+      value: function union(table) {
+        var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'UNION';
+
+        table = this._sanitizeTable(table);
+
+        this._unions.push({
+          type: type,
+          table: table
+        });
+      }
+
+      // Add a UNION ALL with the given table/query.
+
+    }, {
+      key: 'union_all',
+      value: function union_all(table) {
+        this.union(table, 'UNION ALL');
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var totalStr = '',
+            totalValues = [];
+
+        var _iteratorNormalCompletion11 = true;
+        var _didIteratorError11 = false;
+        var _iteratorError11 = undefined;
+
+        try {
+          for (var _iterator11 = this._unions[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+            var _step11$value = _step11.value,
+                type = _step11$value.type,
+                table = _step11$value.table;
+
+            totalStr = _pad(totalStr, this.options.separator);
+
+            var tableStr = void 0;
+
+            if (table instanceof cls.BaseBuilder) {
+              var ret = table._toParamString({
+                buildParameterized: options.buildParameterized,
+                nested: true
+              });
+
+              tableStr = ret.text;
+              ret.values.forEach(function (value) {
+                return totalValues.push(value);
+              });
+            } else {
+              totalStr = this._formatTableName(table);
+            }
+
+            totalStr += type + ' ' + tableStr;
+          }
+        } catch (err) {
+          _didIteratorError11 = true;
+          _iteratorError11 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion11 && _iterator11.return) {
+              _iterator11.return();
+            }
+          } finally {
+            if (_didIteratorError11) {
+              throw _iteratorError11;
+            }
+          }
+        }
+
+        return {
+          text: totalStr,
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class28;
+  }(cls.Block);
+
+  /*
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+  # Query builders
+  # ---------------------------------------------------------------------------------------------------------
+  # ---------------------------------------------------------------------------------------------------------
+  */
+
+  /**
+  # Query builder base class
+  #
+  # Note that the query builder does not check the final query string for correctness.
+  #
+  # All the build methods in this object return the object instance for chained method calling purposes.
+  */
+  cls.QueryBuilder = function (_cls$BaseBuilder4) {
+    _inherits(_class29, _cls$BaseBuilder4);
+
+    /**
+    # Constructor
+    #
+    # blocks - array of cls.BaseBuilderBlock instances to build the query with.
+    */
+    function _class29(options, blocks) {
+      _classCallCheck(this, _class29);
+
+      var _this32 = _possibleConstructorReturn(this, (_class29.__proto__ || Object.getPrototypeOf(_class29)).call(this, options));
+
+      _this32.blocks = blocks || [];
+
+      // Copy exposed methods into myself
+      var _iteratorNormalCompletion12 = true;
+      var _didIteratorError12 = false;
+      var _iteratorError12 = undefined;
+
+      try {
+        for (var _iterator12 = _this32.blocks[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+          var block = _step12.value;
+
+          var exposedMethods = block.exposedMethods();
+
+          for (var methodName in exposedMethods) {
+            var methodBody = exposedMethods[methodName];
+
+            if (undefined !== _this32[methodName]) {
+              throw new Error('Builder already has a builder method called: ' + methodName);
+            }
+
+            (function (block, name, body) {
+              _this32[name] = function () {
+                for (var _len10 = arguments.length, args = Array(_len10), _key10 = 0; _key10 < _len10; _key10++) {
+                  args[_key10] = arguments[_key10];
+                }
+
+                body.call.apply(body, [block].concat(args));
+
+                return _this32;
+              };
+            })(block, methodName, methodBody);
+          }
+        }
+      } catch (err) {
+        _didIteratorError12 = true;
+        _iteratorError12 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion12 && _iterator12.return) {
+            _iterator12.return();
+          }
+        } finally {
+          if (_didIteratorError12) {
+            throw _iteratorError12;
+          }
+        }
+      }
+
+      return _this32;
+    }
+
+    /**
+    # Register a custom value handler for this query builder and all its contained blocks.
+    #
+    # Note: This will override any globally registered handler for this value type.
+    */
+
+
+    _createClass(_class29, [{
+      key: 'registerValueHandler',
+      value: function registerValueHandler(type, handler) {
+        var _iteratorNormalCompletion13 = true;
+        var _didIteratorError13 = false;
+        var _iteratorError13 = undefined;
+
+        try {
+          for (var _iterator13 = this.blocks[Symbol.iterator](), _step13; !(_iteratorNormalCompletion13 = (_step13 = _iterator13.next()).done); _iteratorNormalCompletion13 = true) {
+            var block = _step13.value;
+
+            block.registerValueHandler(type, handler);
+          }
+        } catch (err) {
+          _didIteratorError13 = true;
+          _iteratorError13 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion13 && _iterator13.return) {
+              _iterator13.return();
+            }
+          } finally {
+            if (_didIteratorError13) {
+              throw _iteratorError13;
+            }
+          }
+        }
+
+        _get(_class29.prototype.__proto__ || Object.getPrototypeOf(_class29.prototype), 'registerValueHandler', this).call(this, type, handler);
+
+        return this;
+      }
+
+      /**
+      # Update query builder options
+      #
+      # This will update the options for all blocks too. Use this method with caution as it allows you to change the
+      # behaviour of your query builder mid-build.
+      */
+
+    }, {
+      key: 'updateOptions',
+      value: function updateOptions(options) {
+        this.options = _extend({}, this.options, options);
+
+        var _iteratorNormalCompletion14 = true;
+        var _didIteratorError14 = false;
+        var _iteratorError14 = undefined;
+
+        try {
+          for (var _iterator14 = this.blocks[Symbol.iterator](), _step14; !(_iteratorNormalCompletion14 = (_step14 = _iterator14.next()).done); _iteratorNormalCompletion14 = true) {
+            var block = _step14.value;
+
+            block.options = _extend({}, block.options, options);
+          }
+        } catch (err) {
+          _didIteratorError14 = true;
+          _iteratorError14 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion14 && _iterator14.return) {
+              _iterator14.return();
+            }
+          } finally {
+            if (_didIteratorError14) {
+              throw _iteratorError14;
+            }
+          }
+        }
+      }
+
+      // Get the final fully constructed query param obj.
+
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var _this33 = this;
+
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        options = _extend({}, this.options, options);
+
+        var blockResults = this.blocks.map(function (b) {
+          return b._toParamString({
+            buildParameterized: options.buildParameterized,
+            queryBuilder: _this33
+          });
+        });
+
+        var blockTexts = blockResults.map(function (b) {
+          return b.text;
+        });
+        var blockValues = blockResults.map(function (b) {
+          return b.values;
+        });
+
+        var totalStr = blockTexts.filter(function (v) {
+          return 0 < v.length;
+        }).join(options.separator);
+
+        var totalValues = [];
+        blockValues.forEach(function (block) {
+          return block.forEach(function (value) {
+            return totalValues.push(value);
+          });
+        });
+
+        if (!options.nested) {
+          if (options.numberedParameters) {
+            var i = undefined !== options.numberedParametersStartAt ? options.numberedParametersStartAt : 1;
+
+            // construct regex for searching
+            var regex = options.parameterCharacter.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+
+            totalStr = totalStr.replace(new RegExp(regex, 'g'), function () {
+              return '' + options.numberedParametersPrefix + i++;
+            });
+          }
+        }
+
+        return {
+          text: this._applyNestingFormatting(totalStr, !!options.nested),
+          values: totalValues
+        };
+      }
+
+      // Deep clone
+
+    }, {
+      key: 'clone',
+      value: function clone() {
+        var blockClones = this.blocks.map(function (v) {
+          return v.clone();
+        });
+
+        return new this.constructor(this.options, blockClones);
+      }
+
+      // Get a specific block
+
+    }, {
+      key: 'getBlock',
+      value: function getBlock(blockType) {
+        var filtered = this.blocks.filter(function (b) {
+          return b instanceof blockType;
+        });
+
+        return filtered[0];
+      }
+    }]);
+
+    return _class29;
+  }(cls.BaseBuilder);
+
+  // SELECT query builder.
+  cls.Select = function (_cls$QueryBuilder) {
+    _inherits(_class30, _cls$QueryBuilder);
+
+    function _class30(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class30);
+
+      blocks = blocks || [new cls.StringBlock(options, 'SELECT'), new cls.FunctionBlock(options), new cls.DistinctBlock(options), new cls.GetFieldBlock(options), new cls.FromTableBlock(options), new cls.JoinBlock(options), new cls.WhereBlock(options), new cls.GroupByBlock(options), new cls.HavingBlock(options), new cls.OrderByBlock(options), new cls.LimitBlock(options), new cls.OffsetBlock(options), new cls.UnionBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class30.__proto__ || Object.getPrototypeOf(_class30)).call(this, options, blocks));
+    }
+
+    return _class30;
+  }(cls.QueryBuilder);
+
+  // UPDATE query builder.
+  cls.Update = function (_cls$QueryBuilder2) {
+    _inherits(_class31, _cls$QueryBuilder2);
+
+    function _class31(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class31);
+
+      blocks = blocks || [new cls.StringBlock(options, 'UPDATE'), new cls.UpdateTableBlock(options), new cls.SetFieldBlock(options), new cls.WhereBlock(options), new cls.OrderByBlock(options), new cls.LimitBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class31.__proto__ || Object.getPrototypeOf(_class31)).call(this, options, blocks));
+    }
+
+    return _class31;
+  }(cls.QueryBuilder);
+
+  // DELETE query builder.
+  cls.Delete = function (_cls$QueryBuilder3) {
+    _inherits(_class32, _cls$QueryBuilder3);
+
+    function _class32(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class32);
+
+      blocks = blocks || [new cls.StringBlock(options, 'DELETE'), new cls.TargetTableBlock(options), new cls.FromTableBlock(_extend({}, options, {
+        singleTable: true
+      })), new cls.JoinBlock(options), new cls.WhereBlock(options), new cls.OrderByBlock(options), new cls.LimitBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class32.__proto__ || Object.getPrototypeOf(_class32)).call(this, options, blocks));
+    }
+
+    return _class32;
+  }(cls.QueryBuilder);
+
+  // An INSERT query builder.
+  cls.Insert = function (_cls$QueryBuilder4) {
+    _inherits(_class33, _cls$QueryBuilder4);
+
+    function _class33(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class33);
+
+      blocks = blocks || [new cls.StringBlock(options, 'INSERT'), new cls.IntoTableBlock(options), new cls.InsertFieldValueBlock(options), new cls.InsertFieldsFromQueryBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class33.__proto__ || Object.getPrototypeOf(_class33)).call(this, options, blocks));
+    }
+
+    return _class33;
+  }(cls.QueryBuilder);
+
+  var _squel = {
+    VERSION: '5.12.0',
+    flavour: flavour,
+    expr: function expr(options) {
+      return new cls.Expression(options);
+    },
+    case: function _case(name, options) {
+      return new cls.Case(name, options);
+    },
+    select: function select(options, blocks) {
+      return new cls.Select(options, blocks);
+    },
+    update: function update(options, blocks) {
+      return new cls.Update(options, blocks);
+    },
+    insert: function insert(options, blocks) {
+      return new cls.Insert(options, blocks);
+    },
+    delete: function _delete(options, blocks) {
+      return new cls.Delete(options, blocks);
+    },
+    str: function str() {
+      var inst = new cls.FunctionBlock();
+      inst.function.apply(inst, arguments);
+      return inst;
+    },
+    rstr: function rstr() {
+      var inst = new cls.FunctionBlock({
+        rawNesting: true
+      });
+      inst.function.apply(inst, arguments);
+      return inst;
+    },
+    registerValueHandler: cls.registerValueHandler
+  };
+
+  // aliases
+  _squel.remove = _squel.delete;
+
+  // classes
+  _squel.cls = cls;
+
+  return _squel;
+}
+
+/**
+# ---------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------
+# Exported instance (and for use by flavour definitions further down).
+# ---------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------
+*/
+
+var squel = _buildSquel();
+
+/**
+# ---------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------
+# Squel SQL flavours
+# ---------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------
+*/
+
+// Available flavours
+squel.flavours = {};
+
+// Setup Squel for a particular SQL flavour
+squel.useFlavour = function () {
+  var flavour = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+  if (!flavour) {
+    return squel;
+  }
+
+  if (squel.flavours[flavour] instanceof Function) {
+    var s = _buildSquel(flavour);
+
+    squel.flavours[flavour].call(null, s);
+
+    // add in flavour methods
+    s.flavours = squel.flavours;
+    s.useFlavour = squel.useFlavour;
+
+    return s;
+  } else {
+    throw new Error('Flavour not available: ' + flavour);
+  }
+};
+
+squel.flavours['mssql'] = function (_squel) {
+  var cls = _squel.cls;
+
+  cls.DefaultQueryBuilderOptions.replaceSingleQuotes = true;
+  cls.DefaultQueryBuilderOptions.autoQuoteAliasNames = false;
+  cls.DefaultQueryBuilderOptions.numberedParametersPrefix = '@';
+
+  _squel.registerValueHandler(Date, function (date) {
+    return '\'' + date.getUTCFullYear() + '-' + (date.getUTCMonth() + 1) + '-' + date.getUTCDate() + ' ' + date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + date.getUTCSeconds() + '\'';
+  });
+
+  //�LIMIT,  OFFSET x and TOP x
+  cls.MssqlLimitOffsetTopBlock = function (_cls$Block14) {
+    _inherits(_class34, _cls$Block14);
+
+    function _class34(options) {
+      _classCallCheck(this, _class34);
+
+      var _this38 = _possibleConstructorReturn(this, (_class34.__proto__ || Object.getPrototypeOf(_class34)).call(this, options));
+
+      _this38._limits = null;
+      _this38._offsets = null;
+
+      // This is setup as one block to return many as they all have to use each others data at different times
+      // The build String of EITHER LIMIT OR TOP should execute, never both.
+
+      /**
+      # Set the LIMIT/TOP transformation.
+      #
+      # Call this will override the previously set limit for this query. Also note that Passing 0 for 'max' will remove
+      # the limit.
+      */
+      var _limit = function _limit(max) {
+        max = this._sanitizeLimitOffset(max);
+        this._parent._limits = max;
+      };
+
+      _this38.ParentBlock = function (_cls$Block15) {
+        _inherits(_class35, _cls$Block15);
+
+        function _class35(parent) {
+          _classCallCheck(this, _class35);
+
+          var _this39 = _possibleConstructorReturn(this, (_class35.__proto__ || Object.getPrototypeOf(_class35)).call(this, parent.options));
+
+          _this39._parent = parent;
+          return _this39;
+        }
+
+        return _class35;
+      }(cls.Block);
+
+      _this38.LimitBlock = function (_this38$ParentBlock) {
+        _inherits(_class36, _this38$ParentBlock);
+
+        function _class36(parent) {
+          _classCallCheck(this, _class36);
+
+          var _this40 = _possibleConstructorReturn(this, (_class36.__proto__ || Object.getPrototypeOf(_class36)).call(this, parent));
+
+          _this40.limit = _limit;
+          return _this40;
+        }
+
+        _createClass(_class36, [{
+          key: '_toParamString',
+          value: function _toParamString() {
+            var str = "";
+
+            if (this._parent._limits && this._parent._offsets) {
+              str = 'FETCH NEXT ' + this._parent._limits + ' ROWS ONLY';
+            }
+
+            return {
+              text: str,
+              values: []
+            };
+          }
+        }]);
+
+        return _class36;
+      }(_this38.ParentBlock);
+
+      _this38.TopBlock = function (_this38$ParentBlock2) {
+        _inherits(_class37, _this38$ParentBlock2);
+
+        function _class37(parent) {
+          _classCallCheck(this, _class37);
+
+          var _this41 = _possibleConstructorReturn(this, (_class37.__proto__ || Object.getPrototypeOf(_class37)).call(this, parent));
+
+          _this41.top = _limit;
+          return _this41;
+        }
+
+        _createClass(_class37, [{
+          key: '_toParamString',
+          value: function _toParamString() {
+            var str = "";
+
+            if (this._parent._limits && !this._parent._offsets) {
+              str = 'TOP (' + this._parent._limits + ')';
+            }
+
+            return {
+              text: str,
+              values: []
+            };
+          }
+        }]);
+
+        return _class37;
+      }(_this38.ParentBlock);
+
+      _this38.OffsetBlock = function (_this38$ParentBlock3) {
+        _inherits(_class38, _this38$ParentBlock3);
+
+        function _class38() {
+          _classCallCheck(this, _class38);
+
+          return _possibleConstructorReturn(this, (_class38.__proto__ || Object.getPrototypeOf(_class38)).apply(this, arguments));
+        }
+
+        _createClass(_class38, [{
+          key: 'offset',
+          value: function offset(start) {
+            this._parent._offsets = this._sanitizeLimitOffset(start);
+          }
+        }, {
+          key: '_toParamString',
+          value: function _toParamString() {
+            var str = "";
+
+            if (this._parent._offsets) {
+              str = 'OFFSET ' + this._parent._offsets + ' ROWS';
+            }
+
+            return {
+              text: str,
+              values: []
+            };
+          }
+        }]);
+
+        return _class38;
+      }(_this38.ParentBlock);
+      return _this38;
+    }
+
+    _createClass(_class34, [{
+      key: 'LIMIT',
+      value: function LIMIT() {
+        return new this.LimitBlock(this);
+      }
+    }, {
+      key: 'TOP',
+      value: function TOP() {
+        return new this.TopBlock(this);
+      }
+    }, {
+      key: 'OFFSET',
+      value: function OFFSET() {
+        return new this.OffsetBlock(this);
+      }
+    }]);
+
+    return _class34;
+  }(cls.Block);
+
+  cls.MssqlUpdateTopBlock = function (_cls$Block16) {
+    _inherits(_class39, _cls$Block16);
+
+    function _class39(options) {
+      _classCallCheck(this, _class39);
+
+      var _this43 = _possibleConstructorReturn(this, (_class39.__proto__ || Object.getPrototypeOf(_class39)).call(this, options));
+
+      _this43._limits = null;
+
+      _this43.limit = _this43.top = function (max) {
+        _this43._limits = _this43._sanitizeLimitOffset(max);
+      };
+      return _this43;
+    }
+
+    _createClass(_class39, [{
+      key: '_toParamString',
+      value: function _toParamString() {
+        return {
+          text: this._limits ? 'TOP (' + this._limits + ')' : "",
+          values: []
+        };
+      }
+    }]);
+
+    return _class39;
+  }(cls.Block);
+
+  cls.MssqlInsertFieldValueBlock = function (_cls$InsertFieldValue) {
+    _inherits(_class40, _cls$InsertFieldValue);
+
+    function _class40(options) {
+      _classCallCheck(this, _class40);
+
+      var _this44 = _possibleConstructorReturn(this, (_class40.__proto__ || Object.getPrototypeOf(_class40)).call(this, options));
+
+      _this44._outputs = [];
+      return _this44;
+    }
+
+    // add fields to the output clause
+
+
+    _createClass(_class40, [{
+      key: 'output',
+      value: function output(fields) {
+        var _this45 = this;
+
+        if ('string' === typeof fields) {
+          this._outputs.push('INSERTED.' + this._sanitizeField(fields));
+        } else {
+          fields.forEach(function (f) {
+            _this45._outputs.push('INSERTED.' + _this45._sanitizeField(f));
+          });
+        }
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString(options) {
+        var ret = _get(_class40.prototype.__proto__ || Object.getPrototypeOf(_class40.prototype), '_toParamString', this).call(this, options);
+
+        if (ret.text.length && 0 < this._outputs.length) {
+          var innerStr = 'OUTPUT ' + this._outputs.join(', ') + ' ';
+
+          var valuesPos = ret.text.indexOf('VALUES');
+
+          ret.text = ret.text.substr(0, valuesPos) + innerStr + ret.text.substr(valuesPos);
+        }
+
+        return ret;
+      }
+    }]);
+
+    return _class40;
+  }(cls.InsertFieldValueBlock);
+
+  cls.MssqlUpdateDeleteOutputBlock = function (_cls$Block17) {
+    _inherits(_class41, _cls$Block17);
+
+    function _class41(options) {
+      _classCallCheck(this, _class41);
+
+      var _this46 = _possibleConstructorReturn(this, (_class41.__proto__ || Object.getPrototypeOf(_class41)).call(this, options));
+
+      _this46._outputs = [];
+      return _this46;
+    }
+
+    /**
+    # Add the given fields to the final result set.
+    #
+    # The parameter is an Object containing field names (or database functions) as the keys and aliases for the fields
+    # as the values. If the value for a key is null then no alias is set for that field.
+    #
+    # Internally this method simply calls the field() method of this block to add each individual field.
+    */
+
+
+    _createClass(_class41, [{
+      key: 'outputs',
+      value: function outputs(_outputs) {
+        for (var output in _outputs) {
+          this.output(output, _outputs[output]);
+        }
+      }
+
+      /**
+      # Add the given field to the final result set.
+      #
+      # The 'field' parameter does not necessarily have to be a fieldname. It can use database functions too,
+      # e.g. DATE_FORMAT(a.started, "%H")
+      #
+      # An alias may also be specified for this field.
+      */
+
+    }, {
+      key: 'output',
+      value: function output(_output) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+        _output = this._sanitizeField(_output);
+        alias = alias ? this._sanitizeFieldAlias(alias) : alias;
+
+        this._outputs.push({
+          name: this.options.forDelete ? 'DELETED.' + _output : 'INSERTED.' + _output,
+          alias: alias
+        });
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString(queryBuilder) {
+        var totalStr = "";
+
+        if (this._outputs.length) {
+          var _iteratorNormalCompletion15 = true;
+          var _didIteratorError15 = false;
+          var _iteratorError15 = undefined;
+
+          try {
+            for (var _iterator15 = this._outputs[Symbol.iterator](), _step15; !(_iteratorNormalCompletion15 = (_step15 = _iterator15.next()).done); _iteratorNormalCompletion15 = true) {
+              var output = _step15.value;
+
+              totalStr = _pad(totalStr, ", ");
+
+              totalStr += output.name;
+
+              if (output.alias) {
+                totalStr += ' AS ' + this._formatFieldAlias(output.alias);
+              }
+            }
+          } catch (err) {
+            _didIteratorError15 = true;
+            _iteratorError15 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion15 && _iterator15.return) {
+                _iterator15.return();
+              }
+            } finally {
+              if (_didIteratorError15) {
+                throw _iteratorError15;
+              }
+            }
+          }
+
+          totalStr = 'OUTPUT ' + totalStr;
+        }
+
+        return {
+          text: totalStr,
+          values: []
+        };
+      }
+    }]);
+
+    return _class41;
+  }(cls.Block);
+
+  // SELECT query builder.
+  cls.Select = function (_cls$QueryBuilder5) {
+    _inherits(_class42, _cls$QueryBuilder5);
+
+    function _class42(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class42);
+
+      var limitOffsetTopBlock = new cls.MssqlLimitOffsetTopBlock(options);
+
+      blocks = blocks || [new cls.StringBlock(options, 'SELECT'), new cls.DistinctBlock(options), limitOffsetTopBlock.TOP(), new cls.GetFieldBlock(options), new cls.FromTableBlock(options), new cls.JoinBlock(options), new cls.WhereBlock(options), new cls.GroupByBlock(options), new cls.OrderByBlock(options), limitOffsetTopBlock.OFFSET(), limitOffsetTopBlock.LIMIT(), new cls.UnionBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class42.__proto__ || Object.getPrototypeOf(_class42)).call(this, options, blocks));
+    }
+
+    return _class42;
+  }(cls.QueryBuilder);
+
+  // Order By in update requires subquery
+
+  // UPDATE query builder.
+  cls.Update = function (_cls$QueryBuilder6) {
+    _inherits(_class43, _cls$QueryBuilder6);
+
+    function _class43(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class43);
+
+      blocks = blocks || [new cls.StringBlock(options, 'UPDATE'), new cls.MssqlUpdateTopBlock(options), new cls.UpdateTableBlock(options), new cls.SetFieldBlock(options), new cls.MssqlUpdateDeleteOutputBlock(options), new cls.WhereBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class43.__proto__ || Object.getPrototypeOf(_class43)).call(this, options, blocks));
+    }
+
+    return _class43;
+  }(cls.QueryBuilder);
+
+  // Order By and Limit/Top in delete requires subquery
+
+  // DELETE query builder.
+  cls.Delete = function (_cls$QueryBuilder7) {
+    _inherits(_class44, _cls$QueryBuilder7);
+
+    function _class44(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class44);
+
+      blocks = blocks || [new cls.StringBlock(options, 'DELETE'), new cls.TargetTableBlock(options), new cls.FromTableBlock(_extend({}, options, { singleTable: true })), new cls.JoinBlock(options), new cls.MssqlUpdateDeleteOutputBlock(_extend({}, options, { forDelete: true })), new cls.WhereBlock(options), new cls.OrderByBlock(options), new cls.LimitBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class44.__proto__ || Object.getPrototypeOf(_class44)).call(this, options, blocks));
+    }
+
+    return _class44;
+  }(cls.QueryBuilder);
+
+  // An INSERT query builder.
+  cls.Insert = function (_cls$QueryBuilder8) {
+    _inherits(_class45, _cls$QueryBuilder8);
+
+    function _class45(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class45);
+
+      blocks = blocks || [new cls.StringBlock(options, 'INSERT'), new cls.IntoTableBlock(options), new cls.MssqlInsertFieldValueBlock(options), new cls.InsertFieldsFromQueryBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class45.__proto__ || Object.getPrototypeOf(_class45)).call(this, options, blocks));
+    }
+
+    return _class45;
+  }(cls.QueryBuilder);
+};
+
+// This file contains additional Squel commands for use with MySQL
+
+squel.flavours['mysql'] = function (_squel) {
+  var cls = _squel.cls;
+
+  // ON DUPLICATE KEY UPDATE ...
+  cls.MysqlOnDuplicateKeyUpdateBlock = function (_cls$AbstractSetField3) {
+    _inherits(_class46, _cls$AbstractSetField3);
+
+    function _class46() {
+      _classCallCheck(this, _class46);
+
+      return _possibleConstructorReturn(this, (_class46.__proto__ || Object.getPrototypeOf(_class46)).apply(this, arguments));
+    }
+
+    _createClass(_class46, [{
+      key: 'onDupUpdate',
+      value: function onDupUpdate(field, value, options) {
+        this._set(field, value, options);
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var totalStr = "",
+            totalValues = [];
+
+        for (var i = 0; i < this._fields.length; ++i) {
+          totalStr = _pad(totalStr, ', ');
+
+          var field = this._fields[i];
+
+          var value = this._values[0][i];
+
+          var valueOptions = this._valueOptions[0][i];
+
+          // e.g. if field is an expression such as: count = count + 1
+          if (typeof value === 'undefined') {
+            totalStr += field;
+          } else {
+            var ret = this._buildString(field + ' = ' + this.options.parameterCharacter, [value], {
+              buildParameterized: options.buildParameterized,
+              formattingOptions: valueOptions
+            });
+
+            totalStr += ret.text;
+            ret.values.forEach(function (value) {
+              return totalValues.push(value);
+            });
+          }
+        }
+
+        return {
+          text: !totalStr.length ? "" : 'ON DUPLICATE KEY UPDATE ' + totalStr,
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class46;
+  }(cls.AbstractSetFieldBlock);
+
+  // INSERT query builder.
+  cls.Insert = function (_cls$QueryBuilder9) {
+    _inherits(_class47, _cls$QueryBuilder9);
+
+    function _class47(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class47);
+
+      blocks = blocks || [new cls.StringBlock(options, 'INSERT'), new cls.IntoTableBlock(options), new cls.InsertFieldValueBlock(options), new cls.InsertFieldsFromQueryBlock(options), new cls.MysqlOnDuplicateKeyUpdateBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class47.__proto__ || Object.getPrototypeOf(_class47)).call(this, options, blocks));
+    }
+
+    return _class47;
+  }(cls.QueryBuilder);
+
+  // REPLACE query builder.
+  cls.Replace = function (_cls$QueryBuilder10) {
+    _inherits(_class48, _cls$QueryBuilder10);
+
+    function _class48(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class48);
+
+      blocks = blocks || [new cls.StringBlock(options, 'REPLACE'), new cls.IntoTableBlock(options), new cls.InsertFieldValueBlock(options), new cls.InsertFieldsFromQueryBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class48.__proto__ || Object.getPrototypeOf(_class48)).call(this, options, blocks));
+    }
+
+    return _class48;
+  }(cls.QueryBuilder);
+
+  _squel.replace = function (options, blocks) {
+    return new cls.Replace(options, blocks);
+  };
+};
+
+// This file contains additional Squel commands for use with the Postgres DB engine
+squel.flavours['postgres'] = function (_squel) {
+  var cls = _squel.cls;
+
+  cls.DefaultQueryBuilderOptions.numberedParameters = true;
+  cls.DefaultQueryBuilderOptions.numberedParametersStartAt = 1;
+  cls.DefaultQueryBuilderOptions.autoQuoteAliasNames = false;
+  cls.DefaultQueryBuilderOptions.useAsForTableAliasNames = true;
+
+  cls.PostgresOnConflictKeyUpdateBlock = function (_cls$AbstractSetField4) {
+    _inherits(_class49, _cls$AbstractSetField4);
+
+    function _class49() {
+      _classCallCheck(this, _class49);
+
+      return _possibleConstructorReturn(this, (_class49.__proto__ || Object.getPrototypeOf(_class49)).apply(this, arguments));
+    }
+
+    _createClass(_class49, [{
+      key: 'onConflict',
+      value: function onConflict(conflictFields, fields) {
+        var _this55 = this;
+
+        this._onConflict = true;
+        if (!conflictFields) {
+          return;
+        }
+        if (!_isArray(conflictFields)) {
+          conflictFields = [conflictFields];
+        }
+        this._dupFields = conflictFields.map(this._sanitizeField.bind(this));
+
+        if (fields) {
+          Object.keys(fields).forEach(function (key) {
+            _this55._set(key, fields[key]);
+          });
+        }
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var totalStr = "",
+            totalValues = [];
+
+        for (var i = 0; i < this._fields.length; ++i) {
+          totalStr = _pad(totalStr, ', ');
+
+          var field = this._fields[i];
+
+          var value = this._values[0][i];
+
+          var valueOptions = this._valueOptions[0][i];
+
+          // e.g. if field is an expression such as: count = count + 1
+          if (typeof value === 'undefined') {
+            totalStr += field;
+          } else {
+            var ret = this._buildString(field + ' = ' + this.options.parameterCharacter, [value], {
+              buildParameterized: options.buildParameterized,
+              formattingOptions: valueOptions
+            });
+
+            totalStr += ret.text;
+            ret.values.forEach(function (value) {
+              return totalValues.push(value);
+            });
+          }
+        }
+
+        var returned = {
+          text: '',
+          values: totalValues
+        };
+
+        if (this._onConflict) {
+          // note the trailing whitespace after the join
+          var conflictFields = this._dupFields ? '(' + this._dupFields.join(', ') + ') ' : '';
+          var action = totalStr.length ? 'UPDATE SET ' + totalStr : 'NOTHING';
+          returned.text = 'ON CONFLICT ' + conflictFields + 'DO ' + action;
+        }
+
+        return returned;
+      }
+    }]);
+
+    return _class49;
+  }(cls.AbstractSetFieldBlock);
+
+  // RETURNING
+  cls.ReturningBlock = function (_cls$Block18) {
+    _inherits(_class50, _cls$Block18);
+
+    function _class50(options) {
+      _classCallCheck(this, _class50);
+
+      var _this56 = _possibleConstructorReturn(this, (_class50.__proto__ || Object.getPrototypeOf(_class50)).call(this, options));
+
+      _this56._fields = [];
+      return _this56;
+    }
+
+    _createClass(_class50, [{
+      key: 'returning',
+      value: function returning(field) {
+        var alias = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+        alias = alias ? this._sanitizeFieldAlias(alias) : alias;
+        field = this._sanitizeField(field);
+
+        // if field-alias combo already present then don't add
+        var existingField = this._fields.filter(function (f) {
+          return f.name === field && f.alias === alias;
+        });
+        if (existingField.length) {
+          return this;
+        }
+
+        this._fields.push({
+          name: field,
+          alias: alias,
+          options: options
+        });
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+        var queryBuilder = options.queryBuilder,
+            buildParameterized = options.buildParameterized;
+
+
+        var totalStr = '',
+            totalValues = [];
+
+        var _iteratorNormalCompletion16 = true;
+        var _didIteratorError16 = false;
+        var _iteratorError16 = undefined;
+
+        try {
+          for (var _iterator16 = this._fields[Symbol.iterator](), _step16; !(_iteratorNormalCompletion16 = (_step16 = _iterator16.next()).done); _iteratorNormalCompletion16 = true) {
+            var field = _step16.value;
+
+            totalStr = _pad(totalStr, ", ");
+
+            var name = field.name,
+                alias = field.alias,
+                _options2 = field.options;
+
+
+            if (typeof name === 'string') {
+              totalStr += this._formatFieldName(name, _options2);
+            } else {
+              var ret = name._toParamString({
+                nested: true,
+                buildParameterized: buildParameterized
+              });
+
+              totalStr += ret.text;
+              ret.values.forEach(function (value) {
+                return totalValues.push(value);
+              });
+            }
+
+            if (alias) {
+              totalStr += ' AS ' + this._formatFieldAlias(alias);
+            }
+          }
+        } catch (err) {
+          _didIteratorError16 = true;
+          _iteratorError16 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion16 && _iterator16.return) {
+              _iterator16.return();
+            }
+          } finally {
+            if (_didIteratorError16) {
+              throw _iteratorError16;
+            }
+          }
+        }
+
+        return {
+          text: totalStr.length > 0 ? 'RETURNING ' + totalStr : '',
+          values: totalValues
+        };
+      }
+    }]);
+
+    return _class50;
+  }(cls.Block);
+
+  // WITH
+  cls.WithBlock = function (_cls$Block19) {
+    _inherits(_class51, _cls$Block19);
+
+    function _class51(options) {
+      _classCallCheck(this, _class51);
+
+      var _this57 = _possibleConstructorReturn(this, (_class51.__proto__ || Object.getPrototypeOf(_class51)).call(this, options));
+
+      _this57._tables = [];
+      return _this57;
+    }
+
+    _createClass(_class51, [{
+      key: 'with',
+      value: function _with(alias, table) {
+        this._tables.push({ alias: alias, table: table });
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var parts = [];
+        var values = [];
+
+        var _iteratorNormalCompletion17 = true;
+        var _didIteratorError17 = false;
+        var _iteratorError17 = undefined;
+
+        try {
+          for (var _iterator17 = this._tables[Symbol.iterator](), _step17; !(_iteratorNormalCompletion17 = (_step17 = _iterator17.next()).done); _iteratorNormalCompletion17 = true) {
+            var _step17$value = _step17.value,
+                alias = _step17$value.alias,
+                table = _step17$value.table;
+
+            var ret = table._toParamString({
+              buildParameterized: options.buildParameterized,
+              nested: true
+            });
+
+            parts.push(alias + ' AS ' + ret.text);
+            ret.values.forEach(function (value) {
+              return values.push(value);
+            });
+          }
+        } catch (err) {
+          _didIteratorError17 = true;
+          _iteratorError17 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion17 && _iterator17.return) {
+              _iterator17.return();
+            }
+          } finally {
+            if (_didIteratorError17) {
+              throw _iteratorError17;
+            }
+          }
+        }
+
+        return {
+          text: parts.length ? 'WITH ' + parts.join(', ') : '',
+          values: values
+        };
+      }
+    }]);
+
+    return _class51;
+  }(cls.Block);
+
+  // DISTINCT [ON]
+  cls.DistinctOnBlock = function (_cls$Block20) {
+    _inherits(_class52, _cls$Block20);
+
+    function _class52(options) {
+      _classCallCheck(this, _class52);
+
+      var _this58 = _possibleConstructorReturn(this, (_class52.__proto__ || Object.getPrototypeOf(_class52)).call(this, options));
+
+      _this58._distinctFields = [];
+      return _this58;
+    }
+
+    _createClass(_class52, [{
+      key: 'distinct',
+      value: function distinct() {
+        var _this59 = this;
+
+        this._useDistinct = true;
+
+        // Add all fields to the DISTINCT ON clause.
+
+        for (var _len11 = arguments.length, fields = Array(_len11), _key11 = 0; _key11 < _len11; _key11++) {
+          fields[_key11] = arguments[_key11];
+        }
+
+        fields.forEach(function (field) {
+          _this59._distinctFields.push(_this59._sanitizeField(field));
+        });
+      }
+    }, {
+      key: '_toParamString',
+      value: function _toParamString() {
+        var text = '';
+
+        if (this._useDistinct) {
+          text = 'DISTINCT';
+
+          if (this._distinctFields.length) {
+            text += ' ON (' + this._distinctFields.join(', ') + ')';
+          }
+        }
+
+        return {
+          text: text,
+          values: []
+        };
+      }
+    }]);
+
+    return _class52;
+  }(cls.Block);
+
+  // SELECT query builder.
+  cls.Select = function (_cls$QueryBuilder11) {
+    _inherits(_class53, _cls$QueryBuilder11);
+
+    function _class53(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class53);
+
+      blocks = blocks || [new cls.WithBlock(options), new cls.StringBlock(options, 'SELECT'), new cls.FunctionBlock(options), new cls.DistinctOnBlock(options), new cls.GetFieldBlock(options), new cls.FromTableBlock(options), new cls.JoinBlock(options), new cls.WhereBlock(options), new cls.GroupByBlock(options), new cls.HavingBlock(options), new cls.OrderByBlock(options), new cls.LimitBlock(options), new cls.OffsetBlock(options), new cls.UnionBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class53.__proto__ || Object.getPrototypeOf(_class53)).call(this, options, blocks));
+    }
+
+    return _class53;
+  }(cls.QueryBuilder);
+
+  // INSERT query builder
+  cls.Insert = function (_cls$QueryBuilder12) {
+    _inherits(_class54, _cls$QueryBuilder12);
+
+    function _class54(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class54);
+
+      blocks = blocks || [new cls.WithBlock(options), new cls.StringBlock(options, 'INSERT'), new cls.IntoTableBlock(options), new cls.InsertFieldValueBlock(options), new cls.InsertFieldsFromQueryBlock(options), new cls.PostgresOnConflictKeyUpdateBlock(options), new cls.ReturningBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class54.__proto__ || Object.getPrototypeOf(_class54)).call(this, options, blocks));
+    }
+
+    return _class54;
+  }(cls.QueryBuilder);
+
+  // UPDATE query builder
+  cls.Update = function (_cls$QueryBuilder13) {
+    _inherits(_class55, _cls$QueryBuilder13);
+
+    function _class55(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class55);
+
+      blocks = blocks || [new cls.WithBlock(options), new cls.StringBlock(options, 'UPDATE'), new cls.UpdateTableBlock(options), new cls.SetFieldBlock(options), new cls.FromTableBlock(options), new cls.WhereBlock(options), new cls.OrderByBlock(options), new cls.LimitBlock(options), new cls.ReturningBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class55.__proto__ || Object.getPrototypeOf(_class55)).call(this, options, blocks));
+    }
+
+    return _class55;
+  }(cls.QueryBuilder);
+
+  // DELETE query builder
+  cls.Delete = function (_cls$QueryBuilder14) {
+    _inherits(_class56, _cls$QueryBuilder14);
+
+    function _class56(options) {
+      var blocks = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      _classCallCheck(this, _class56);
+
+      blocks = blocks || [new cls.WithBlock(options), new cls.StringBlock(options, 'DELETE'), new cls.TargetTableBlock(options), new cls.FromTableBlock(_extend({}, options, {
+        singleTable: true
+      })), new cls.JoinBlock(options), new cls.WhereBlock(options), new cls.OrderByBlock(options), new cls.LimitBlock(options), new cls.ReturningBlock(options)];
+
+      return _possibleConstructorReturn(this, (_class56.__proto__ || Object.getPrototypeOf(_class56)).call(this, options, blocks));
+    }
+
+    return _class56;
+  }(cls.QueryBuilder);
+};
+return squel;
+}));
+});
+
+var QueryBuilder = (flavor => squel.useFlavour(flavor || 'mysql'));
+
+class Processor {
+
+    constructor(queryBuilder) {
+        if (typeof queryBuilder === 'undefined') throw new Error('A QueryBuilder object is required to initialize a Processor');
+
+        this._qb = queryBuilder;
+    }
+
+    process(docroot, node, config, qb) {
+        throw new Error('No process() method implemented for this class');
+    }
+}
+
+function resolveVariable(variable, variables) {
+    const v = variables[variable];
+
+    if (typeof v === 'undefined') throw new Error(`Could not find variable: ${variable}`);
+
+    return v.value;
+}
+
+const getFieldValue = (table, node, aliases) => table !== null ? typeof aliases[node.value] !== 'undefined' ? node.alias : `${table}.${node.value}` : node.value;
+
+class FilterString {
+
+    /**
+     * Handles case where node is a call to a neighboring query (document)
+     *
+     * @param docroot       Document docroot
+     * @param node          Current node
+     * @param flavor        Flavor to use for SQL (postgres, mysql, mssql)
+     * @returns {{text: string, variables: [null]}}
+     * @private
+     */
+
+    /**
+     * Handles case where no other conditions are matched and text is treated as a field
+     *
+     * @param table     Table name
+     * @param node      Current node
+     * @param aliases   Pre-defined field aliases
+     * @private
+     */
+    _handleQueryCall(docroot, node, variables, flavor) {
+        // If the node is a call to a neighboring query
+        // Locate the query
+        const target_query = docroot.filter(x => x.type === 'QUERY' && x.name === node.name)[0];
+
+        if (typeof target_query === 'undefined') {
+            let param_list = [];
+
+            node.params.forEach(param => {
+                if (param.type && param.type === Nodes.VARIABLE) param_list.push(resolveVariable(param.value, variables));else if (param.type === Nodes.BOOLEAN) param_list.push(param.value.toString().toUpperCase());else if (param.type === Nodes.LONG_TEXT) param_list.push(`'${param.value}'`);else param_list.push(param.value);
+            });
+
+            return {
+                text: `${node.name}(${param_list.join(', ')})`,
+                variables: []
+            };
+        }
+
+        // Extract the required variables in the query declaration
+        const tq_variables = target_query.variables;
+
+        // Initialize a map of variables
+
+        const vmap = {};
+
+        // For each of the required variables
+        tq_variables.forEach((v, index) => {
+            const param = node.params[index];
+
+            // If the param passed at the end of that variable is itself
+            // a variable, resolve it before passing it in
+            if (param.type === Nodes.VARIABLE) vmap[v.name] = resolveVariable(param.value, variables);else
+                // Otherwise just pass in the param
+                vmap[v.name] = param.value;
+        });
+
+        // Return the object and process the call
+        return {
+            text: '?',
+            variables: [QueryProcessor$1(flavor).process(docroot, target_query, {
+                variables: vmap
+            })]
+        };
+    }
+
+    /**
+     * Handles case where current node is a built-in SQL function
+     *
+     * @param node  Current node
+     * @private
+     */
+
+
+    /**
+     * Handles case where text appears on the left side of the operator
+     *
+     * @param table     Table name
+     * @param node      Current node
+     * @param aliases   Pre-defined field aliases
+     * @private
+     */
+
+
+    /**
+     * Handles case where current node is a variable
+     *
+     * @param node  Current node
+     * @private
+     */
+
+
+    /**
+     * Handles case where current node is another operator
+     *
+     * @param docroot          Document docroot
+     * @param table         Table name
+     * @param node          Current node
+     * @param variables     Global variable map
+     * @param aliases       Pre-defined field aliases
+     * @param flavor        Flavor to use for SQL
+     * @returns {{text: string, variables: [null,null]}}
+     * @private
+     */
+    _handleOperation(docroot, table, node, variables, aliases, flavor) {
+        const a = node.a;
+        const op = node.op;
+        const b = node.b;
+
+        // Recurse on both sides of the operand
+        const a_bos = this._buildString(docroot, table, a, variables, true, aliases, flavor);
+
+        const b_bos = this._buildString(docroot, null, b, variables, false, aliases, flavor);
+
+        // We return text and variables separately to allow Squel
+        // to sanitize the input
+        return {
+            text: `${a_bos.text} ${op} ${b_bos.text}`,
+            variables: [...a_bos.variables, ...b_bos.variables]
+        };
+    }
+
+    /**
+     * Builds a string from the operator tree found in selector blocks (inside parens)
+     *
+     * @param docroot       Document docroot
+     * @param table         Table name
+     * @param node          Current node
+     * @param variables     Global variable map
+     * @param left_side     Boolean denoting whether the node is on the left site of an operator
+     * @param aliases       Pre-defined field aliases
+     * @param flavor        Flavor to use for SQL
+     * @returns {*}
+     */
+    _buildString(docroot, table, node, variables, left_side, aliases, flavor) {
+        let value = null;
+
+        switch (node.type) {
+            case Nodes.OPERATION:
+                value = this._handleOperation(docroot, table, node, variables, aliases, flavor);
+                break;
+            case Nodes.VARIABLE:
+                value = this._handleVariable(node, variables);
+                break;
+            case Nodes.BUILT_IN:
+                value = this._handleBuiltIn(node);
+                break;
+            case Nodes.QUERY_CALL:
+                value = this._handleQueryCall(docroot, node, variables, flavor);
+                break;
+            case Nodes.RAW_TEXT:
+                value = this._handleLeftSide(table, node, aliases);
+                break;
+            default:
+                value = left_side ? this._handleLeftSide(table, node, aliases) : this._handleText(table, node, aliases);
+        }
+
+        return value;
+    }
+
+    constructor(docroot, table, node, variables, aliases, flavor) {
+        _initialiseProps.call(this);
+
+        this._string = this._buildString(docroot, table, node, variables, false, aliases || {}, flavor);
+    }
+
+}
+
+var _initialiseProps = function _initialiseProps() {
+    this._handleText = (table, node, aliases) => ({
+        // Assume anything else is a field, and prepend
+        // the table name if one is available
+        text: '?',
+        variables: [getFieldValue(table, node, aliases)]
+    });
+
+    this._handleLeftSide = (table, node, aliases) => ({
+        text: getFieldValue(table, node, aliases),
+        variables: []
+    });
+
+    this._handleBuiltIn = node => ({
+        // If the node is a built-in SQL function such as INTERVAL
+        // Return built-in SQL operations as is
+        // They're not special
+        text: node.value,
+        variables: []
+    });
+
+    this._handleVariable = (node, variables) => ({
+        // If the node is a $variable
+        // Resolve any variable node and return the object
+        // The text just becomes '?', which tells Squel where
+        // to interpolate the variable
+        text: '?',
+        variables: [resolveVariable(node.value, variables)]
+    });
+
+    this.toString = () => this._string;
+};
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+var objectWithoutProperties = function (obj, keys) {
+  var target = {};
+
+  for (var i in obj) {
+    if (keys.indexOf(i) >= 0) continue;
+    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+    target[i] = obj[i];
+  }
+
+  return target;
+};
+
+// Flow has to ignore this file because of the recursion in builderOperationStringHelper()
+class Helpers {
+    /**
+     * Gets all the fields from a table or join node
+     *
+     * @param node  Table or join node
+     */
+    static getFieldsFromNode(node) {
+        const type = node.type,
+              table = node.table,
+              name = node.name,
+              nodes = node.nodes;
+
+
+        return nodes.filter(x => x.type === Nodes.FIELD).map(x => _extends({}, x, {
+            name: type === Nodes.JOIN ? `${table}.${x.name}` : `${name}.${x.name}`
+        }));
+    }
+
+    /**
+     * Returns anything that can be identified as a "field" in an operator tree
+     * Careful – any text that doesn't conform to a set grammar can be identified as a field
+     * Better to keep your selectors simple for now
+     *
+     * @param node          Base node of operator tree
+     * @param variables     Variables passed to query
+     * @param initial       Initial array to add values to
+     * @returns {*}
+     */
+    static getFieldsFromOperationString(node, variables, initial) {
+        if (node.type === Nodes.OPERATION) {
+            const a = node.a;
+
+            initial = [...initial, ...this.getFieldsFromOperationString(a, variables, initial)];
+
+            return initial;
+        } else if (node.type === Nodes.VARIABLE) {
+            return [variables[node]];
+        } else {
+            return [node];
+        }
+    }
+
+    /**
+     * Gets the whole recursion thing for buildOperationStringHelper going
+     * @param docroot
+     * @param table
+     * @param node
+     * @param variables
+     * @returns {{text, variables}}
+     */
+    static buildFilterString(docroot, table, node, variables, aliases, flavor) {
+        return new FilterString(docroot, table, node, variables, aliases, flavor).toString();
+    }
+
+    /**
+     * Applies a WHERE statement to a QueryBuilder object
+     *
+     * @param node  Table node
+     * @param qb
+     */
+    static applyWhereStatement(docroot, node, variables, qb) {
+        // Get the name and parameters associated with the table
+        const params = node.params;
+
+        // From the parameters, create an operator tree and generate
+        // an array of selector strings to use in the WHERE() call
+
+        const selectors = params.map(x => Helpers.buildFilterString(docroot, null, x, variables, [], qb.flavour));
+
+        // If the user has included selectors, add those too
+        if (selectors.length > 0) {
+            qb = qb.where(selectors.map(x => x.text).join(' AND '), ...selectors.map(x => x.variables).reduce((a, b) => a.concat(b)));
+        }
+    }
+    /**
+     * Interpolates variables into strings using '?' like Squel does
+     *
+     * @param string        String containing '?''s
+     * @param variables     Array of variables
+     * @returns {*}
+     */
+    static interpolateVariables(string, variables) {
+        // Matches all standalone question marks (?) in a string
+        const regex = /(\s+\?\s+)|(^\?\s+)|(\s+\?$)/g;
+
+        // Define an iterator to know which match we're on
+        let iterator = 0;
+
+        // Index of the last matched question mark
+        let last_index = 0;
+
+        // Our final message
+        let message = '';
+
+        // Match the first question mark
+        let match = regex.exec(string);
+
+        // Recursively match all question marks in the string
+        while (match !== null) {
+            // Get the variable at that index
+            let v = variables[iterator];
+
+            // If there isn't a variable available, error
+            if (typeof v === 'undefined') throw new Error('Missing variable. Cannot interpolate.');
+
+            // Replace the question mark with the variable value
+            message += `${string.substring(last_index, match.index)} ${v}`;
+
+            // Increment the last index
+            last_index = match.index + (match.index === 0 ? 1 : 2);
+
+            // Increment the iterator
+            iterator++;
+
+            // Match the next question mark
+            match = regex.exec(string);
+        }
+
+        // Append the rest of the string, whatever that may be
+        message += string.substring(last_index, string.length);
+
+        return message;
+    }
+}
+
+class JoinProcessor extends Processor {
+    /**
+     * Applies fields to a QueryBuilder given an alias set
+     *
+     * @param qb        QueryBuilder object
+     * @param fields    Collection of FIELD nodes
+     * @param aliases   Array of defined aliases
+     * @private
+     */
+    _applyFields(qb, fields, aliases) {
+        fields.forEach(field => {
+            if (field.alias) {
+                // Use an alias if one has already been defined for the field
+                if (aliases.includes(field.alias)) qb.field(field.alias);else {
+                    // Otherwise declare the alias and add it to our list of aliases
+                    qb.field(field.name, field.alias);
+                    aliases.push(field.alias);
+                }
+            } else
+                // Or just add the value if there isn't an alias
+                qb.field(field.name);
+        });
+    }
+
+    /**
+     * Gets the "on" selector string from an operation tree
+     *
+     * @param docroot       Document root
+     * @param node          Join node
+     * @param variables     Global variable map
+     * @returns {string}
+     * @private
+     */
+    _getOnString(docroot, node, variables, aliases) {
+        const op = Helpers.buildFilterString(docroot, node.table, node.on[0], variables, aliases, this._qb.flavour);
+
+        return Helpers.interpolateVariables(op.text, op.variables);
+    }
+
+    /**
+     * Adds "where" selectors to QueryBuilder if possible
+     *
+     * @param docroot       Document root
+     * @param node          Join node
+     * @param variables     Global variable map
+     * @param qb            QueryBuilder
+     * @returns {string}
+     * @private
+     */
+    _addSelectors(docroot, node, variables, qb) {
+        const where = node.on.slice(1);
+
+        // Spoof a table node and add a where statement
+        Helpers.applyWhereStatement(docroot, {
+            params: where
+        }, variables, qb);
+    }
+
+    /**
+     * Adds all possible fields and subjoins in a join to a QueryBuilder
+     *
+     * @param docroot       Document root
+     * @param node          Join node
+     * @param variables     Global variable map
+     * @param qb            QueryBuilder
+     * @returns {string[]}  All available fields
+     * @private
+     */
+    _addAllFieldsAndJoins(docroot, node, variables, aliases, qb) {
+        const table = node.table,
+              on = node.on;
+
+        // Get all local fields
+
+        const fields = Helpers.getFieldsFromNode(node);
+
+        // Get all subjoins
+        const joins = this._getAllSubjoins(docroot, node, variables, aliases);
+
+        // Extract fields from all sub-joins
+        const join_fields = joins.length > 0 ? joins.map(x => x.fields).reduce((a, b) => a.concat(b)) : [];
+
+        // Add local fields to query
+        fields.forEach(field => {
+            if (field.value) throw new Error('Values cannot be assigned to fields in a query document');
+            qb.field(field.name);
+        });
+
+        if (qb.field == null) console.log('fuck');
+        // All sub-join fields to query
+        joins.forEach(join => this._applyFields(qb, join.fields, aliases));
+
+        // Get just field values
+        const field_vals = fields.map(x => x.value);
+
+        // Apply fields from the 'on' selector
+        Helpers.getFieldsFromOperationString(on[0], variables, []).forEach(field => {
+            const name = `${table}.${field.value}`;
+            if (!field_vals.includes(name)) qb.field(name);
+        });
+
+        // Add all sub-joins to the query
+        joins.forEach(join => qb.join(join.qb, join.table, join.on));
+
+        return [...fields, ...join_fields];
+    }
+
+    /**
+     * Gets all subjoins in a join node
+     *
+     * @param node
+     * @returns {ProcessedJoin[]}
+     * @private
+     */
+    _getAllSubjoins(docroot, node, variables, aliases) {
+        const nodes = node.nodes;
+
+        const joins = [];
+
+        nodes.filter(x => x.type === Nodes.JOIN).forEach(join => {
+            joins.push(this._processJoin(docroot, join, variables, aliases));
+        });
+
+        return joins;
+    }
+
+    /**
+     *  Processes JOIN blocks and adds their fields to the global fields
+     *
+     * @param docroot          Document docroot
+     * @param node          JOIN node
+     * @param variables     Global variable map
+     * @param aliases       Keeps track of all previously declared aliases up the stack
+     * @private
+     */
+    _processJoin(docroot, node, variables, aliases) {
+        // Get basic information associated with join
+        const table = node.table;
+
+        // Start a new QueryBuilder
+
+        const qb = this._qb.select().from(table);
+
+        // Get 'on' selector as interpolated string
+        const on = this._getOnString(docroot, node, variables, aliases);
+
+        // Add 'where' statement if applicable
+        this._addSelectors(docroot, node, variables, qb);
+
+        // Gets and applies all fields contained in this join
+        const fields = this._addAllFieldsAndJoins(docroot, node, variables, aliases, qb);
+
+        // Return an object with info about the JOIN
+        return {
+            qb, // <-- QueryBuilder object
+            table, // <-- table name
+            fields, // <-- All fields
+            on // <-- 'on' selector statement
+        };
+    }
+
+    /**
+     * Processes a table's JOINs
+     * Should be run right after fields are defined in a table
+     *
+     * @param docroot          docroot of the document
+     * @param node          Table node
+     * @param variables     Global variables
+     * @param qb            QueryBuilder object
+     * @returns {*}
+     */
+    process(docroot, node, variables, qb) {
+        const aliases = [];
+        const joins = node.nodes.filter(x => x.type === Nodes.JOIN).map(x => this._processJoin(docroot, x, variables, aliases));
+
+        if (qb.field != null)
+            // Add fields from joins
+            joins.forEach(join => this._applyFields(qb, join.fields, aliases));
+
+        // Add JOIN statements from joins
+        joins.forEach(join => qb.join(join.qb, join.table, join.on));
+
+        return qb;
+    }
+}
+
+var JoinProcessor$1 = (queryBuilder => new JoinProcessor(queryBuilder));
+
+/**
+ * QueryProcessor
+ * ==============
+ * Processes all query documents (the equivalent of a SELECT statement)
+ */
+class QueryProcessor extends Processor {
+
+    /**
+     * Adds fields from a table to a QueryBuilder object
+     *
+     * @param node          The table node
+     * @param variables     Global variables
+     * @param qb            The QueryBuilder
+     * @private
+     */
+    _addTableFields(node, qb) {
+        const fields = Helpers.getFieldsFromNode(node);
+        // Iterate through each field and add it to the QueryBuilder
+        fields.forEach(field => {
+            if (field.value) throw new Error('Values cannot be assigned to fields in a query document');else if (field.alias) qb.field(field.name, field.alias);else qb.field(field.name);
+        });
+    }
+
+    /**
+     * Adds configuration options to a QueryBuilder object
+     *
+     * @param options   Options object
+     * @param qb        QueryBuilder
+     * @private
+     */
+    _addConfigOptions(options, qb) {
+        const orderBy = options.orderBy,
+              descending = options.descending,
+              groupBy = options.groupBy,
+              limit = options.limit,
+              offset = options.offset;
+
+        const exists = obj => typeof obj !== 'undefined' && obj !== null;
+
+        // Add grouping
+        if (exists(groupBy)) qb.group(groupBy);
+
+        // Add sorting
+        if (exists(orderBy)) qb.order(orderBy, !descending);
+
+        // Add offset
+        if (exists(offset)) qb.offset(offset);
+
+        // Add limit
+        if (exists(limit)) qb.limit(limit);
+    }
+
+    /**
+     * Processes a table node
+     *
+     * @param qb            The QueryBuilder object
+     * @param docroot          The docroot of the document (contains all queries, mutations, etc.)
+     * @param node          The table node to process
+     * @param variables     All variables passed to the query
+     * @returns {qb}
+     * @private
+     */
+    _processTable(docroot, node, variables, options) {
+        // Get the name and parameters associated with the table
+        const name = node.name;
+
+        const del = node.delete;
+
+        if (del) throw new Error('Queries cannot contain delete statements');else {
+            // Initialize qb
+            let qb = this._qb.select().from(name);
+
+            // Add fields from table
+            this._addTableFields(node, qb);
+
+            // Iterate through each join and add it to the QueryBuilder
+            qb = JoinProcessor$1(this._qb).process(docroot, node, variables, qb);
+
+            // Apply a WHERE statement if applicable
+            Helpers.applyWhereStatement(docroot, node, variables, qb);
+
+            this._addConfigOptions(options, qb);
+
+            return qb;
+        }
+    }
+
+    /**
+     * Processes a query document
+     *
+     * @param docroot          docroot of the document
+     * @param node          Query node
+     * @param variables     Global variables
+     * @returns {QueryBuilder}
+     */
+    process(docroot, node, config, qb = this._qb) {
+        const req_var = node.variables,
+              nodes = node.nodes;
+        let variables = config.variables,
+            options = objectWithoutProperties(config, ['variables']);
+
+        // Clone the variables
+
+        variables = Object.assign({}, variables);
+
+        if (node.type !== Nodes.QUERY) throw new Error('Only a query document node can be passed to a QueryProcessor');
+
+        req_var.forEach(v => {
+            if (variables && variables.hasOwnProperty(v.name)) {
+                variables[v.name] = {
+                    value: variables[v.name],
+                    required: v.required
+                };
+            } else {
+                if (v.required) throw new Error(`Missing required variable ${v.name}`);
+            }
+        });
+
+        const tables = nodes.filter(x => x.type === Nodes.TABLE);
+
+        if (tables.length < 1) throw new Error('Query must contain at least one table');
+
+        tables.forEach(table => {
+            qb = this._processTable(docroot, table, variables || {}, options);
+        });
+
+        return qb;
+    }
+}
+
+var QueryProcessor$1 = (flavor => new QueryProcessor(QueryBuilder(flavor)));
+
+/**
+ * MutationProcessor
+ * ==============
+ * Processes all mutation documents (the equivalent of an INSERT or UPDATE statement)
+ */
+class MutationProcessor extends Processor {
+
+    /**
+     * Adds fields from a table to a QueryBuilder object
+     *
+     * @param node          The table node
+     * @param variables     Global variables
+     * @param qb            The QueryBuilder
+     * @private
+     */
+    _addTableFields(node, variables, qb) {
+        const fields = node.nodes.filter(x => x.type === Nodes.FIELD);
+        let count = 0;
+
+        fields.forEach(field => {
+            this._verifyField(field);
+
+            try {
+                switch (field.value.type) {
+                    case Nodes.VARIABLE:
+                        const variable = field.value.value;
+                        const val = variables[variable];
+
+                        if (typeof val !== 'undefined') {
+                            qb.set(field.name, val.value);
+                            count++;
+                        }
+
+                        break;
+                    case Nodes.RAW_TEXT:
+                        qb.set(field.name, this._qb.str(field.value.value));
+                        count++;
+                        break;
+                    default:
+                        qb.set(field.name, field.value.value);
+                        count++;
+                }
+            } catch (e) {
+                console.error(`Value \`${field.value.value}\` for field \`${field.name}\` is invalid`);
+            }
+        });
+
+        if (count === 0) throw new Error('At least one field must be set in a mutation');
+    }
+
+    /**
+     * Verifies a field to make sure it is valid for a mutation
+     *
+     * @param field     The field node
+     * @returns {boolean}
+     * @private
+     */
+    _verifyField(field) {
+        if (field.alias) throw new Error('Aliases not allowed in mutations');else if (field.value === null) throw new Error(`Value required for field '${field.name}'`);else return true;
+    }
+
+    /**
+     * Processed an INSERT statement
+     *
+     * @param docroot          The document docroot
+     * @param node          The table node
+     * @param variables     Global variables
+     * @param options       Config object
+     * @returns {QueryBuilder}
+     * @private
+     */
+    _processInsert(docroot, node, variables, options) {
+        const name = node.name;
+        const returning = options.returning;
+
+        let qb = this._qb.insert().into(name);
+
+        this._addTableFields(node, variables, qb);
+
+        if (returning) qb.returning(returning);
+
+        return qb;
+    }
+
+    /**
+     * Processes an UPDATE statement
+     *
+     * @param docroot          The document docroot
+     * @param node          The table node
+     * @param variables     Global variables
+     * @param options       Config object
+     * @returns {QueryBuilder}
+     * @private
+     */
+    _processUpdate(docroot, node, variables, options) {
+        const name = node.name;
+        const descending = options.descending,
+              orderBy = options.orderBy,
+              returning = options.returning,
+              limit = options.limit;
+
+        // Initialize the query builder
+
+        let qb = this._qb.update().table(name);
+
+        // Iterate through each field and add it to the QueryBuilder
+        this._addTableFields(node, variables, qb);
+
+        // Apply a WHERE statement if applicable
+        Helpers.applyWhereStatement(docroot, node, variables, qb);
+
+        // Add order
+        if (typeof orderBy !== 'undefined' && orderBy !== null) qb.order(orderBy, !descending);
+
+        // Add limit
+        if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
+
+        // Add returning
+        if (typeof returning !== 'undefined' && returning !== null) qb.returning(returning);
+
+        return qb;
+    }
+
+    _processDelete(docroot, node, variables, options) {
+        const params = node.params,
+              nodes = node.nodes,
+              name = node.name;
+        const orderBy = options.orderBy,
+              limit = options.limit,
+              returning = options.returning,
+              descending = options.descending;
+
+
+        if (params.length === 0) throw new Error('A selector statement is required for all delete statements');else if (nodes.filter(x => x.type === Nodes.FIELD).length > 0) throw new Error('Fields are not allowed in delete statements');else {
+            let qb = this._qb.delete().from(name);
+
+            // Add JOIN statements
+            qb = JoinProcessor$1(this._qb).process(docroot, node, variables, qb);
+
+            // Add WHERE statement
+            Helpers.applyWhereStatement(docroot, node, variables, qb);
+
+            // Add order
+            if (typeof orderBy !== 'undefined' && orderBy !== null) qb.order(orderBy, !descending);
+
+            // Add limit
+            if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
+
+            // Add returning
+            if (typeof returning !== 'undefined' && returning !== null) qb.returning(returning);
+
+            return qb;
+        }
+
+        return null;
+    }
+
+    /**
+     * Processes a table node
+     *
+     * @param docroot          The document docroot
+     * @param node          The table node
+     * @param variables     Global variables
+     * @param options       Config object
+     * @returns {QueryBuilder}
+     * @private
+     */
+    _processTable(docroot, node, variables, options) {
+        // Get the name and parameters associated with the table
+        const params = node.params,
+              nodes = node.nodes;
+
+        const del = node.delete;
+
+        let qb;
+
+        if (del) qb = this._processDelete(docroot, node, variables, options);else {
+            if (nodes.filter(x => x.type === Nodes.JOIN).length > 0) throw new Error('Join statements are not allowed in mutations');
+
+            // If we have selectors, then we're updating a row
+            if (params.length > 0) qb = this._processUpdate(docroot, node, variables, options);else qb = this._processInsert(docroot, node, variables, options);
+        }
+
+        return qb;
+    }
+
+    /**
+     * Processes a query document
+     *
+     * @param docroot          docroot of the document
+     * @param node          Query node
+     * @param variables     Global variables
+     * @returns {QueryBuilder}
+     */
+    process(docroot, node, config, qb = this._qb) {
+        const req_var = node.variables,
+              nodes = node.nodes;
+        let variables = config.variables,
+            options = objectWithoutProperties(config, ['variables']);
+
+        // Clone the variables
+
+        variables = Object.assign({}, variables);
+
+        if (node.type !== Nodes.MUTATION) throw new Error('Only a mutation document node can be passed to a MutationProcessor');
+
+        req_var.forEach(v => {
+            if (variables && variables.hasOwnProperty(v.name)) {
+                variables[v.name] = {
+                    value: variables[v.name],
+                    required: v.required
+                };
+            } else {
+                if (v.required) throw new Error(`Missing required variable ${v.name}`);
+            }
+        });
+
+        const tables = nodes.filter(x => x.type === Nodes.TABLE);
+
+        if (tables.length < 1) throw new Error('Mutations must contain at least one table');
+
+        tables.forEach(table => {
+            qb = this._processTable(docroot, table, variables || {}, options);
+        });
+
+        return qb;
+    }
+}
+
+var MutationProcessor$1 = (flavor => new MutationProcessor(QueryBuilder(flavor)));
+
+/**
+ * Gets the argument object given the initially-passed arguments
+ * @param args
+ * @returns {{name: string|null, config: {}, as_string: boolean}}
+ */
+const getFunctionArgs = args => {
+    let name = null;
+    let config = {};
+    let as_string = false;
+
+    switch (args.length) {
+        case 1:
+            config = args[0];
+            break;
+        case 2:
+            if (typeof args[0] === 'string') {
+                name = args[0];
+                config = args[1];
+            } else {
+                config = args[0];
+                as_string = args[1];
+            }
+            break;
+        case 3:
+            name = args[0];
+            config = args[1];
+            as_string = args[2];
+            break;
+    }
+
+    return { name, config, as_string };
+};
+
+/**
+ * Gets the entry point AST given a document's name
+ *
+ * @param args      Argument object
+ * @param trees     Collection of documents as a bunch of ASTs
+ * @returns {AST}
+ */
+const getEntryPoint = (args, trees) => {
+    const name = args.name;
+
+    const entry_index = name !== null ? trees.findIndex(x => x.name === name) : trees.length - 1;
+
+    if (name !== null && entry_index < 0) throw new Error(`Could not find document \`${name}\``);
+
+    return trees[entry_index];
+};
+
+/**
+ * Returns a processed document
+ *
+ * @param ast       A single document as an abstract syntax tree (AST)
+ * @param trees     The collection of all documents as a bunch of ASTs
+ * @param flavor    The SQL flavor to use
+ * @param args      Argument object
+ * @returns {string|{text: string, variables: string[]}}
+ */
+const getProcessedDocument = (ast, trees, flavor, args) => {
+    let config = args.config,
+        as_string = args.as_string;
+
+    let processed = null;
+
+    switch (ast.type) {
+        case Nodes.QUERY:
+            processed = QueryProcessor$1(flavor).process(trees, ast, config);
+            break;
+        case Nodes.MUTATION:
+            processed = MutationProcessor$1(flavor).process(trees, ast, config);
+            break;
+        default:
+            throw new Error('Unrecognized document type');
+    }
+
+    if (processed !== null) return as_string ? processed.toString() : processed.toParam();else throw new Error('An error occurred processing the document');
+};
+
+/**
+ * Returns the function created from a document set
+ *
+ * @param flavor    Flavor of SQL
+ * @param trees     Collection of document trees
+ */
+const getFunction = (flavor, trees) => function () {
+    const args = getFunctionArgs(Array.from(arguments));
+    const ast = getEntryPoint(args, trees);
+
+    return getProcessedDocument(ast, trees, flavor, args);
+};
+
+const dql = flavor => function (arg) {
+    const args = Array.from(arguments);
+
+    // Process as an AST if it is already parsed data
+    if (args.length === 1 && args[0].length > 0 && typeof args[0][0] === 'object' && args[0][0].hasOwnProperty('type')) return getFunction(flavor, arg);
+
+    const literals = args[0];
+
+    // We always get literals[0] and then matching post literals for each arg given
+    let result = typeof literals === 'string' ? literals : literals[0];
+
+    // Interpolate all variables and get document string
+    for (let i = 1; i < args.length; i++) {
+        result += args[i];
+        result += literals[i];
+    }
+
+    // Parse the string into a set of trees
+    const trees = parser_1.parse(result);
+
+    return getFunction(flavor, trees);
+};
+
+const postgres = dql('postgres');
+const mysql = dql('mysql');
+const mssql = dql('mssql');
+
+exports.postgres = postgres;
+exports.mysql = mysql;
+exports.mssql = mssql;
+exports.parser = parser_1;
