@@ -12,31 +12,31 @@ import MutationProcessor from './processors/MutationProcessor';
  * @returns {{name: string|null, config: {}, as_string: boolean}}
  */
 const getFunctionArgs = args => {
-    let name = null;
-    let config = {};
-    let as_string = false;
+  let name = null;
+  let config = {};
+  let as_string = false;
 
-    switch (args.length) {
-        case 1:
-            config = args[0];
-            break;
-        case 2:
-            if (typeof args[0] === 'string') {
-                name = args[0];
-                config = args[1];
-            } else {
-                config = args[0];
-                as_string = args[1];
-            }
-            break;
-        case 3:
-            name = args[0];
-            config = args[1];
-            as_string = args[2];
-            break;
-    }
+  switch (args.length) {
+    case 1:
+      config = args[0];
+      break;
+    case 2:
+      if (typeof args[0] === 'string') {
+        name = args[0];
+        config = args[1];
+      } else {
+        config = args[0];
+        as_string = args[1];
+      }
+      break;
+    case 3:
+      name = args[0];
+      config = args[1];
+      as_string = args[2];
+      break;
+  }
 
-    return { name, config, as_string };
+  return { name, config, as_string };
 };
 
 /**
@@ -47,16 +47,14 @@ const getFunctionArgs = args => {
  * @returns {AST}
  */
 const getEntryPoint = (args, trees) => {
-    const { name } = args;
-    const entry_index =
-        name !== null
-            ? trees.findIndex(x => x.name === name)
-            : trees.length - 1;
+  const { name } = args;
+  const entry_index =
+    name !== null ? trees.findIndex(x => x.name === name) : trees.length - 1;
 
-    if (name !== null && entry_index < 0)
-        throw new Error(`Could not find document \`${name}\``);
+  if (name !== null && entry_index < 0)
+    throw new Error(`Could not find document \`${name}\``);
 
-    return trees[entry_index];
+  return trees[entry_index];
 };
 
 /**
@@ -69,23 +67,23 @@ const getEntryPoint = (args, trees) => {
  * @returns {string|{text: string, variables: string[]}}
  */
 const getProcessedDocument = (ast, trees, flavor, args) => {
-    let { config, as_string } = args;
-    let processed = null;
+  let { config, as_string } = args;
+  let processed = null;
 
-    switch (ast.type) {
-        case Nodes.QUERY:
-            processed = QueryProcessor(flavor).process(trees, ast, config);
-            break;
-        case Nodes.MUTATION:
-            processed = MutationProcessor(flavor).process(trees, ast, config);
-            break;
-        default:
-            throw new Error('Unrecognized document type');
-    }
+  switch (ast.type) {
+    case Nodes.QUERY:
+      processed = QueryProcessor(flavor).process(trees, ast, config);
+      break;
+    case Nodes.MUTATION:
+      processed = MutationProcessor(flavor).process(trees, ast, config);
+      break;
+    default:
+      throw new Error('Unrecognized document type');
+  }
 
-    if (processed !== null)
-        return as_string ? processed.toString() : processed.toParam();
-    else throw new Error('An error occurred processing the document');
+  if (processed !== null)
+    return as_string ? processed.toString() : processed.toParam();
+  else throw new Error('An error occurred processing the document');
 };
 
 /**
@@ -95,42 +93,42 @@ const getProcessedDocument = (ast, trees, flavor, args) => {
  * @param trees     Collection of document trees
  */
 const getFunction = (flavor, trees) =>
-    function() {
-        const args = getFunctionArgs(Array.from(arguments));
-        const ast = getEntryPoint(args, trees);
+  function() {
+    const args = getFunctionArgs(Array.from(arguments));
+    const ast = getEntryPoint(args, trees);
 
-        return getProcessedDocument(ast, trees, flavor, args);
-    };
+    return getProcessedDocument(ast, trees, flavor, args);
+  };
 
 const dql = flavor =>
-    function(arg: string[] | object) {
-        const args = Array.from(arguments);
+  function(arg: string[] | object) {
+    const args = Array.from(arguments);
 
-        // Process as an AST if it is already parsed data
-        if (
-            args.length === 1 &&
-            args[0].length > 0 &&
-            typeof args[0][0] === 'object' &&
-            args[0][0].hasOwnProperty('type')
-        )
-            return getFunction(flavor, arg);
+    // Process as an AST if it is already parsed data
+    if (
+      args.length === 1 &&
+      args[0].length > 0 &&
+      typeof args[0][0] === 'object' &&
+      args[0][0].hasOwnProperty('type')
+    )
+      return getFunction(flavor, arg);
 
-        const literals = args[0];
+    const literals = args[0];
 
-        // We always get literals[0] and then matching post literals for each arg given
-        let result = typeof literals === 'string' ? literals : literals[0];
+    // We always get literals[0] and then matching post literals for each arg given
+    let result = typeof literals === 'string' ? literals : literals[0];
 
-        // Interpolate all variables and get document string
-        for (let i = 1; i < args.length; i++) {
-            result += args[i];
-            result += literals[i];
-        }
+    // Interpolate all variables and get document string
+    for (let i = 1; i < args.length; i++) {
+      result += args[i];
+      result += literals[i];
+    }
 
-        // Parse the string into a set of trees
-        const trees = parser.parse(result);
+    // Parse the string into a set of trees
+    const trees = parser.parse(result);
 
-        return getFunction(flavor, trees);
-    };
+    return getFunction(flavor, trees);
+  };
 
 export const postgres = dql('postgres');
 export const mysql = dql('mysql');

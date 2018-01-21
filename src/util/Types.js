@@ -4,36 +4,36 @@
  * ===========
  */
 export type QueryCallNode = {
-    type: 'QUERY_CALL',
-    name: string,
-    params: string[]
+  type: 'QUERY_CALL',
+  name: string,
+  params: string[]
 };
 
 export type TextNode = {
-    type: 'TEXT',
-    value: string
+  type: 'TEXT',
+  value: string
 };
 
 export type FieldNode = {
-    type: 'FIELD',
-    name: string,
-    value: string | null,
-    alias: string | null
+  type: 'FIELD',
+  name: string,
+  value: string | null,
+  alias: string | null
 };
 
 export type VariableNode = {
-    type: 'VARIABLE',
-    value: string
+  type: 'VARIABLE',
+  value: string
 };
 
 export type NumberNode = {
-    type: 'NUMBER',
-    value: number
+  type: 'NUMBER',
+  value: number
 };
 
 export type BuiltInNode = {
-    type: 'BUILT_IN',
-    value: string
+  type: 'BUILT_IN',
+  value: string
 };
 
 /**
@@ -41,29 +41,29 @@ export type BuiltInNode = {
  * ==================
  */
 export type OperationNode = {
-    type: 'OPERATION',
-    a:
-        | OperationNode
-        | TextNode
-        | NumberNode
-        | VariableNode
-        | QueryCallNode
-        | BuiltInNode,
-    op: string,
-    b:
-        | OperationNode
-        | TextNode
-        | NumberNode
-        | VariableNode
-        | QueryCallNode
-        | BuiltInNode
+  type: 'OPERATION',
+  a:
+    | OperationNode
+    | TextNode
+    | NumberNode
+    | VariableNode
+    | QueryCallNode
+    | BuiltInNode,
+  op: string,
+  b:
+    | OperationNode
+    | TextNode
+    | NumberNode
+    | VariableNode
+    | QueryCallNode
+    | BuiltInNode
 };
 
 export type JoinNode = {
-    type: 'JOIN',
-    table: string,
-    on: OperationNode[],
-    nodes: JoinNode[]
+  type: 'JOIN',
+  table: string,
+  on: OperationNode[],
+  nodes: JoinNode[]
 };
 
 /**
@@ -71,18 +71,18 @@ export type JoinNode = {
  * ===============
  */
 export type TableNode = {
-    type: 'TABLE',
-    name: string,
-    params: string[],
-    nodes: FieldNode[] | JoinNode[],
-    delete: boolean
+  type: 'TABLE',
+  name: string,
+  params: string[],
+  nodes: FieldNode[] | JoinNode[],
+  delete: boolean
 };
 
 export type DocumentNode = {
-    type: 'QUERY' | 'MUTATION',
-    name: string,
-    variables: {}[],
-    nodes: TableNode[]
+  type: 'QUERY' | 'MUTATION',
+  name: string,
+  variables: {}[],
+  nodes: TableNode[]
 };
 
 /**
@@ -90,10 +90,10 @@ export type DocumentNode = {
  * ==============
  */
 export type Config = {
-    variables?: {},
-    orderBy?: string,
-    descending?: boolean,
-    groupBy?: string,
-    limit?: number,
-    offset?: number
+  variables?: {},
+  orderBy?: string,
+  descending?: boolean,
+  groupBy?: string,
+  limit?: number,
+  offset?: number
 };

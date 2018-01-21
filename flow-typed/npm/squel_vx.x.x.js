@@ -14,7 +14,7 @@
  */
 
 declare module 'squel' {
-    declare module.exports: any;
+  declare module.exports: any;
 }
 
 /**
@@ -23,38 +23,38 @@ declare module 'squel' {
  * needed.
  */
 declare module 'squel/dist/squel-basic' {
-    declare module.exports: any;
+  declare module.exports: any;
 }
 
 declare module 'squel/dist/squel-basic.min' {
-    declare module.exports: any;
+  declare module.exports: any;
 }
 
 declare module 'squel/dist/squel' {
-    declare module.exports: any;
+  declare module.exports: any;
 }
 
 declare module 'squel/dist/squel.min' {
-    declare module.exports: any;
+  declare module.exports: any;
 }
 
 declare module 'squel/gulpfile' {
-    declare module.exports: any;
+  declare module.exports: any;
 }
 
 // Filename aliases
 declare module 'squel/dist/squel-basic.js' {
-    declare module.exports: $Exports<'squel/dist/squel-basic'>;
+  declare module.exports: $Exports<'squel/dist/squel-basic'>;
 }
 declare module 'squel/dist/squel-basic.min.js' {
-    declare module.exports: $Exports<'squel/dist/squel-basic.min'>;
+  declare module.exports: $Exports<'squel/dist/squel-basic.min'>;
 }
 declare module 'squel/dist/squel.js' {
-    declare module.exports: $Exports<'squel/dist/squel'>;
+  declare module.exports: $Exports<'squel/dist/squel'>;
 }
 declare module 'squel/dist/squel.min.js' {
-    declare module.exports: $Exports<'squel/dist/squel.min'>;
+  declare module.exports: $Exports<'squel/dist/squel.min'>;
 }
 declare module 'squel/gulpfile.js' {
-    declare module.exports: $Exports<'squel/gulpfile'>;
+  declare module.exports: $Exports<'squel/gulpfile'>;
 }

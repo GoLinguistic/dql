@@ -8,18 +8,18 @@ var fs = _interopDefault(require('fs'));
 var path = _interopDefault(require('path'));
 
 var Nodes = {
-    TABLE: 'TABLE',
-    BOOLEAN: 'BOOLEAN',
-    JOIN: 'JOIN',
-    QUERY: 'QUERY',
-    QUERY_CALL: 'QUERY_CALL',
-    FIELD: 'FIELD',
-    RAW_TEXT: 'RAW',
-    LONG_TEXT: 'LONG_STRING',
-    OPERATION: 'OPERATION',
-    VARIABLE: 'VARIABLE',
-    BUILT_IN: 'BUILT_IN',
-    MUTATION: 'MUTATION'
+  TABLE: 'TABLE',
+  BOOLEAN: 'BOOLEAN',
+  JOIN: 'JOIN',
+  QUERY: 'QUERY',
+  QUERY_CALL: 'QUERY_CALL',
+  FIELD: 'FIELD',
+  RAW_TEXT: 'RAW',
+  LONG_TEXT: 'LONG_STRING',
+  OPERATION: 'OPERATION',
+  VARIABLE: 'VARIABLE',
+  BUILT_IN: 'BUILT_IN',
+  MUTATION: 'MUTATION'
 };
 
 var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -4799,225 +4799,225 @@ var QueryBuilder = (flavor => squel.useFlavour(flavor || 'mysql'));
 
 class Processor {
 
-    constructor(queryBuilder) {
-        if (typeof queryBuilder === 'undefined') throw new Error('A QueryBuilder object is required to initialize a Processor');
+  constructor(queryBuilder) {
+    if (typeof queryBuilder === 'undefined') throw new Error('A QueryBuilder object is required to initialize a Processor');
 
-        this._qb = queryBuilder;
-    }
+    this._qb = queryBuilder;
+  }
 
-    process(docroot, node, config, qb) {
-        throw new Error('No process() method implemented for this class');
-    }
+  process(docroot, node, config, qb) {
+    throw new Error('No process() method implemented for this class');
+  }
 }
 
 function resolveVariable(variable, variables) {
-    const v = variables[variable];
+  const v = variables[variable];
 
-    if (typeof v === 'undefined') throw new Error(`Could not find variable: ${variable}`);
+  if (typeof v === 'undefined') throw new Error(`Could not find variable: ${variable}`);
 
-    return v.value;
+  return v.value;
 }
 
 const getFieldValue = (table, node, aliases) => table !== null ? typeof aliases[node.value] !== 'undefined' ? node.alias : `${table}.${node.value}` : node.value;
 
 class FilterString {
 
-    /**
-     * Handles case where node is a call to a neighboring query (document)
-     *
-     * @param docroot       Document docroot
-     * @param node          Current node
-     * @param flavor        Flavor to use for SQL (postgres, mysql, mssql)
-     * @returns {{text: string, variables: [null]}}
-     * @private
-     */
+  /**
+   * Handles case where node is a call to a neighboring query (document)
+   *
+   * @param docroot       Document docroot
+   * @param node          Current node
+   * @param flavor        Flavor to use for SQL (postgres, mysql, mssql)
+   * @returns {{text: string, variables: [null]}}
+   * @private
+   */
 
-    /**
-     * Handles case where no other conditions are matched and text is treated as a field
-     *
-     * @param table     Table name
-     * @param node      Current node
-     * @param aliases   Pre-defined field aliases
-     * @private
-     */
-    _handleQueryCall(docroot, node, variables, flavor) {
-        // If the node is a call to a neighboring query
-        // Locate the query
-        const target_query = docroot.filter(x => x.type === 'QUERY' && x.name === node.name)[0];
+  /**
+   * Handles case where no other conditions are matched and text is treated as a field
+   *
+   * @param table     Table name
+   * @param node      Current node
+   * @param aliases   Pre-defined field aliases
+   * @private
+   */
+  _handleQueryCall(docroot, node, variables, flavor) {
+    // If the node is a call to a neighboring query
+    // Locate the query
+    const target_query = docroot.filter(x => x.type === 'QUERY' && x.name === node.name)[0];
 
-        if (typeof target_query === 'undefined') {
-            let param_list = [];
+    if (typeof target_query === 'undefined') {
+      let param_list = [];
 
-            node.params.forEach(param => {
-                if (param.type && param.type === Nodes.VARIABLE) param_list.push(resolveVariable(param.value, variables));else if (param.type === Nodes.BOOLEAN) param_list.push(param.value.toString().toUpperCase());else if (param.type === Nodes.LONG_TEXT) param_list.push(`'${param.value}'`);else param_list.push(param.value);
-            });
+      node.params.forEach(param => {
+        if (param.type && param.type === Nodes.VARIABLE) param_list.push(resolveVariable(param.value, variables));else if (param.type === Nodes.BOOLEAN) param_list.push(param.value.toString().toUpperCase());else if (param.type === Nodes.LONG_TEXT) param_list.push(`'${param.value}'`);else param_list.push(param.value);
+      });
 
-            return {
-                text: `${node.name}(${param_list.join(', ')})`,
-                variables: []
-            };
-        }
-
-        // Extract the required variables in the query declaration
-        const tq_variables = target_query.variables;
-
-        // Initialize a map of variables
-
-        const vmap = {};
-
-        // For each of the required variables
-        tq_variables.forEach((v, index) => {
-            const param = node.params[index];
-
-            // If the param passed at the end of that variable is itself
-            // a variable, resolve it before passing it in
-            if (param.type === Nodes.VARIABLE) vmap[v.name] = resolveVariable(param.value, variables);else
-                // Otherwise just pass in the param
-                vmap[v.name] = param.value;
-        });
-
-        // Return the object and process the call
-        return {
-            text: '?',
-            variables: [QueryProcessor$1(flavor).process(docroot, target_query, {
-                variables: vmap
-            })]
-        };
+      return {
+        text: `${node.name}(${param_list.join(', ')})`,
+        variables: []
+      };
     }
 
-    /**
-     * Handles case where current node is a built-in SQL function
-     *
-     * @param node  Current node
-     * @private
-     */
+    // Extract the required variables in the query declaration
+    const tq_variables = target_query.variables;
+
+    // Initialize a map of variables
+
+    const vmap = {};
+
+    // For each of the required variables
+    tq_variables.forEach((v, index) => {
+      const param = node.params[index];
+
+      // If the param passed at the end of that variable is itself
+      // a variable, resolve it before passing it in
+      if (param.type === Nodes.VARIABLE) vmap[v.name] = resolveVariable(param.value, variables);else
+        // Otherwise just pass in the param
+        vmap[v.name] = param.value;
+    });
+
+    // Return the object and process the call
+    return {
+      text: '?',
+      variables: [QueryProcessor$1(flavor).process(docroot, target_query, {
+        variables: vmap
+      })]
+    };
+  }
+
+  /**
+   * Handles case where current node is a built-in SQL function
+   *
+   * @param node  Current node
+   * @private
+   */
 
 
-    /**
-     * Handles case where text appears on the left side of the operator
-     *
-     * @param table     Table name
-     * @param node      Current node
-     * @param aliases   Pre-defined field aliases
-     * @private
-     */
+  /**
+   * Handles case where text appears on the left side of the operator
+   *
+   * @param table     Table name
+   * @param node      Current node
+   * @param aliases   Pre-defined field aliases
+   * @private
+   */
 
 
-    /**
-     * Handles case where current node is a variable
-     *
-     * @param node  Current node
-     * @private
-     */
+  /**
+   * Handles case where current node is a variable
+   *
+   * @param node  Current node
+   * @private
+   */
 
 
-    /**
-     * Handles case where current node is another operator
-     *
-     * @param docroot          Document docroot
-     * @param table         Table name
-     * @param node          Current node
-     * @param variables     Global variable map
-     * @param aliases       Pre-defined field aliases
-     * @param flavor        Flavor to use for SQL
-     * @returns {{text: string, variables: [null,null]}}
-     * @private
-     */
-    _handleOperation(docroot, table, node, variables, aliases, flavor) {
-        const a = node.a;
-        const op = node.op;
-        const b = node.b;
+  /**
+   * Handles case where current node is another operator
+   *
+   * @param docroot          Document docroot
+   * @param table         Table name
+   * @param node          Current node
+   * @param variables     Global variable map
+   * @param aliases       Pre-defined field aliases
+   * @param flavor        Flavor to use for SQL
+   * @returns {{text: string, variables: [null,null]}}
+   * @private
+   */
+  _handleOperation(docroot, table, node, variables, aliases, flavor) {
+    const a = node.a;
+    const op = node.op;
+    const b = node.b;
 
-        // Recurse on both sides of the operand
-        const a_bos = this._buildString(docroot, table, a, variables, true, aliases, flavor);
+    // Recurse on both sides of the operand
+    const a_bos = this._buildString(docroot, table, a, variables, true, aliases, flavor);
 
-        const b_bos = this._buildString(docroot, null, b, variables, false, aliases, flavor);
+    const b_bos = this._buildString(docroot, null, b, variables, false, aliases, flavor);
 
-        // We return text and variables separately to allow Squel
-        // to sanitize the input
-        return {
-            text: `${a_bos.text} ${op} ${b_bos.text}`,
-            variables: [...a_bos.variables, ...b_bos.variables]
-        };
+    // We return text and variables separately to allow Squel
+    // to sanitize the input
+    return {
+      text: `${a_bos.text} ${op} ${b_bos.text}`,
+      variables: [...a_bos.variables, ...b_bos.variables]
+    };
+  }
+
+  /**
+   * Builds a string from the operator tree found in selector blocks (inside parens)
+   *
+   * @param docroot       Document docroot
+   * @param table         Table name
+   * @param node          Current node
+   * @param variables     Global variable map
+   * @param left_side     Boolean denoting whether the node is on the left site of an operator
+   * @param aliases       Pre-defined field aliases
+   * @param flavor        Flavor to use for SQL
+   * @returns {*}
+   */
+  _buildString(docroot, table, node, variables, left_side, aliases, flavor) {
+    let value = null;
+
+    switch (node.type) {
+      case Nodes.OPERATION:
+        value = this._handleOperation(docroot, table, node, variables, aliases, flavor);
+        break;
+      case Nodes.VARIABLE:
+        value = this._handleVariable(node, variables);
+        break;
+      case Nodes.BUILT_IN:
+        value = this._handleBuiltIn(node);
+        break;
+      case Nodes.QUERY_CALL:
+        value = this._handleQueryCall(docroot, node, variables, flavor);
+        break;
+      case Nodes.RAW_TEXT:
+        value = this._handleLeftSide(table, node, aliases);
+        break;
+      default:
+        value = left_side ? this._handleLeftSide(table, node, aliases) : this._handleText(table, node, aliases);
     }
 
-    /**
-     * Builds a string from the operator tree found in selector blocks (inside parens)
-     *
-     * @param docroot       Document docroot
-     * @param table         Table name
-     * @param node          Current node
-     * @param variables     Global variable map
-     * @param left_side     Boolean denoting whether the node is on the left site of an operator
-     * @param aliases       Pre-defined field aliases
-     * @param flavor        Flavor to use for SQL
-     * @returns {*}
-     */
-    _buildString(docroot, table, node, variables, left_side, aliases, flavor) {
-        let value = null;
+    return value;
+  }
 
-        switch (node.type) {
-            case Nodes.OPERATION:
-                value = this._handleOperation(docroot, table, node, variables, aliases, flavor);
-                break;
-            case Nodes.VARIABLE:
-                value = this._handleVariable(node, variables);
-                break;
-            case Nodes.BUILT_IN:
-                value = this._handleBuiltIn(node);
-                break;
-            case Nodes.QUERY_CALL:
-                value = this._handleQueryCall(docroot, node, variables, flavor);
-                break;
-            case Nodes.RAW_TEXT:
-                value = this._handleLeftSide(table, node, aliases);
-                break;
-            default:
-                value = left_side ? this._handleLeftSide(table, node, aliases) : this._handleText(table, node, aliases);
-        }
+  constructor(docroot, table, node, variables, aliases, flavor) {
+    _initialiseProps.call(this);
 
-        return value;
-    }
-
-    constructor(docroot, table, node, variables, aliases, flavor) {
-        _initialiseProps.call(this);
-
-        this._string = this._buildString(docroot, table, node, variables, false, aliases || {}, flavor);
-    }
+    this._string = this._buildString(docroot, table, node, variables, false, aliases || {}, flavor);
+  }
 
 }
 
 var _initialiseProps = function _initialiseProps() {
-    this._handleText = (table, node, aliases) => ({
-        // Assume anything else is a field, and prepend
-        // the table name if one is available
-        text: '?',
-        variables: [getFieldValue(table, node, aliases)]
-    });
+  this._handleText = (table, node, aliases) => ({
+    // Assume anything else is a field, and prepend
+    // the table name if one is available
+    text: '?',
+    variables: [getFieldValue(table, node, aliases)]
+  });
 
-    this._handleLeftSide = (table, node, aliases) => ({
-        text: getFieldValue(table, node, aliases),
-        variables: []
-    });
+  this._handleLeftSide = (table, node, aliases) => ({
+    text: getFieldValue(table, node, aliases),
+    variables: []
+  });
 
-    this._handleBuiltIn = node => ({
-        // If the node is a built-in SQL function such as INTERVAL
-        // Return built-in SQL operations as is
-        // They're not special
-        text: node.value,
-        variables: []
-    });
+  this._handleBuiltIn = node => ({
+    // If the node is a built-in SQL function such as INTERVAL
+    // Return built-in SQL operations as is
+    // They're not special
+    text: node.value,
+    variables: []
+  });
 
-    this._handleVariable = (node, variables) => ({
-        // If the node is a $variable
-        // Resolve any variable node and return the object
-        // The text just becomes '?', which tells Squel where
-        // to interpolate the variable
-        text: '?',
-        variables: [resolveVariable(node.value, variables)]
-    });
+  this._handleVariable = (node, variables) => ({
+    // If the node is a $variable
+    // Resolve any variable node and return the object
+    // The text just becomes '?', which tells Squel where
+    // to interpolate the variable
+    text: '?',
+    variables: [resolveVariable(node.value, variables)]
+  });
 
-    this.toString = () => this._string;
+  this.toString = () => this._string;
 };
 
 var _extends = Object.assign || function (target) {
@@ -5060,314 +5060,314 @@ var objectWithoutProperties = function (obj, keys) {
 
 // Flow has to ignore this file because of the recursion in builderOperationStringHelper()
 class Helpers {
-    /**
-     * Gets all the fields from a table or join node
-     *
-     * @param node  Table or join node
-     */
-    static getFieldsFromNode(node) {
-        const type = node.type,
-              table = node.table,
-              name = node.name,
-              nodes = node.nodes;
+  /**
+   * Gets all the fields from a table or join node
+   *
+   * @param node  Table or join node
+   */
+  static getFieldsFromNode(node) {
+    const type = node.type,
+          table = node.table,
+          name = node.name,
+          nodes = node.nodes;
 
 
-        return nodes.filter(x => x.type === Nodes.FIELD).map(x => _extends({}, x, {
-            name: type === Nodes.JOIN ? `${table}.${x.name}` : `${name}.${x.name}`
-        }));
+    return nodes.filter(x => x.type === Nodes.FIELD).map(x => _extends({}, x, {
+      name: type === Nodes.JOIN ? `${table}.${x.name}` : `${name}.${x.name}`
+    }));
+  }
+
+  /**
+   * Returns anything that can be identified as a "field" in an operator tree
+   * Careful – any text that doesn't conform to a set grammar can be identified as a field
+   * Better to keep your selectors simple for now
+   *
+   * @param node          Base node of operator tree
+   * @param variables     Variables passed to query
+   * @param initial       Initial array to add values to
+   * @returns {*}
+   */
+  static getFieldsFromOperationString(node, variables, initial) {
+    if (node.type === Nodes.OPERATION) {
+      const a = node.a;
+
+      initial = [...initial, ...this.getFieldsFromOperationString(a, variables, initial)];
+
+      return initial;
+    } else if (node.type === Nodes.VARIABLE) {
+      return [variables[node]];
+    } else {
+      return [node];
+    }
+  }
+
+  /**
+   * Gets the whole recursion thing for buildOperationStringHelper going
+   * @param docroot
+   * @param table
+   * @param node
+   * @param variables
+   * @returns {{text, variables}}
+   */
+  static buildFilterString(docroot, table, node, variables, aliases, flavor) {
+    return new FilterString(docroot, table, node, variables, aliases, flavor).toString();
+  }
+
+  /**
+   * Applies a WHERE statement to a QueryBuilder object
+   *
+   * @param node  Table node
+   * @param qb
+   */
+  static applyWhereStatement(docroot, node, variables, qb) {
+    // Get the name and parameters associated with the table
+    const params = node.params;
+
+    // From the parameters, create an operator tree and generate
+    // an array of selector strings to use in the WHERE() call
+
+    const selectors = params.map(x => Helpers.buildFilterString(docroot, null, x, variables, [], qb.flavour));
+
+    // If the user has included selectors, add those too
+    if (selectors.length > 0) {
+      qb = qb.where(selectors.map(x => x.text).join(' AND '), ...selectors.map(x => x.variables).reduce((a, b) => a.concat(b)));
+    }
+  }
+  /**
+   * Interpolates variables into strings using '?' like Squel does
+   *
+   * @param string        String containing '?''s
+   * @param variables     Array of variables
+   * @returns {*}
+   */
+  static interpolateVariables(string, variables) {
+    // Matches all standalone question marks (?) in a string
+    const regex = /(\s+\?\s+)|(^\?\s+)|(\s+\?$)/g;
+
+    // Define an iterator to know which match we're on
+    let iterator = 0;
+
+    // Index of the last matched question mark
+    let last_index = 0;
+
+    // Our final message
+    let message = '';
+
+    // Match the first question mark
+    let match = regex.exec(string);
+
+    // Recursively match all question marks in the string
+    while (match !== null) {
+      // Get the variable at that index
+      let v = variables[iterator];
+
+      // If there isn't a variable available, error
+      if (typeof v === 'undefined') throw new Error('Missing variable. Cannot interpolate.');
+
+      // Replace the question mark with the variable value
+      message += `${string.substring(last_index, match.index)} ${v}`;
+
+      // Increment the last index
+      last_index = match.index + (match.index === 0 ? 1 : 2);
+
+      // Increment the iterator
+      iterator++;
+
+      // Match the next question mark
+      match = regex.exec(string);
     }
 
-    /**
-     * Returns anything that can be identified as a "field" in an operator tree
-     * Careful – any text that doesn't conform to a set grammar can be identified as a field
-     * Better to keep your selectors simple for now
-     *
-     * @param node          Base node of operator tree
-     * @param variables     Variables passed to query
-     * @param initial       Initial array to add values to
-     * @returns {*}
-     */
-    static getFieldsFromOperationString(node, variables, initial) {
-        if (node.type === Nodes.OPERATION) {
-            const a = node.a;
+    // Append the rest of the string, whatever that may be
+    message += string.substring(last_index, string.length);
 
-            initial = [...initial, ...this.getFieldsFromOperationString(a, variables, initial)];
-
-            return initial;
-        } else if (node.type === Nodes.VARIABLE) {
-            return [variables[node]];
-        } else {
-            return [node];
-        }
-    }
-
-    /**
-     * Gets the whole recursion thing for buildOperationStringHelper going
-     * @param docroot
-     * @param table
-     * @param node
-     * @param variables
-     * @returns {{text, variables}}
-     */
-    static buildFilterString(docroot, table, node, variables, aliases, flavor) {
-        return new FilterString(docroot, table, node, variables, aliases, flavor).toString();
-    }
-
-    /**
-     * Applies a WHERE statement to a QueryBuilder object
-     *
-     * @param node  Table node
-     * @param qb
-     */
-    static applyWhereStatement(docroot, node, variables, qb) {
-        // Get the name and parameters associated with the table
-        const params = node.params;
-
-        // From the parameters, create an operator tree and generate
-        // an array of selector strings to use in the WHERE() call
-
-        const selectors = params.map(x => Helpers.buildFilterString(docroot, null, x, variables, [], qb.flavour));
-
-        // If the user has included selectors, add those too
-        if (selectors.length > 0) {
-            qb = qb.where(selectors.map(x => x.text).join(' AND '), ...selectors.map(x => x.variables).reduce((a, b) => a.concat(b)));
-        }
-    }
-    /**
-     * Interpolates variables into strings using '?' like Squel does
-     *
-     * @param string        String containing '?''s
-     * @param variables     Array of variables
-     * @returns {*}
-     */
-    static interpolateVariables(string, variables) {
-        // Matches all standalone question marks (?) in a string
-        const regex = /(\s+\?\s+)|(^\?\s+)|(\s+\?$)/g;
-
-        // Define an iterator to know which match we're on
-        let iterator = 0;
-
-        // Index of the last matched question mark
-        let last_index = 0;
-
-        // Our final message
-        let message = '';
-
-        // Match the first question mark
-        let match = regex.exec(string);
-
-        // Recursively match all question marks in the string
-        while (match !== null) {
-            // Get the variable at that index
-            let v = variables[iterator];
-
-            // If there isn't a variable available, error
-            if (typeof v === 'undefined') throw new Error('Missing variable. Cannot interpolate.');
-
-            // Replace the question mark with the variable value
-            message += `${string.substring(last_index, match.index)} ${v}`;
-
-            // Increment the last index
-            last_index = match.index + (match.index === 0 ? 1 : 2);
-
-            // Increment the iterator
-            iterator++;
-
-            // Match the next question mark
-            match = regex.exec(string);
-        }
-
-        // Append the rest of the string, whatever that may be
-        message += string.substring(last_index, string.length);
-
-        return message;
-    }
+    return message;
+  }
 }
 
 class JoinProcessor extends Processor {
-    /**
-     * Applies fields to a QueryBuilder given an alias set
-     *
-     * @param qb        QueryBuilder object
-     * @param fields    Collection of FIELD nodes
-     * @param aliases   Array of defined aliases
-     * @private
-     */
-    _applyFields(qb, fields, aliases) {
-        fields.forEach(field => {
-            if (field.alias) {
-                // Use an alias if one has already been defined for the field
-                if (aliases.includes(field.alias)) qb.field(field.alias);else {
-                    // Otherwise declare the alias and add it to our list of aliases
-                    qb.field(field.name, field.alias);
-                    aliases.push(field.alias);
-                }
-            } else
-                // Or just add the value if there isn't an alias
-                qb.field(field.name);
-        });
-    }
+  /**
+   * Applies fields to a QueryBuilder given an alias set
+   *
+   * @param qb        QueryBuilder object
+   * @param fields    Collection of FIELD nodes
+   * @param aliases   Array of defined aliases
+   * @private
+   */
+  _applyFields(qb, fields, aliases) {
+    fields.forEach(field => {
+      if (field.alias) {
+        // Use an alias if one has already been defined for the field
+        if (aliases.includes(field.alias)) qb.field(field.alias);else {
+          // Otherwise declare the alias and add it to our list of aliases
+          qb.field(field.name, field.alias);
+          aliases.push(field.alias);
+        }
+      } else
+        // Or just add the value if there isn't an alias
+        qb.field(field.name);
+    });
+  }
 
-    /**
-     * Gets the "on" selector string from an operation tree
-     *
-     * @param docroot       Document root
-     * @param node          Join node
-     * @param variables     Global variable map
-     * @returns {string}
-     * @private
-     */
-    _getOnString(docroot, node, variables, aliases) {
-        const op = Helpers.buildFilterString(docroot, node.table, node.on[0], variables, aliases, this._qb.flavour);
+  /**
+   * Gets the "on" selector string from an operation tree
+   *
+   * @param docroot       Document root
+   * @param node          Join node
+   * @param variables     Global variable map
+   * @returns {string}
+   * @private
+   */
+  _getOnString(docroot, node, variables, aliases) {
+    const op = Helpers.buildFilterString(docroot, node.table, node.on[0], variables, aliases, this._qb.flavour);
 
-        return Helpers.interpolateVariables(op.text, op.variables);
-    }
+    return Helpers.interpolateVariables(op.text, op.variables);
+  }
 
-    /**
-     * Adds "where" selectors to QueryBuilder if possible
-     *
-     * @param docroot       Document root
-     * @param node          Join node
-     * @param variables     Global variable map
-     * @param qb            QueryBuilder
-     * @returns {string}
-     * @private
-     */
-    _addSelectors(docroot, node, variables, qb) {
-        const where = node.on.slice(1);
+  /**
+   * Adds "where" selectors to QueryBuilder if possible
+   *
+   * @param docroot       Document root
+   * @param node          Join node
+   * @param variables     Global variable map
+   * @param qb            QueryBuilder
+   * @returns {string}
+   * @private
+   */
+  _addSelectors(docroot, node, variables, qb) {
+    const where = node.on.slice(1);
 
-        // Spoof a table node and add a where statement
-        Helpers.applyWhereStatement(docroot, {
-            params: where
-        }, variables, qb);
-    }
+    // Spoof a table node and add a where statement
+    Helpers.applyWhereStatement(docroot, {
+      params: where
+    }, variables, qb);
+  }
 
-    /**
-     * Adds all possible fields and subjoins in a join to a QueryBuilder
-     *
-     * @param docroot       Document root
-     * @param node          Join node
-     * @param variables     Global variable map
-     * @param qb            QueryBuilder
-     * @returns {string[]}  All available fields
-     * @private
-     */
-    _addAllFieldsAndJoins(docroot, node, variables, aliases, qb) {
-        const table = node.table,
-              on = node.on;
+  /**
+   * Adds all possible fields and subjoins in a join to a QueryBuilder
+   *
+   * @param docroot       Document root
+   * @param node          Join node
+   * @param variables     Global variable map
+   * @param qb            QueryBuilder
+   * @returns {string[]}  All available fields
+   * @private
+   */
+  _addAllFieldsAndJoins(docroot, node, variables, aliases, qb) {
+    const table = node.table,
+          on = node.on;
 
-        // Get all local fields
+    // Get all local fields
 
-        const fields = Helpers.getFieldsFromNode(node);
+    const fields = Helpers.getFieldsFromNode(node);
 
-        // Get all subjoins
-        const joins = this._getAllSubjoins(docroot, node, variables, aliases);
+    // Get all subjoins
+    const joins = this._getAllSubjoins(docroot, node, variables, aliases);
 
-        // Extract fields from all sub-joins
-        const join_fields = joins.length > 0 ? joins.map(x => x.fields).reduce((a, b) => a.concat(b)) : [];
+    // Extract fields from all sub-joins
+    const join_fields = joins.length > 0 ? joins.map(x => x.fields).reduce((a, b) => a.concat(b)) : [];
 
-        // Add local fields to query
-        fields.forEach(field => {
-            if (field.value) throw new Error('Values cannot be assigned to fields in a query document');
-            qb.field(field.name);
-        });
+    // Add local fields to query
+    fields.forEach(field => {
+      if (field.value) throw new Error('Values cannot be assigned to fields in a query document');
+      qb.field(field.name);
+    });
 
-        if (qb.field == null) console.log('fuck');
-        // All sub-join fields to query
-        joins.forEach(join => this._applyFields(qb, join.fields, aliases));
+    if (qb.field == null) console.log('fuck');
+    // All sub-join fields to query
+    joins.forEach(join => this._applyFields(qb, join.fields, aliases));
 
-        // Get just field values
-        const field_vals = fields.map(x => x.value);
+    // Get just field values
+    const field_vals = fields.map(x => x.value);
 
-        // Apply fields from the 'on' selector
-        Helpers.getFieldsFromOperationString(on[0], variables, []).forEach(field => {
-            const name = `${table}.${field.value}`;
-            if (!field_vals.includes(name)) qb.field(name);
-        });
+    // Apply fields from the 'on' selector
+    Helpers.getFieldsFromOperationString(on[0], variables, []).forEach(field => {
+      const name = `${table}.${field.value}`;
+      if (!field_vals.includes(name)) qb.field(name);
+    });
 
-        // Add all sub-joins to the query
-        joins.forEach(join => qb.join(join.qb, join.table, join.on));
+    // Add all sub-joins to the query
+    joins.forEach(join => qb.join(join.qb, join.table, join.on));
 
-        return [...fields, ...join_fields];
-    }
+    return [...fields, ...join_fields];
+  }
 
-    /**
-     * Gets all subjoins in a join node
-     *
-     * @param node
-     * @returns {ProcessedJoin[]}
-     * @private
-     */
-    _getAllSubjoins(docroot, node, variables, aliases) {
-        const nodes = node.nodes;
+  /**
+   * Gets all subjoins in a join node
+   *
+   * @param node
+   * @returns {ProcessedJoin[]}
+   * @private
+   */
+  _getAllSubjoins(docroot, node, variables, aliases) {
+    const nodes = node.nodes;
 
-        const joins = [];
+    const joins = [];
 
-        nodes.filter(x => x.type === Nodes.JOIN).forEach(join => {
-            joins.push(this._processJoin(docroot, join, variables, aliases));
-        });
+    nodes.filter(x => x.type === Nodes.JOIN).forEach(join => {
+      joins.push(this._processJoin(docroot, join, variables, aliases));
+    });
 
-        return joins;
-    }
+    return joins;
+  }
 
-    /**
-     *  Processes JOIN blocks and adds their fields to the global fields
-     *
-     * @param docroot          Document docroot
-     * @param node          JOIN node
-     * @param variables     Global variable map
-     * @param aliases       Keeps track of all previously declared aliases up the stack
-     * @private
-     */
-    _processJoin(docroot, node, variables, aliases) {
-        // Get basic information associated with join
-        const table = node.table;
+  /**
+   *  Processes JOIN blocks and adds their fields to the global fields
+   *
+   * @param docroot          Document docroot
+   * @param node          JOIN node
+   * @param variables     Global variable map
+   * @param aliases       Keeps track of all previously declared aliases up the stack
+   * @private
+   */
+  _processJoin(docroot, node, variables, aliases) {
+    // Get basic information associated with join
+    const table = node.table;
 
-        // Start a new QueryBuilder
+    // Start a new QueryBuilder
 
-        const qb = this._qb.select().from(table);
+    const qb = this._qb.select().from(table);
 
-        // Get 'on' selector as interpolated string
-        const on = this._getOnString(docroot, node, variables, aliases);
+    // Get 'on' selector as interpolated string
+    const on = this._getOnString(docroot, node, variables, aliases);
 
-        // Add 'where' statement if applicable
-        this._addSelectors(docroot, node, variables, qb);
+    // Add 'where' statement if applicable
+    this._addSelectors(docroot, node, variables, qb);
 
-        // Gets and applies all fields contained in this join
-        const fields = this._addAllFieldsAndJoins(docroot, node, variables, aliases, qb);
+    // Gets and applies all fields contained in this join
+    const fields = this._addAllFieldsAndJoins(docroot, node, variables, aliases, qb);
 
-        // Return an object with info about the JOIN
-        return {
-            qb, // <-- QueryBuilder object
-            table, // <-- table name
-            fields, // <-- All fields
-            on // <-- 'on' selector statement
-        };
-    }
+    // Return an object with info about the JOIN
+    return {
+      qb, // <-- QueryBuilder object
+      table, // <-- table name
+      fields, // <-- All fields
+      on // <-- 'on' selector statement
+    };
+  }
 
-    /**
-     * Processes a table's JOINs
-     * Should be run right after fields are defined in a table
-     *
-     * @param docroot          docroot of the document
-     * @param node          Table node
-     * @param variables     Global variables
-     * @param qb            QueryBuilder object
-     * @returns {*}
-     */
-    process(docroot, node, variables, qb) {
-        const aliases = [];
-        const joins = node.nodes.filter(x => x.type === Nodes.JOIN).map(x => this._processJoin(docroot, x, variables, aliases));
+  /**
+   * Processes a table's JOINs
+   * Should be run right after fields are defined in a table
+   *
+   * @param docroot          docroot of the document
+   * @param node          Table node
+   * @param variables     Global variables
+   * @param qb            QueryBuilder object
+   * @returns {*}
+   */
+  process(docroot, node, variables, qb) {
+    const aliases = [];
+    const joins = node.nodes.filter(x => x.type === Nodes.JOIN).map(x => this._processJoin(docroot, x, variables, aliases));
 
-        if (qb.field != null)
-            // Add fields from joins
-            joins.forEach(join => this._applyFields(qb, join.fields, aliases));
+    if (qb.field != null)
+      // Add fields from joins
+      joins.forEach(join => this._applyFields(qb, join.fields, aliases));
 
-        // Add JOIN statements from joins
-        joins.forEach(join => qb.join(join.qb, join.table, join.on));
+    // Add JOIN statements from joins
+    joins.forEach(join => qb.join(join.qb, join.table, join.on));
 
-        return qb;
-    }
+    return qb;
+  }
 }
 
 var JoinProcessor$1 = (queryBuilder => new JoinProcessor(queryBuilder));
@@ -5379,127 +5379,127 @@ var JoinProcessor$1 = (queryBuilder => new JoinProcessor(queryBuilder));
  */
 class QueryProcessor extends Processor {
 
-    /**
-     * Adds fields from a table to a QueryBuilder object
-     *
-     * @param node          The table node
-     * @param variables     Global variables
-     * @param qb            The QueryBuilder
-     * @private
-     */
-    _addTableFields(node, qb) {
-        const fields = Helpers.getFieldsFromNode(node);
-        // Iterate through each field and add it to the QueryBuilder
-        fields.forEach(field => {
-            if (field.value) throw new Error('Values cannot be assigned to fields in a query document');else if (field.alias) qb.field(field.name, field.alias);else qb.field(field.name);
-        });
+  /**
+   * Adds fields from a table to a QueryBuilder object
+   *
+   * @param node          The table node
+   * @param variables     Global variables
+   * @param qb            The QueryBuilder
+   * @private
+   */
+  _addTableFields(node, qb) {
+    const fields = Helpers.getFieldsFromNode(node);
+    // Iterate through each field and add it to the QueryBuilder
+    fields.forEach(field => {
+      if (field.value) throw new Error('Values cannot be assigned to fields in a query document');else if (field.alias) qb.field(field.name, field.alias);else qb.field(field.name);
+    });
+  }
+
+  /**
+   * Adds configuration options to a QueryBuilder object
+   *
+   * @param options   Options object
+   * @param qb        QueryBuilder
+   * @private
+   */
+  _addConfigOptions(options, qb) {
+    const orderBy = options.orderBy,
+          descending = options.descending,
+          groupBy = options.groupBy,
+          limit = options.limit,
+          offset = options.offset;
+
+    const exists = obj => typeof obj !== 'undefined' && obj !== null;
+
+    // Add grouping
+    if (exists(groupBy)) qb.group(groupBy);
+
+    // Add sorting
+    if (exists(orderBy)) qb.order(orderBy, !descending);
+
+    // Add offset
+    if (exists(offset)) qb.offset(offset);
+
+    // Add limit
+    if (exists(limit)) qb.limit(limit);
+  }
+
+  /**
+   * Processes a table node
+   *
+   * @param qb            The QueryBuilder object
+   * @param docroot          The docroot of the document (contains all queries, mutations, etc.)
+   * @param node          The table node to process
+   * @param variables     All variables passed to the query
+   * @returns {qb}
+   * @private
+   */
+  _processTable(docroot, node, variables, options) {
+    // Get the name and parameters associated with the table
+    const name = node.name;
+
+    const del = node.delete;
+
+    if (del) throw new Error('Queries cannot contain delete statements');else {
+      // Initialize qb
+      let qb = this._qb.select().from(name);
+
+      // Add fields from table
+      this._addTableFields(node, qb);
+
+      // Iterate through each join and add it to the QueryBuilder
+      qb = JoinProcessor$1(this._qb).process(docroot, node, variables, qb);
+
+      // Apply a WHERE statement if applicable
+      Helpers.applyWhereStatement(docroot, node, variables, qb);
+
+      this._addConfigOptions(options, qb);
+
+      return qb;
     }
+  }
 
-    /**
-     * Adds configuration options to a QueryBuilder object
-     *
-     * @param options   Options object
-     * @param qb        QueryBuilder
-     * @private
-     */
-    _addConfigOptions(options, qb) {
-        const orderBy = options.orderBy,
-              descending = options.descending,
-              groupBy = options.groupBy,
-              limit = options.limit,
-              offset = options.offset;
+  /**
+   * Processes a query document
+   *
+   * @param docroot          docroot of the document
+   * @param node          Query node
+   * @param variables     Global variables
+   * @returns {QueryBuilder}
+   */
+  process(docroot, node, config, qb = this._qb) {
+    const req_var = node.variables,
+          nodes = node.nodes;
+    let variables = config.variables,
+        options = objectWithoutProperties(config, ['variables']);
 
-        const exists = obj => typeof obj !== 'undefined' && obj !== null;
+    // Clone the variables
 
-        // Add grouping
-        if (exists(groupBy)) qb.group(groupBy);
+    variables = Object.assign({}, variables);
 
-        // Add sorting
-        if (exists(orderBy)) qb.order(orderBy, !descending);
+    if (node.type !== Nodes.QUERY) throw new Error('Only a query document node can be passed to a QueryProcessor');
 
-        // Add offset
-        if (exists(offset)) qb.offset(offset);
+    req_var.forEach(v => {
+      if (variables && variables.hasOwnProperty(v.name)) {
+        variables[v.name] = {
+          value: variables[v.name],
+          required: v.required
+        };
+      } else {
+        if (v.required) throw new Error(`Missing required variable ${v.name}`);
+      }
+    });
 
-        // Add limit
-        if (exists(limit)) qb.limit(limit);
-    }
+    const tables = nodes.filter(x => x.type === Nodes.TABLE);
 
-    /**
-     * Processes a table node
-     *
-     * @param qb            The QueryBuilder object
-     * @param docroot          The docroot of the document (contains all queries, mutations, etc.)
-     * @param node          The table node to process
-     * @param variables     All variables passed to the query
-     * @returns {qb}
-     * @private
-     */
-    _processTable(docroot, node, variables, options) {
-        // Get the name and parameters associated with the table
-        const name = node.name;
+    if (tables.length < 1) throw new Error('Query must contain at least one table');
 
-        const del = node.delete;
+    tables.forEach(table => {
+      qb = this._processTable(docroot, table, variables || {}, options);
+    });
 
-        if (del) throw new Error('Queries cannot contain delete statements');else {
-            // Initialize qb
-            let qb = this._qb.select().from(name);
-
-            // Add fields from table
-            this._addTableFields(node, qb);
-
-            // Iterate through each join and add it to the QueryBuilder
-            qb = JoinProcessor$1(this._qb).process(docroot, node, variables, qb);
-
-            // Apply a WHERE statement if applicable
-            Helpers.applyWhereStatement(docroot, node, variables, qb);
-
-            this._addConfigOptions(options, qb);
-
-            return qb;
-        }
-    }
-
-    /**
-     * Processes a query document
-     *
-     * @param docroot          docroot of the document
-     * @param node          Query node
-     * @param variables     Global variables
-     * @returns {QueryBuilder}
-     */
-    process(docroot, node, config, qb = this._qb) {
-        const req_var = node.variables,
-              nodes = node.nodes;
-        let variables = config.variables,
-            options = objectWithoutProperties(config, ['variables']);
-
-        // Clone the variables
-
-        variables = Object.assign({}, variables);
-
-        if (node.type !== Nodes.QUERY) throw new Error('Only a query document node can be passed to a QueryProcessor');
-
-        req_var.forEach(v => {
-            if (variables && variables.hasOwnProperty(v.name)) {
-                variables[v.name] = {
-                    value: variables[v.name],
-                    required: v.required
-                };
-            } else {
-                if (v.required) throw new Error(`Missing required variable ${v.name}`);
-            }
-        });
-
-        const tables = nodes.filter(x => x.type === Nodes.TABLE);
-
-        if (tables.length < 1) throw new Error('Query must contain at least one table');
-
-        tables.forEach(table => {
-            qb = this._processTable(docroot, table, variables || {}, options);
-        });
-
-        return qb;
-    }
+    return qb;
+  }
 }
 
 var QueryProcessor$1 = (flavor => new QueryProcessor(QueryBuilder(flavor)));
@@ -5511,226 +5511,226 @@ var QueryProcessor$1 = (flavor => new QueryProcessor(QueryBuilder(flavor)));
  */
 class MutationProcessor extends Processor {
 
-    /**
-     * Adds fields from a table to a QueryBuilder object
-     *
-     * @param node          The table node
-     * @param variables     Global variables
-     * @param qb            The QueryBuilder
-     * @private
-     */
-    _addTableFields(node, variables, qb) {
-        const fields = node.nodes.filter(x => x.type === Nodes.FIELD);
-        let count = 0;
+  /**
+   * Adds fields from a table to a QueryBuilder object
+   *
+   * @param node          The table node
+   * @param variables     Global variables
+   * @param qb            The QueryBuilder
+   * @private
+   */
+  _addTableFields(node, variables, qb) {
+    const fields = node.nodes.filter(x => x.type === Nodes.FIELD);
+    let count = 0;
 
-        fields.forEach(field => {
-            this._verifyField(field);
+    fields.forEach(field => {
+      this._verifyField(field);
 
-            try {
-                switch (field.value.type) {
-                    case Nodes.VARIABLE:
-                        const variable = field.value.value;
-                        const val = variables[variable];
+      try {
+        switch (field.value.type) {
+          case Nodes.VARIABLE:
+            const variable = field.value.value;
+            const val = variables[variable];
 
-                        if (typeof val !== 'undefined') {
-                            qb.set(field.name, val.value);
-                            count++;
-                        }
-
-                        break;
-                    case Nodes.RAW_TEXT:
-                        qb.set(field.name, this._qb.str(field.value.value));
-                        count++;
-                        break;
-                    default:
-                        qb.set(field.name, field.value.value);
-                        count++;
-                }
-            } catch (e) {
-                console.error(`Value \`${field.value.value}\` for field \`${field.name}\` is invalid`);
+            if (typeof val !== 'undefined') {
+              qb.set(field.name, val.value);
+              count++;
             }
-        });
 
-        if (count === 0) throw new Error('At least one field must be set in a mutation');
-    }
-
-    /**
-     * Verifies a field to make sure it is valid for a mutation
-     *
-     * @param field     The field node
-     * @returns {boolean}
-     * @private
-     */
-    _verifyField(field) {
-        if (field.alias) throw new Error('Aliases not allowed in mutations');else if (field.value === null) throw new Error(`Value required for field '${field.name}'`);else return true;
-    }
-
-    /**
-     * Processed an INSERT statement
-     *
-     * @param docroot          The document docroot
-     * @param node          The table node
-     * @param variables     Global variables
-     * @param options       Config object
-     * @returns {QueryBuilder}
-     * @private
-     */
-    _processInsert(docroot, node, variables, options) {
-        const name = node.name;
-        const returning = options.returning;
-
-        let qb = this._qb.insert().into(name);
-
-        this._addTableFields(node, variables, qb);
-
-        if (returning) qb.returning(returning);
-
-        return qb;
-    }
-
-    /**
-     * Processes an UPDATE statement
-     *
-     * @param docroot          The document docroot
-     * @param node          The table node
-     * @param variables     Global variables
-     * @param options       Config object
-     * @returns {QueryBuilder}
-     * @private
-     */
-    _processUpdate(docroot, node, variables, options) {
-        const name = node.name;
-        const descending = options.descending,
-              orderBy = options.orderBy,
-              returning = options.returning,
-              limit = options.limit;
-
-        // Initialize the query builder
-
-        let qb = this._qb.update().table(name);
-
-        // Iterate through each field and add it to the QueryBuilder
-        this._addTableFields(node, variables, qb);
-
-        // Apply a WHERE statement if applicable
-        Helpers.applyWhereStatement(docroot, node, variables, qb);
-
-        // Add order
-        if (typeof orderBy !== 'undefined' && orderBy !== null) qb.order(orderBy, !descending);
-
-        // Add limit
-        if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
-
-        // Add returning
-        if (typeof returning !== 'undefined' && returning !== null) qb.returning(returning);
-
-        return qb;
-    }
-
-    _processDelete(docroot, node, variables, options) {
-        const params = node.params,
-              nodes = node.nodes,
-              name = node.name;
-        const orderBy = options.orderBy,
-              limit = options.limit,
-              returning = options.returning,
-              descending = options.descending;
-
-
-        if (params.length === 0) throw new Error('A selector statement is required for all delete statements');else if (nodes.filter(x => x.type === Nodes.FIELD).length > 0) throw new Error('Fields are not allowed in delete statements');else {
-            let qb = this._qb.delete().from(name);
-
-            // Add JOIN statements
-            qb = JoinProcessor$1(this._qb).process(docroot, node, variables, qb);
-
-            // Add WHERE statement
-            Helpers.applyWhereStatement(docroot, node, variables, qb);
-
-            // Add order
-            if (typeof orderBy !== 'undefined' && orderBy !== null) qb.order(orderBy, !descending);
-
-            // Add limit
-            if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
-
-            // Add returning
-            if (typeof returning !== 'undefined' && returning !== null) qb.returning(returning);
-
-            return qb;
+            break;
+          case Nodes.RAW_TEXT:
+            qb.set(field.name, this._qb.str(field.value.value));
+            count++;
+            break;
+          default:
+            qb.set(field.name, field.value.value);
+            count++;
         }
+      } catch (e) {
+        console.error(`Value \`${field.value.value}\` for field \`${field.name}\` is invalid`);
+      }
+    });
 
-        return null;
+    if (count === 0) throw new Error('At least one field must be set in a mutation');
+  }
+
+  /**
+   * Verifies a field to make sure it is valid for a mutation
+   *
+   * @param field     The field node
+   * @returns {boolean}
+   * @private
+   */
+  _verifyField(field) {
+    if (field.alias) throw new Error('Aliases not allowed in mutations');else if (field.value === null) throw new Error(`Value required for field '${field.name}'`);else return true;
+  }
+
+  /**
+   * Processed an INSERT statement
+   *
+   * @param docroot          The document docroot
+   * @param node          The table node
+   * @param variables     Global variables
+   * @param options       Config object
+   * @returns {QueryBuilder}
+   * @private
+   */
+  _processInsert(docroot, node, variables, options) {
+    const name = node.name;
+    const returning = options.returning;
+
+    let qb = this._qb.insert().into(name);
+
+    this._addTableFields(node, variables, qb);
+
+    if (returning) qb.returning(returning);
+
+    return qb;
+  }
+
+  /**
+   * Processes an UPDATE statement
+   *
+   * @param docroot          The document docroot
+   * @param node          The table node
+   * @param variables     Global variables
+   * @param options       Config object
+   * @returns {QueryBuilder}
+   * @private
+   */
+  _processUpdate(docroot, node, variables, options) {
+    const name = node.name;
+    const descending = options.descending,
+          orderBy = options.orderBy,
+          returning = options.returning,
+          limit = options.limit;
+
+    // Initialize the query builder
+
+    let qb = this._qb.update().table(name);
+
+    // Iterate through each field and add it to the QueryBuilder
+    this._addTableFields(node, variables, qb);
+
+    // Apply a WHERE statement if applicable
+    Helpers.applyWhereStatement(docroot, node, variables, qb);
+
+    // Add order
+    if (typeof orderBy !== 'undefined' && orderBy !== null) qb.order(orderBy, !descending);
+
+    // Add limit
+    if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
+
+    // Add returning
+    if (typeof returning !== 'undefined' && returning !== null) qb.returning(returning);
+
+    return qb;
+  }
+
+  _processDelete(docroot, node, variables, options) {
+    const params = node.params,
+          nodes = node.nodes,
+          name = node.name;
+    const orderBy = options.orderBy,
+          limit = options.limit,
+          returning = options.returning,
+          descending = options.descending;
+
+
+    if (params.length === 0) throw new Error('A selector statement is required for all delete statements');else if (nodes.filter(x => x.type === Nodes.FIELD).length > 0) throw new Error('Fields are not allowed in delete statements');else {
+      let qb = this._qb.delete().from(name);
+
+      // Add JOIN statements
+      qb = JoinProcessor$1(this._qb).process(docroot, node, variables, qb);
+
+      // Add WHERE statement
+      Helpers.applyWhereStatement(docroot, node, variables, qb);
+
+      // Add order
+      if (typeof orderBy !== 'undefined' && orderBy !== null) qb.order(orderBy, !descending);
+
+      // Add limit
+      if (typeof limit !== 'undefined' && limit !== null) qb.limit(limit);
+
+      // Add returning
+      if (typeof returning !== 'undefined' && returning !== null) qb.returning(returning);
+
+      return qb;
     }
 
-    /**
-     * Processes a table node
-     *
-     * @param docroot          The document docroot
-     * @param node          The table node
-     * @param variables     Global variables
-     * @param options       Config object
-     * @returns {QueryBuilder}
-     * @private
-     */
-    _processTable(docroot, node, variables, options) {
-        // Get the name and parameters associated with the table
-        const params = node.params,
-              nodes = node.nodes;
+    return null;
+  }
 
-        const del = node.delete;
+  /**
+   * Processes a table node
+   *
+   * @param docroot          The document docroot
+   * @param node          The table node
+   * @param variables     Global variables
+   * @param options       Config object
+   * @returns {QueryBuilder}
+   * @private
+   */
+  _processTable(docroot, node, variables, options) {
+    // Get the name and parameters associated with the table
+    const params = node.params,
+          nodes = node.nodes;
 
-        let qb;
+    const del = node.delete;
 
-        if (del) qb = this._processDelete(docroot, node, variables, options);else {
-            if (nodes.filter(x => x.type === Nodes.JOIN).length > 0) throw new Error('Join statements are not allowed in mutations');
+    let qb;
 
-            // If we have selectors, then we're updating a row
-            if (params.length > 0) qb = this._processUpdate(docroot, node, variables, options);else qb = this._processInsert(docroot, node, variables, options);
-        }
+    if (del) qb = this._processDelete(docroot, node, variables, options);else {
+      if (nodes.filter(x => x.type === Nodes.JOIN).length > 0) throw new Error('Join statements are not allowed in mutations');
 
-        return qb;
+      // If we have selectors, then we're updating a row
+      if (params.length > 0) qb = this._processUpdate(docroot, node, variables, options);else qb = this._processInsert(docroot, node, variables, options);
     }
 
-    /**
-     * Processes a query document
-     *
-     * @param docroot          docroot of the document
-     * @param node          Query node
-     * @param variables     Global variables
-     * @returns {QueryBuilder}
-     */
-    process(docroot, node, config, qb = this._qb) {
-        const req_var = node.variables,
-              nodes = node.nodes;
-        let variables = config.variables,
-            options = objectWithoutProperties(config, ['variables']);
+    return qb;
+  }
 
-        // Clone the variables
+  /**
+   * Processes a query document
+   *
+   * @param docroot          docroot of the document
+   * @param node          Query node
+   * @param variables     Global variables
+   * @returns {QueryBuilder}
+   */
+  process(docroot, node, config, qb = this._qb) {
+    const req_var = node.variables,
+          nodes = node.nodes;
+    let variables = config.variables,
+        options = objectWithoutProperties(config, ['variables']);
 
-        variables = Object.assign({}, variables);
+    // Clone the variables
 
-        if (node.type !== Nodes.MUTATION) throw new Error('Only a mutation document node can be passed to a MutationProcessor');
+    variables = Object.assign({}, variables);
 
-        req_var.forEach(v => {
-            if (variables && variables.hasOwnProperty(v.name)) {
-                variables[v.name] = {
-                    value: variables[v.name],
-                    required: v.required
-                };
-            } else {
-                if (v.required) throw new Error(`Missing required variable ${v.name}`);
-            }
-        });
+    if (node.type !== Nodes.MUTATION) throw new Error('Only a mutation document node can be passed to a MutationProcessor');
 
-        const tables = nodes.filter(x => x.type === Nodes.TABLE);
+    req_var.forEach(v => {
+      if (variables && variables.hasOwnProperty(v.name)) {
+        variables[v.name] = {
+          value: variables[v.name],
+          required: v.required
+        };
+      } else {
+        if (v.required) throw new Error(`Missing required variable ${v.name}`);
+      }
+    });
 
-        if (tables.length < 1) throw new Error('Mutations must contain at least one table');
+    const tables = nodes.filter(x => x.type === Nodes.TABLE);
 
-        tables.forEach(table => {
-            qb = this._processTable(docroot, table, variables || {}, options);
-        });
+    if (tables.length < 1) throw new Error('Mutations must contain at least one table');
 
-        return qb;
-    }
+    tables.forEach(table => {
+      qb = this._processTable(docroot, table, variables || {}, options);
+    });
+
+    return qb;
+  }
 }
 
 var MutationProcessor$1 = (flavor => new MutationProcessor(QueryBuilder(flavor)));
@@ -5741,31 +5741,31 @@ var MutationProcessor$1 = (flavor => new MutationProcessor(QueryBuilder(flavor))
  * @returns {{name: string|null, config: {}, as_string: boolean}}
  */
 const getFunctionArgs = args => {
-    let name = null;
-    let config = {};
-    let as_string = false;
+  let name = null;
+  let config = {};
+  let as_string = false;
 
-    switch (args.length) {
-        case 1:
-            config = args[0];
-            break;
-        case 2:
-            if (typeof args[0] === 'string') {
-                name = args[0];
-                config = args[1];
-            } else {
-                config = args[0];
-                as_string = args[1];
-            }
-            break;
-        case 3:
-            name = args[0];
-            config = args[1];
-            as_string = args[2];
-            break;
-    }
+  switch (args.length) {
+    case 1:
+      config = args[0];
+      break;
+    case 2:
+      if (typeof args[0] === 'string') {
+        name = args[0];
+        config = args[1];
+      } else {
+        config = args[0];
+        as_string = args[1];
+      }
+      break;
+    case 3:
+      name = args[0];
+      config = args[1];
+      as_string = args[2];
+      break;
+  }
 
-    return { name, config, as_string };
+  return { name, config, as_string };
 };
 
 /**
@@ -5776,13 +5776,13 @@ const getFunctionArgs = args => {
  * @returns {AST}
  */
 const getEntryPoint = (args, trees) => {
-    const name = args.name;
+  const name = args.name;
 
-    const entry_index = name !== null ? trees.findIndex(x => x.name === name) : trees.length - 1;
+  const entry_index = name !== null ? trees.findIndex(x => x.name === name) : trees.length - 1;
 
-    if (name !== null && entry_index < 0) throw new Error(`Could not find document \`${name}\``);
+  if (name !== null && entry_index < 0) throw new Error(`Could not find document \`${name}\``);
 
-    return trees[entry_index];
+  return trees[entry_index];
 };
 
 /**
@@ -5795,23 +5795,23 @@ const getEntryPoint = (args, trees) => {
  * @returns {string|{text: string, variables: string[]}}
  */
 const getProcessedDocument = (ast, trees, flavor, args) => {
-    let config = args.config,
-        as_string = args.as_string;
+  let config = args.config,
+      as_string = args.as_string;
 
-    let processed = null;
+  let processed = null;
 
-    switch (ast.type) {
-        case Nodes.QUERY:
-            processed = QueryProcessor$1(flavor).process(trees, ast, config);
-            break;
-        case Nodes.MUTATION:
-            processed = MutationProcessor$1(flavor).process(trees, ast, config);
-            break;
-        default:
-            throw new Error('Unrecognized document type');
-    }
+  switch (ast.type) {
+    case Nodes.QUERY:
+      processed = QueryProcessor$1(flavor).process(trees, ast, config);
+      break;
+    case Nodes.MUTATION:
+      processed = MutationProcessor$1(flavor).process(trees, ast, config);
+      break;
+    default:
+      throw new Error('Unrecognized document type');
+  }
 
-    if (processed !== null) return as_string ? processed.toString() : processed.toParam();else throw new Error('An error occurred processing the document');
+  if (processed !== null) return as_string ? processed.toString() : processed.toParam();else throw new Error('An error occurred processing the document');
 };
 
 /**
@@ -5821,33 +5821,33 @@ const getProcessedDocument = (ast, trees, flavor, args) => {
  * @param trees     Collection of document trees
  */
 const getFunction = (flavor, trees) => function () {
-    const args = getFunctionArgs(Array.from(arguments));
-    const ast = getEntryPoint(args, trees);
+  const args = getFunctionArgs(Array.from(arguments));
+  const ast = getEntryPoint(args, trees);
 
-    return getProcessedDocument(ast, trees, flavor, args);
+  return getProcessedDocument(ast, trees, flavor, args);
 };
 
 const dql = flavor => function (arg) {
-    const args = Array.from(arguments);
+  const args = Array.from(arguments);
 
-    // Process as an AST if it is already parsed data
-    if (args.length === 1 && args[0].length > 0 && typeof args[0][0] === 'object' && args[0][0].hasOwnProperty('type')) return getFunction(flavor, arg);
+  // Process as an AST if it is already parsed data
+  if (args.length === 1 && args[0].length > 0 && typeof args[0][0] === 'object' && args[0][0].hasOwnProperty('type')) return getFunction(flavor, arg);
 
-    const literals = args[0];
+  const literals = args[0];
 
-    // We always get literals[0] and then matching post literals for each arg given
-    let result = typeof literals === 'string' ? literals : literals[0];
+  // We always get literals[0] and then matching post literals for each arg given
+  let result = typeof literals === 'string' ? literals : literals[0];
 
-    // Interpolate all variables and get document string
-    for (let i = 1; i < args.length; i++) {
-        result += args[i];
-        result += literals[i];
-    }
+  // Interpolate all variables and get document string
+  for (let i = 1; i < args.length; i++) {
+    result += args[i];
+    result += literals[i];
+  }
 
-    // Parse the string into a set of trees
-    const trees = parser_1.parse(result);
+  // Parse the string into a set of trees
+  const trees = parser_1.parse(result);
 
-    return getFunction(flavor, trees);
+  return getFunction(flavor, trees);
 };
 
 const postgres = dql('postgres');
