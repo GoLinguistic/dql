@@ -51,14 +51,6 @@ RawString
         {$$ = { type: 'RAW', value: $1 };}
 ;
 
-// String
-// ======
-// Any single string without spaces
-String
-    : '"' RawString '"'
-        {$$ = $2.type = 'STRING'; return $2;}
-;
-
 // Field Reference
 // ===============
 // Any reference to a table-specific field using dot notation

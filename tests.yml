@@ -704,23 +704,11 @@
        users(name = $name) { }
      }
 
-# Query with Variable That Naturally Includes ?
-# =============================================
-- name: query with variable that naturally includes question mark
-  expected: SELECT * FROM messages WHERE (content = 'Where are you going?')
+# Query with Long Quoted Text
+# ===========================
+- name: query with long quoted text
+  expected: SELECT * FROM messages WHERE (content = 'This is a test')
   document: |
     query getBookmarksForUser() {
-      messages(content = "Where are you going?") { }
+      messages(content = "This is a test") { }
     }
-
-# Query with Variable That Uses ?
-# ===============================
-- name: query with variable that uses question mark
-  expected: SELECT * FROM messages WHERE (content = 'Where are you going?')
-  document: |
-    query getBookmarksForUser($content) {
-      messages(content = $content) { }
-    }
-  config:
-    variables:
-      content: Where are you going?

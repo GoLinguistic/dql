@@ -14,15 +14,6 @@ import { parser, postgres as dql } from './src';
 
 const tests = yaml.safeLoad(fs.readFileSync('tests.yml', 'utf8'));
 
-test('Should handle preprocessed data correctly', t => {
-    const entry = tests[1];
-    const config = entry.config || {};
-    const parsed = parser.parse(entry.document);
-    const processed = dql(parsed)(config, true);
-
-    return t.is(processed, entry.expected.replace(/\s+/g, ' ').trim());
-});
-
 tests.forEach(entry => {
     const config = entry.config || {};
 
