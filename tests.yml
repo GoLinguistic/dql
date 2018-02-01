@@ -294,6 +294,20 @@
     variables:
       dog: dog
 
+# Selection with an IN that Uses a Query Call
+# ===========================================
+- name: query with an 'in' selector that uses a query call
+  expected: SELECT * FROM messages WHERE (content in (SELECT messages.content FROM messages))
+  document: |
+    query getAllMessages() {
+      messages {
+        content
+      }
+    }
+    query getBookmarksForUser($dog) {
+      messages(content in getAllMessages()) { }
+    }
+
 
 # Limiting for Queries
 # ====================

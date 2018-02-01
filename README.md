@@ -1,13 +1,13 @@
 <div align="center">
     <img src="https://github.com/Nickersoft/dql/raw/master/logo.png" width="400" /><br/><br/>
 
-[![Travis](https://img.shields.io/travis/golinguistic/dql.js.svg)](https://travis-ci.org/Nickersoft/dql)
-[![Code Climate](https://img.shields.io/codeclimate/maintainability/golinguistic/dql.js.svg)]()
-[![Code Climate](https://img.shields.io/codeclimate/c/golinguistic/dql.js.svg)]()
-[![Github file size](https://img.shields.io/github/size/golinguistic/dql.js/bin/dql.js.svg)](https://github.com/golinguistic/dql.js)
+[![Travis](https://img.shields.io/travis/Linguistic/dql.js.svg)](https://travis-ci.org/Nickersoft/dql)
+[![Code Climate](https://img.shields.io/codeclimate/maintainability/Linguistic/dql.js.svg)]()
+[![Code Climate](https://img.shields.io/codeclimate/c/Linguistic/dql.js.svg)]()
+[![Github file size](https://img.shields.io/github/size/Linguistic/dql.js/bin/dql.js.svg)](https://github.com/Linguistic/dql.js)
 
 [![Greenkeeper badge](https://img.shields.io/badge/Greenkeeper-enabled-brightgreen.svg)](https://greenkeeper.io/)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/golinguistic/dql.js/blob/master/LICENSE.md)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/Linguistic/dql.js/blob/master/LICENSE.md)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 </div>
