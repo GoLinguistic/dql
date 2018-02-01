@@ -33,19 +33,17 @@ const common = {
 };
 
 export default [
-  {
-    ...common,
+  Object.assign({}, common, {
     output: {
       file: 'bin/dql.js',
       format: 'cjs'
     }
-  },
-  {
-    ...common,
+  }),
+  Object.assign({}, common, {
     output: {
       file: 'bin/dql.min.js',
       format: 'cjs'
     },
     plugins: [...common.plugins, uglify({}, minify)]
-  }
+  })
 ];

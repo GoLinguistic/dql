@@ -1,60 +1,58 @@
 {
-    "name": "dql",
-    "version": "0.3.3",
-    "description": "A GraphQL-inspired markup for querying databases",
-    "main": "bin/dql.js",
-    "author": "Tyler Nickerson",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Nickersoft/dql"
-    },
-    "files": ["bin", "*.md", "*.png"],
-    "bugs": {
-        "url": "https://github.com/Nickersoft/dql/issues"
-    },
-    "homepage": "https://github.com/Nickersoft/dql",
-    "scripts": {
-        "precommit":
-            "npm run build && git add bin/ src/parser.js && lint-staged",
-        "build-rollup": "rollup -c rollup.config.js",
-        "build-parser": "node cfg/build",
-        "build": "npm run build-parser && npm run build-rollup",
-        "test": "nyc ava",
-        "flow": "flow"
-    },
-    "dependencies": {
-        "squel": "^5.12.0"
-    },
-    "devDependencies": {
-        "ava": "^0.24.0",
-        "babel-core": "^6.26.0",
-        "babel-plugin-external-helpers": "^6.22.0",
-        "babel-plugin-transform-runtime": "^6.23.0",
-        "babel-preset-env": "^1.6.1",
-        "babel-preset-flow": "^6.23.0",
-        "babel-preset-stage-2": "^6.24.1",
-        "babel-register": "^6.26.0",
-        "coveralls": "^3.0.0",
-        "flow-bin": "^0.63.1",
-        "flow-typed": "^2.2.3",
-        "husky": "^0.14.3",
-        "jison": "^0.4.18",
-        "js-yaml": "^3.10.0",
-        "lint-staged": "^6.0.1",
-        "nyc": "^11.4.1",
-        "prettier": "^1.10.2",
-        "rollup": "^0.54.1",
-        "rollup-plugin-babel": "^3.0.3",
-        "rollup-plugin-commonjs": "^8.2.6",
-        "rollup-plugin-node-resolve": "^3.0.2",
-        "rollup-plugin-uglify": "^3.0.0",
-        "uglify-es": "^3.3.7"
-    },
-    "lint-staged": {
-        "*.{js,json,css}": ["prettier --write", "git add"]
-    },
-    "ava": {
-        "require": "babel-register"
-    }
+  "name": "dql",
+  "version": "0.3.3",
+  "description": "A GraphQL-inspired markup for querying databases",
+  "main": "bin/dql.js",
+  "author": "Tyler Nickerson",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nickersoft/dql"
+  },
+  "files": ["bin", "*.md", "*.png"],
+  "bugs": {
+    "url": "https://github.com/Nickersoft/dql/issues"
+  },
+  "homepage": "https://github.com/Nickersoft/dql",
+  "scripts": {
+    "precommit": "npm run build && git add bin/ src/parser.js && lint-staged",
+    "build-rollup": "rollup -c rollup.config.js",
+    "build-parser": "node cfg/build",
+    "build": "npm run build-parser && npm run build-rollup",
+    "test": "nyc ava",
+    "flow": "flow"
+  },
+  "dependencies": {
+    "squel": "^5.12.0"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "coveralls": "^3.0.0",
+    "flow-bin": "^0.64.0",
+    "flow-typed": "^2.3.0",
+    "husky": "^0.14.3",
+    "jison": "^0.4.18",
+    "js-yaml": "^3.10.0",
+    "lint-staged": "^6.1.0",
+    "nyc": "^11.4.1",
+    "prettier": "^1.10.2",
+    "rollup": "^0.55.3",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-commonjs": "^8.3.0",
+    "rollup-plugin-node-resolve": "^3.0.2",
+    "rollup-plugin-uglify": "^3.0.0",
+    "uglify-es": "^3.3.9"
+  },
+  "lint-staged": {
+    "*.{js,json,css}": ["prettier --write", "git add"]
+  },
+  "ava": {
+    "require": "babel-register"
+  }
 }
