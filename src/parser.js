@@ -1320,13 +1320,13 @@ var parser = (function() {
       ) {
         var YYSTATE = YY_START;
         switch ($avoiding_name_collisions) {
-          case 0 /* skip whitespace */:
-            break;
-          case 1:
+          case 0:
             return 44;
             break;
-          case 2:
+          case 1:
             return 43;
+            break;
+          case 2 /* skip whitespace */:
             break;
           case 3:
             return 10;
@@ -1388,9 +1388,9 @@ var parser = (function() {
         }
       },
       rules: [
-        /^(?:\s+)/,
         /^(?:-)/,
-        /^(?:([\+*\/%&|^=><]+)|(![=<>]+)|(-)|(in))/,
+        /^(?:([\+*\/%&|^=><]+)|(![=<>]+)|(-)|(\s+in\s+))/,
+        /^(?:\s+)/,
         /^(?:"(.*?)")/,
         /^(?:\d+\b)/,
         /^(?:query|mutation\b)/,

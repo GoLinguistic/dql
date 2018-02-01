@@ -213,7 +213,7 @@ class FilterString {
     // We return text and variables separately to allow Squel
     // to sanitize the input
     return {
-      text: `${a_bos.text} ${op} ${b_bos.text}`,
+      text: `${a_bos.text} ${op.trim()} ${b_bos.text}`,
       variables: [...a_bos.variables, ...b_bos.variables]
     };
   }

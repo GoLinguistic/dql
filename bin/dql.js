@@ -718,13 +718,13 @@ var parser = function () {
             performAction: function anonymous(yy, yy_, $avoiding_name_collisions, YY_START) {
                 switch ($avoiding_name_collisions) {
                     case 0:
-                        /* skip whitespace */
-                        break;
-                    case 1:
                         return 44;
                         break;
-                    case 2:
+                    case 1:
                         return 43;
+                        break;
+                    case 2:
+                        /* skip whitespace */
                         break;
                     case 3:
                         return 10;
@@ -785,7 +785,7 @@ var parser = function () {
                         break;
                 }
             },
-            rules: [/^(?:\s+)/, /^(?:-)/, /^(?:([\+*\/%&|^=><]+)|(![=<>]+)|(-)|(in))/, /^(?:"(.*?)")/, /^(?:\d+\b)/, /^(?:query|mutation\b)/, /^(?:false|true\b)/, /^(?:[\w\_\d]+)/, /^(?:\{)/, /^(?:\})/, /^(?:\()/, /^(?:\))/, /^(?:\.{3}\s*on\b)/, /^(?:,)/, /^(?:')/, /^(?:")/, /^(?:\.)/, /^(?:\$)/, /^(?:\[)/, /^(?:\])/, /^(?::)/, /^(?:!)/],
+            rules: [/^(?:-)/, /^(?:([\+*\/%&|^=><]+)|(![=<>]+)|(-)|(\s+in\s+))/, /^(?:\s+)/, /^(?:"(.*?)")/, /^(?:\d+\b)/, /^(?:query|mutation\b)/, /^(?:false|true\b)/, /^(?:[\w\_\d]+)/, /^(?:\{)/, /^(?:\})/, /^(?:\()/, /^(?:\))/, /^(?:\.{3}\s*on\b)/, /^(?:,)/, /^(?:')/, /^(?:")/, /^(?:\.)/, /^(?:\$)/, /^(?:\[)/, /^(?:\])/, /^(?::)/, /^(?:!)/],
             conditions: { "INITIAL": { "rules": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], "inclusive": true } }
         };
         return lexer;
@@ -4949,7 +4949,7 @@ class FilterString {
     // We return text and variables separately to allow Squel
     // to sanitize the input
     return {
-      text: `${a_bos.text} ${op} ${b_bos.text}`,
+      text: `${a_bos.text} ${op.trim()} ${b_bos.text}`,
       variables: [...a_bos.variables, ...b_bos.variables]
     };
   }

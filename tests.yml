@@ -35,13 +35,15 @@
 - name: select with fields
   expected: >
     SELECT users.id AS user_id,
-           users.name AS user_name
+           users.name AS user_name,
+           users.dob
     FROM users
   document: |
     query getUsers {
       users {
         id[user_id]
         name[user_name]
+        dob
       }
     }
 
@@ -207,11 +209,13 @@
     SELECT
       users.name,
       bookmarks.name AS bookmark_name,
+      bookmarks.created,
       page_number,
       chapter_name
     FROM users
       INNER JOIN (SELECT
                     bookmarks.name,
+                    bookmarks.created,
                     pages.number AS page_number,
                     chapter_name,
                     bookmarks.user_id
@@ -235,6 +239,7 @@
 
         ...on bookmarks(user_id = users.id) {
           name[bookmark_name]
+          created
 
           ...on pages(bookmark_id = bookmarks.id) {
               number[page_number]
@@ -249,7 +254,7 @@
 
 # Selection with a Nested Filtered JOIN
 # =====================================
-- name: select with nested aliased joins
+- name: select with nested filtered joins
   expected: >
     SELECT
       users.name,

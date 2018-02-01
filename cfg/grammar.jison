@@ -5,28 +5,28 @@
 %lex
 %%
 
-\s+                                     /* skip whitespace */
-"-"                                     return '-';
-([\+*\/%&|^=><]+)|(\![=<>]+)|(\-=)|(in) return 'OPERATOR';
-\"(.*?)\"                               return 'LONG_STRING';
-\d+\b                                   return 'NUMBER';
-query|mutation\b                        return 'DEFINITION';
-false|true\b                            return 'BOOLEAN';
-[\w\_\d]+                               return 'STRING';
-"{"                                     return '{';
-"}"                                     return '}';
-"("                                     return '(';
-")"                                     return ')';
-\.{3}\s*on                              return 'JOIN_OP';
-","                                     return ',';
-"'"                                     return '\'';
-\"                                      return '"';
-"."                                     return '.';
-"$"                                     return '$';
-"["                                     return '[';
-"]"                                     return ']';
-":"                                     return ':';
-"!"                                     return '!';
+"-"                                             return '-';
+([\+*\/%&|^=><]+)|(\![=<>]+)|(\-=)|(\s+in\s+)   return 'OPERATOR';
+\s+                                             /* skip whitespace */
+\"(.*?)\"                                       return 'LONG_STRING';
+\d+\b                                           return 'NUMBER';
+query|mutation\b                                return 'DEFINITION';
+false|true\b                                    return 'BOOLEAN';
+[\w\_\d]+                                       return 'STRING';
+"{"                                             return '{';
+"}"                                             return '}';
+"("                                             return '(';
+")"                                             return ')';
+\.{3}\s*on                                      return 'JOIN_OP';
+","                                             return ',';
+"'"                                             return '\'';
+\"                                              return '"';
+"."                                             return '.';
+"$"                                             return '$';
+"["                                             return '[';
+"]"                                             return ']';
+":"                                             return ':';
+"!"                                             return '!';
 
 /lex
 
