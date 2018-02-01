@@ -48,6 +48,37 @@ class FilterString {
   });
 
   /**
+   * Handles arrays of values
+   *
+   * @param node      Current node
+   * @private
+   */
+  _handleArray = (docroot, node, variables, flavor) => {
+    let values = [];
+
+    node.value.forEach(x => {
+      switch (x.type) {
+        case Nodes.QUERY_CALL:
+          values = [
+            ...values,
+            this._handleQueryCall(docroot, x, variables, flavor).variables
+          ];
+          break;
+        case Nodes.VARIABLE:
+          values = [...values, ...this._handleVariable(x, variables).variables];
+          break;
+        default:
+          values.push(x.value);
+      }
+    });
+
+    return {
+      text: `(${node.value.map(x => '?').join(', ')})`,
+      variables: values
+    };
+  };
+
+  /**
    * Handles case where node is a call to a neighboring query (document)
    *
    * @param docroot       Document docroot
@@ -221,6 +252,9 @@ class FilterString {
         break;
       case Nodes.QUERY_CALL:
         value = this._handleQueryCall(docroot, node, variables, flavor);
+        break;
+      case Nodes.ARRAY:
+        value = this._handleArray(docroot, node, variables, flavor);
         break;
       case Nodes.RAW_TEXT:
         value = this._handleLeftSide(table, node, aliases);

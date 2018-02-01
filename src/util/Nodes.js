@@ -1,6 +1,7 @@
 // @flow
 export default {
   TABLE: 'TABLE',
+  ARRAY: 'ARRAY',
   BOOLEAN: 'BOOLEAN',
   JOIN: 'JOIN',
   QUERY: 'QUERY',

@@ -5,28 +5,28 @@
 %lex
 %%
 
-\s+                                 /* skip whitespace */
-\"(.*?)\"                           return 'LONG_STRING';
-\d+\b                               return 'NUMBER';
-query|mutation\b                    return 'DEFINITION';
-false|true\b                        return 'BOOLEAN';
-[\w\_\d]+                           return 'STRING';
-"-"                                 return '-';
-([\+*\/%&|^=><]+)|(\![=<>]+)|(\-=)  return 'OPERATOR';
-"{"                                 return '{';
-"}"                                 return '}';
-"("                                 return '(';
-")"                                 return ')';
-\.{3}\s*on                          return 'JOIN_OP';
-","                                 return ',';
-"'"                                 return '\'';
-\"                                  return '"';
-"."                                 return '.';
-"$"                                 return '$';
-"["                                 return '[';
-"]"                                 return ']';
-":"                                 return ':';
-"!"                                 return '!';
+\s+                                     /* skip whitespace */
+"-"                                     return '-';
+([\+*\/%&|^=><]+)|(\![=<>]+)|(\-=)|(in) return 'OPERATOR';
+\"(.*?)\"                               return 'LONG_STRING';
+\d+\b                                   return 'NUMBER';
+query|mutation\b                        return 'DEFINITION';
+false|true\b                            return 'BOOLEAN';
+[\w\_\d]+                               return 'STRING';
+"{"                                     return '{';
+"}"                                     return '}';
+"("                                     return '(';
+")"                                     return ')';
+\.{3}\s*on                              return 'JOIN_OP';
+","                                     return ',';
+"'"                                     return '\'';
+\"                                      return '"';
+"."                                     return '.';
+"$"                                     return '$';
+"["                                     return '[';
+"]"                                     return ']';
+":"                                     return ':';
+"!"                                     return '!';
 
 /lex
 
@@ -193,6 +193,42 @@ Param
         {$$ = $1;}
 ;
 
+// Array List
+// ==============
+// Comma-separated list of values contained in brackets
+ArrayList
+    :
+        {$$ = [''];}
+    | ArrayElement
+        {$$ = [$1];}
+    | ArrayList ',' ArrayElement
+        {$$ = $1; $1.push($3);}
+;
+
+// Array
+// ==========
+// ArrayList surrounded by parens []
+Array
+    : '[' ArrayList ']'
+        {$$ = { type: 'ARRAY', value: $2 };}
+;
+
+// ArrayElement
+// ============
+// Single array element
+ArrayElement
+    : LongString
+        {$$ = $1;}
+    | Number
+        {$$ = $1;}
+    | Boolean
+        {$$ = $1;}
+    | Variable
+        {$$ = $1;}
+    | QueryCall
+        {$$ = $1;}
+;
+
 /*************
  * VARIABLES *
  *************/
@@ -263,6 +299,8 @@ Equation
         {$$ = $1;}
     | Number
         {$$ = $1;}
+    | Array
+        {$$ = $1;}
     | LongString
         {$$ = $1;}
     | RawString
@@ -272,8 +310,6 @@ Equation
     | Equation '-' Equation
         {$$ = { type: 'OPERATION', a: $1, op: $2, b: $3 };}
     | '(' Equation ')'
-        {$$ = $2;}
-    | '[' Equation ']'
         {$$ = $2;}
 ;
 

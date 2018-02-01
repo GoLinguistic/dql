@@ -282,6 +282,19 @@
       }
     }
 
+# Selection with an IN Selector
+# =============================
+- name: query with an 'in' selector
+  expected: SELECT * FROM messages WHERE (content in ('cat', TRUE, 'dog'))
+  document: |
+    query getBookmarksForUser($dog) {
+      messages(content in ["cat", true, $dog]) { }
+    }
+  config:
+    variables:
+      dog: dog
+
+
 # Limiting for Queries
 # ====================
 - name: limiting (queries)

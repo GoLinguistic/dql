@@ -9,6 +9,7 @@ var path = _interopDefault(require('path'));
 
 var Nodes = {
   TABLE: 'TABLE',
+  ARRAY: 'ARRAY',
   BOOLEAN: 'BOOLEAN',
   JOIN: 'JOIN',
   QUERY: 'QUERY',
@@ -120,29 +121,30 @@ var parser = function () {
         $V5 = [1, 25],
         $V6 = [1, 24],
         $V7 = [27, 29],
-        $V8 = [1, 4, 15, 17, 39, 46],
-        $V9 = [4, 15, 39, 46],
+        $V8 = [1, 4, 15, 17, 44, 49],
+        $V9 = [4, 15, 44, 49],
         $Va = [1, 36],
         $Vb = [1, 49],
         $Vc = [1, 47],
         $Vd = [1, 46],
         $Ve = [1, 63],
-        $Vf = [1, 61],
-        $Vg = [1, 62],
-        $Vh = [4, 15, 27, 29, 38, 39, 41, 46],
+        $Vf = [1, 62],
+        $Vg = [1, 64],
+        $Vh = [4, 15, 27, 29, 35, 43, 44, 49],
         $Vi = [2, 1],
-        $Vj = [1, 70],
-        $Vk = [1, 71],
-        $Vl = [27, 29, 38, 39, 41],
+        $Vj = [1, 71],
+        $Vk = [1, 72],
+        $Vl = [27, 29, 43, 44],
         $Vm = [1, 77],
-        $Vn = [1, 96],
-        $Vo = [27, 29, 41],
-        $Vp = [4, 8, 36];
+        $Vn = [27, 35],
+        $Vo = [1, 85],
+        $Vp = [27, 29, 35, 43, 44],
+        $Vq = [4, 8, 41];
     var parser = { trace: function trace() {},
         yy: {},
-        symbols_: { "error": 2, "RawString": 3, "STRING": 4, "FieldRef": 5, ".": 6, "RawLongString": 7, "NUMBER": 8, "LongString": 9, "LONG_STRING": 10, "Number": 11, "Boolean": 12, "BOOLEAN": 13, "Join": 14, "JOIN_OP": 15, "Definition": 16, "DEFINITION": 17, "Root": 18, "DocumentList": 19, "Document": 20, "Variables": 21, "Block": 22, "QueryCall": 23, "Params": 24, "ParamList": 25, "Param": 26, ",": 27, "(": 28, ")": 29, "Variable": 30, "VARIABLE": 31, "$": 32, "VariableList": 33, "!": 34, "BuiltInFunc": 35, "'": 36, "Equation": 37, "OPERATOR": 38, "-": 39, "[": 40, "]": 41, "EquationList": 42, "Selectors": 43, "{": 44, "BlockContent": 45, "}": 46, "Content": 47, "JoinOperation": 48, "TableOperation": 49, ":": 50, "$accept": 0, "$end": 1 },
-        terminals_: { 2: "error", 4: "STRING", 6: ".", 8: "NUMBER", 10: "LONG_STRING", 13: "BOOLEAN", 15: "JOIN_OP", 17: "DEFINITION", 27: ",", 28: "(", 29: ")", 32: "$", 34: "!", 36: "'", 38: "OPERATOR", 39: "-", 40: "[", 41: "]", 44: "{", 46: "}", 50: ":" },
-        productions_: [0, [3, 1], [5, 3], [7, 1], [7, 1], [7, 2], [7, 2], [9, 1], [11, 1], [12, 1], [14, 1], [16, 1], [18, 1], [20, 4], [20, 3], [19, 2], [19, 1], [23, 2], [25, 0], [25, 1], [25, 3], [24, 3], [26, 1], [26, 1], [26, 1], [26, 1], [26, 1], [31, 2], [30, 1], [21, 2], [21, 3], [33, 1], [33, 2], [33, 3], [33, 4], [35, 4], [37, 1], [37, 1], [37, 1], [37, 1], [37, 1], [37, 1], [37, 1], [37, 3], [37, 3], [37, 3], [37, 3], [42, 1], [42, 3], [43, 3], [22, 3], [22, 2], [45, 1], [45, 2], [47, 1], [47, 1], [47, 1], [47, 4], [47, 3], [47, 3], [47, 3], [47, 3], [47, 3], [49, 3], [49, 2], [49, 3], [49, 4], [48, 4]],
+        symbols_: { "error": 2, "RawString": 3, "STRING": 4, "FieldRef": 5, ".": 6, "RawLongString": 7, "NUMBER": 8, "LongString": 9, "LONG_STRING": 10, "Number": 11, "Boolean": 12, "BOOLEAN": 13, "Join": 14, "JOIN_OP": 15, "Definition": 16, "DEFINITION": 17, "Root": 18, "DocumentList": 19, "Document": 20, "Variables": 21, "Block": 22, "QueryCall": 23, "Params": 24, "ParamList": 25, "Param": 26, ",": 27, "(": 28, ")": 29, "Variable": 30, "ArrayList": 31, "ArrayElement": 32, "Array": 33, "[": 34, "]": 35, "VARIABLE": 36, "$": 37, "VariableList": 38, "!": 39, "BuiltInFunc": 40, "'": 41, "Equation": 42, "OPERATOR": 43, "-": 44, "EquationList": 45, "Selectors": 46, "{": 47, "BlockContent": 48, "}": 49, "Content": 50, "JoinOperation": 51, "TableOperation": 52, ":": 53, "$accept": 0, "$end": 1 },
+        terminals_: { 2: "error", 4: "STRING", 6: ".", 8: "NUMBER", 10: "LONG_STRING", 13: "BOOLEAN", 15: "JOIN_OP", 17: "DEFINITION", 27: ",", 28: "(", 29: ")", 34: "[", 35: "]", 37: "$", 39: "!", 41: "'", 43: "OPERATOR", 44: "-", 47: "{", 49: "}", 53: ":" },
+        productions_: [0, [3, 1], [5, 3], [7, 1], [7, 1], [7, 2], [7, 2], [9, 1], [11, 1], [12, 1], [14, 1], [16, 1], [18, 1], [20, 4], [20, 3], [19, 2], [19, 1], [23, 2], [25, 0], [25, 1], [25, 3], [24, 3], [26, 1], [26, 1], [26, 1], [26, 1], [26, 1], [31, 0], [31, 1], [31, 3], [33, 3], [32, 1], [32, 1], [32, 1], [32, 1], [32, 1], [36, 2], [30, 1], [21, 2], [21, 3], [38, 1], [38, 2], [38, 3], [38, 4], [40, 4], [42, 1], [42, 1], [42, 1], [42, 1], [42, 1], [42, 1], [42, 1], [42, 1], [42, 3], [42, 3], [42, 3], [45, 1], [45, 3], [46, 3], [22, 3], [22, 2], [48, 1], [48, 2], [50, 1], [50, 1], [50, 1], [50, 4], [50, 3], [50, 3], [50, 3], [50, 3], [50, 3], [52, 3], [52, 2], [52, 3], [52, 4], [51, 4]],
         performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
             /* this == yyval */
 
@@ -154,7 +156,7 @@ var parser = function () {
                 case 2:
                     this.$ = { type: 'FIELD_REF', value: $$[$0 - 2] + '.' + $$[$0] };
                     break;
-                case 3:case 4:case 10:case 11:case 22:case 23:case 24:case 25:case 26:case 27:case 36:case 37:case 38:case 39:case 40:case 41:case 42:case 54:case 55:
+                case 3:case 4:case 10:case 11:case 22:case 23:case 24:case 25:case 26:case 31:case 32:case 33:case 34:case 35:case 36:case 45:case 46:case 47:case 48:case 49:case 50:case 51:case 52:case 63:case 64:
                     this.$ = $$[$0];
                     break;
                 case 5:case 6:
@@ -178,76 +180,79 @@ var parser = function () {
                 case 14:
                     this.$ = { type: $$[$0 - 2].toUpperCase(), name: $$[$0 - 1], variables: [], nodes: $$[$0] };
                     break;
-                case 15:case 53:
+                case 15:case 62:
                     this.$ = $$[$0 - 1];$$[$0 - 1].push($$[$0]);
                     break;
-                case 16:case 19:case 47:case 52:
+                case 16:case 19:case 28:case 56:case 61:
                     this.$ = [$$[$0]];
                     break;
                 case 17:
                     this.$ = { type: 'QUERY_CALL', name: $$[$0 - 1], params: $$[$0] };
                     break;
-                case 18:
+                case 18:case 27:
                     this.$ = [''];
                     break;
-                case 20:case 48:
+                case 20:case 29:case 57:
                     this.$ = $$[$0 - 2];$$[$0 - 2].push($$[$0]);
                     break;
-                case 21:case 30:case 45:case 46:case 49:case 50:
+                case 21:case 39:case 55:case 58:case 59:
                     this.$ = $$[$0 - 1];
                     break;
-                case 28:
+                case 30:
+                    this.$ = { type: 'ARRAY', value: $$[$0 - 1] };
+                    break;
+                case 37:
                     this.$ = { type: 'VARIABLE', value: $$[$0] };
                     break;
-                case 29:case 51:
+                case 38:case 60:
                     this.$ = [];
                     break;
-                case 31:
+                case 40:
                     this.$ = [{ required: false, name: $$[$0] }];
                     break;
-                case 32:
+                case 41:
                     this.$ = [{ required: true, name: $$[$0 - 1] }];
                     break;
-                case 33:
+                case 42:
                     this.$ = $$[$0 - 2];$$[$0 - 2].push({ required: false, name: $$[$0] });
                     break;
-                case 34:
+                case 43:
                     this.$ = $$[$0 - 3];$$[$0 - 3].push({ required: true, name: $$[$0 - 1] });
                     break;
-                case 35:
+                case 44:
                     this.$ = { type: 'BUILT_IN', value: $$[$0 - 3] + " '" + $$[$0 - 1] + "'" };
                     break;
-                case 43:case 44:
+                case 53:case 54:
                     this.$ = { type: 'OPERATION', a: $$[$0 - 2], op: $$[$0 - 1], b: $$[$0] };
                     break;
-                case 56:
+                case 65:
                     this.$ = { type: 'FIELD', name: $$[$0], value: null, alias: null };
                     break;
-                case 57:
+                case 66:
                     this.$ = { type: 'FIELD', name: $$[$0 - 3], value: null, alias: $$[$0 - 1] };
                     break;
-                case 58:case 59:case 60:case 61:case 62:
+                case 67:case 68:case 69:case 70:case 71:
                     this.$ = { type: 'FIELD', name: $$[$0 - 2], value: $$[$0], alias: null };
                     break;
-                case 63:
+                case 72:
                     this.$ = { type: 'TABLE', name: $$[$0 - 2].trim(), params: $$[$0 - 1], nodes: $$[$0], delete: false };
                     break;
-                case 64:
+                case 73:
                     this.$ = { type: 'TABLE', name: $$[$0 - 1].trim(), params: [], nodes: $$[$0], delete: false };
                     break;
-                case 65:
+                case 74:
                     this.$ = { type: 'TABLE', name: $$[$0 - 1].trim(), params: $$[$0], nodes: [], delete: true };
                     break;
-                case 66:
+                case 75:
                     this.$ = { type: 'TABLE', name: $$[$0 - 2].trim(), params: $$[$0 - 1], nodes: $$[$0], delete: true };
                     break;
-                case 67:
+                case 76:
                     this.$ = { type: 'JOIN', table: $$[$0 - 2].trim(), on: $$[$0 - 1], nodes: $$[$0] };
                     break;
             }
         },
-        table: [{ 16: 4, 17: $V0, 18: 1, 19: 2, 20: 3 }, { 1: [3] }, { 1: [2, 12], 16: 4, 17: $V0, 20: 6 }, o($V1, [2, 16]), { 4: [1, 7] }, { 4: [2, 11] }, o($V1, [2, 15]), { 21: 8, 22: 9, 28: [1, 10], 44: $V2 }, { 22: 12, 44: $V2 }, o($V1, [2, 14]), { 29: [1, 13], 31: 15, 32: $V3, 33: 14 }, { 4: $V4, 14: 23, 15: $V5, 39: $V6, 45: 17, 46: [1, 18], 47: 19, 48: 20, 49: 21 }, o($V1, [2, 13]), { 44: [2, 29] }, { 27: [1, 27], 29: [1, 26] }, o($V7, [2, 31], { 34: [1, 28] }), { 4: [1, 29] }, { 4: $V4, 14: 23, 15: $V5, 39: $V6, 46: [1, 30], 47: 31, 48: 20, 49: 21 }, o($V8, [2, 51]), o($V9, [2, 52]), o($V9, [2, 54]), o($V9, [2, 55]), o($V9, [2, 56], { 43: 34, 22: 35, 28: $Va, 40: [1, 32], 44: $V2, 50: [1, 33] }), { 4: [1, 37] }, { 4: [1, 38] }, { 4: [2, 10] }, { 44: [2, 30] }, { 31: 39, 32: $V3 }, o($V7, [2, 32]), o([4, 15, 27, 29, 34, 38, 39, 41, 46], [2, 27]), o($V8, [2, 50]), o($V9, [2, 53]), { 4: [1, 40] }, { 3: 43, 4: [1, 48], 8: $Vb, 9: 42, 10: $Vc, 11: 44, 12: 41, 13: $Vd, 30: 45, 31: 50, 32: $V3 }, { 22: 51, 44: $V2 }, o($V9, [2, 64]), { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 53, 40: $Vg, 42: 52 }, { 28: $Va, 43: 64 }, { 28: $Va, 43: 65 }, o($V7, [2, 33], { 34: [1, 66] }), { 41: [1, 67] }, o($V9, [2, 58]), o($V9, [2, 59]), o($V9, [2, 60]), o($V9, [2, 61]), o($V9, [2, 62]), o([4, 15, 27, 29, 39, 46], [2, 9]), o($Vh, [2, 7]), o($V9, $Vi), o($Vh, [2, 8]), o($Vh, [2, 28]), o($V9, [2, 63]), { 27: [1, 69], 29: [1, 68] }, o($V7, [2, 47], { 38: $Vj, 39: $Vk }), o($Vl, [2, 36]), o($Vl, [2, 37]), o($Vl, [2, 38]), o($Vl, [2, 39]), o($Vl, [2, 40]), o($Vl, [2, 41]), o($Vl, [2, 42]), { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 72, 40: $Vg }, { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 73, 40: $Vg }, o($Vl, $Vi, { 24: 75, 6: [1, 74], 28: $Vm, 36: [1, 76] }), { 22: 78, 44: $V2 }, o($V9, [2, 65], { 22: 79, 44: $V2 }), o($V7, [2, 34]), o($V9, [2, 57]), o([4, 15, 39, 44, 46], [2, 49]), { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 80, 40: $Vg }, { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 81, 40: $Vg }, { 3: 60, 4: $Ve, 5: 54, 8: $Vb, 9: 59, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 31: 50, 32: $V3, 35: 57, 37: 82, 40: $Vg }, { 29: [1, 83], 38: $Vj, 39: $Vk }, { 38: $Vj, 39: $Vk, 41: [1, 84] }, { 4: [1, 85] }, o($Vl, [2, 17]), { 4: [1, 87], 7: 86, 8: [1, 88] }, o($V7, [2, 18], { 31: 50, 25: 89, 26: 90, 9: 91, 11: 92, 12: 93, 30: 94, 23: 95, 4: $Vn, 8: $Vb, 10: $Vc, 13: $Vd, 32: $V3 }), o($V9, [2, 67]), o($V9, [2, 66]), o($V7, [2, 48], { 38: $Vj, 39: $Vk }), o($Vo, [2, 43], { 38: $Vj, 39: $Vk }), o($Vo, [2, 44], { 38: $Vj, 39: $Vk }), o($Vl, [2, 45]), o($Vl, [2, 46]), o($Vl, [2, 2]), { 4: [1, 99], 8: [1, 98], 36: [1, 97] }, o($Vp, [2, 3]), o($Vp, [2, 4]), { 27: [1, 101], 29: [1, 100] }, o($V7, [2, 19]), o($V7, [2, 22]), o($V7, [2, 23]), o($V7, [2, 24]), o($V7, [2, 25]), o($V7, [2, 26]), { 24: 75, 28: $Vm }, o($Vl, [2, 35]), o($Vp, [2, 5]), o($Vp, [2, 6]), o($Vl, [2, 21]), { 4: $Vn, 8: $Vb, 9: 91, 10: $Vc, 11: 92, 12: 93, 13: $Vd, 23: 95, 26: 102, 30: 94, 31: 50, 32: $V3 }, o($V7, [2, 20])],
-        defaultActions: { 5: [2, 11], 13: [2, 29], 25: [2, 10], 26: [2, 30] },
+        table: [{ 16: 4, 17: $V0, 18: 1, 19: 2, 20: 3 }, { 1: [3] }, { 1: [2, 12], 16: 4, 17: $V0, 20: 6 }, o($V1, [2, 16]), { 4: [1, 7] }, { 4: [2, 11] }, o($V1, [2, 15]), { 21: 8, 22: 9, 28: [1, 10], 47: $V2 }, { 22: 12, 47: $V2 }, o($V1, [2, 14]), { 29: [1, 13], 36: 15, 37: $V3, 38: 14 }, { 4: $V4, 14: 23, 15: $V5, 44: $V6, 48: 17, 49: [1, 18], 50: 19, 51: 20, 52: 21 }, o($V1, [2, 13]), { 47: [2, 38] }, { 27: [1, 27], 29: [1, 26] }, o($V7, [2, 40], { 39: [1, 28] }), { 4: [1, 29] }, { 4: $V4, 14: 23, 15: $V5, 44: $V6, 49: [1, 30], 50: 31, 51: 20, 52: 21 }, o($V8, [2, 60]), o($V9, [2, 61]), o($V9, [2, 63]), o($V9, [2, 64]), o($V9, [2, 65], { 46: 34, 22: 35, 28: $Va, 34: [1, 32], 47: $V2, 53: [1, 33] }), { 4: [1, 37] }, { 4: [1, 38] }, { 4: [2, 10] }, { 47: [2, 39] }, { 36: 39, 37: $V3 }, o($V7, [2, 41]), o([4, 15, 27, 29, 35, 39, 43, 44, 49], [2, 36]), o($V8, [2, 59]), o($V9, [2, 62]), { 4: [1, 40] }, { 3: 43, 4: [1, 48], 8: $Vb, 9: 42, 10: $Vc, 11: 44, 12: 41, 13: $Vd, 30: 45, 36: 50, 37: $V3 }, { 22: 51, 47: $V2 }, o($V9, [2, 73]), { 3: 61, 4: $Ve, 5: 54, 8: $Vb, 9: 60, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 33: 59, 34: $Vg, 36: 50, 37: $V3, 40: 57, 42: 53, 45: 52 }, { 28: $Va, 46: 65 }, { 28: $Va, 46: 66 }, o($V7, [2, 42], { 39: [1, 67] }), { 35: [1, 68] }, o($V9, [2, 67]), o($V9, [2, 68]), o($V9, [2, 69]), o($V9, [2, 70]), o($V9, [2, 71]), o([4, 15, 27, 29, 35, 44, 49], [2, 9]), o($Vh, [2, 7]), o($V9, $Vi), o($Vh, [2, 8]), o($Vh, [2, 37]), o($V9, [2, 72]), { 27: [1, 70], 29: [1, 69] }, o($V7, [2, 56], { 43: $Vj, 44: $Vk }), o($Vl, [2, 45]), o($Vl, [2, 46]), o($Vl, [2, 47]), o($Vl, [2, 48]), o($Vl, [2, 49]), o($Vl, [2, 50]), o($Vl, [2, 51]), o($Vl, [2, 52]), { 3: 61, 4: $Ve, 5: 54, 8: $Vb, 9: 60, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 33: 59, 34: $Vg, 36: 50, 37: $V3, 40: 57, 42: 73 }, o($Vl, $Vi, { 24: 75, 6: [1, 74], 28: $Vm, 41: [1, 76] }), o($Vn, [2, 27], { 36: 50, 31: 78, 32: 79, 9: 80, 11: 81, 12: 82, 30: 83, 23: 84, 4: $Vo, 8: $Vb, 10: $Vc, 13: $Vd, 37: $V3 }), { 22: 86, 47: $V2 }, o($V9, [2, 74], { 22: 87, 47: $V2 }), o($V7, [2, 43]), o($V9, [2, 66]), o([4, 15, 44, 47, 49], [2, 58]), { 3: 61, 4: $Ve, 5: 54, 8: $Vb, 9: 60, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 33: 59, 34: $Vg, 36: 50, 37: $V3, 40: 57, 42: 88 }, { 3: 61, 4: $Ve, 5: 54, 8: $Vb, 9: 60, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 33: 59, 34: $Vg, 36: 50, 37: $V3, 40: 57, 42: 89 }, { 3: 61, 4: $Ve, 5: 54, 8: $Vb, 9: 60, 10: $Vc, 11: 58, 23: 56, 28: $Vf, 30: 55, 33: 59, 34: $Vg, 36: 50, 37: $V3, 40: 57, 42: 90 }, { 29: [1, 91], 43: $Vj, 44: $Vk }, { 4: [1, 92] }, o($Vp, [2, 17]), { 4: [1, 94], 7: 93, 8: [1, 95] }, o($V7, [2, 18], { 36: 50, 25: 96, 26: 97, 9: 98, 11: 99, 12: 100, 30: 101, 23: 102, 4: $Vo, 8: $Vb, 10: $Vc, 13: $Vd, 37: $V3 }), { 27: [1, 104], 35: [1, 103] }, o($Vn, [2, 28]), o($Vn, [2, 31]), o($Vn, [2, 32]), o($Vn, [2, 33]), o($Vn, [2, 34]), o($Vn, [2, 35]), { 24: 75, 28: $Vm }, o($V9, [2, 76]), o($V9, [2, 75]), o($V7, [2, 57], { 43: $Vj, 44: $Vk }), o($V7, [2, 53], { 43: $Vj, 44: $Vk }), o($V7, [2, 54], { 43: $Vj, 44: $Vk }), o($Vl, [2, 55]), o($Vl, [2, 2]), { 4: [1, 107], 8: [1, 106], 41: [1, 105] }, o($Vq, [2, 3]), o($Vq, [2, 4]), { 27: [1, 109], 29: [1, 108] }, o($V7, [2, 19]), o($V7, [2, 22]), o($V7, [2, 23]), o($V7, [2, 24]), o($V7, [2, 25]), o($V7, [2, 26]), o($Vl, [2, 30]), { 4: $Vo, 8: $Vb, 9: 80, 10: $Vc, 11: 81, 12: 82, 13: $Vd, 23: 84, 30: 83, 32: 110, 36: 50, 37: $V3 }, o($Vl, [2, 44]), o($Vq, [2, 5]), o($Vq, [2, 6]), o($Vp, [2, 21]), { 4: $Vo, 8: $Vb, 9: 98, 10: $Vc, 11: 99, 12: 100, 13: $Vd, 23: 102, 26: 111, 30: 101, 36: 50, 37: $V3 }, o($Vn, [2, 29]), o($V7, [2, 20])],
+        defaultActions: { 5: [2, 11], 13: [2, 38], 25: [2, 10], 26: [2, 39] },
         parseError: function parseError(str, hash) {
             if (hash.recoverable) {
                 this.trace(str);
@@ -716,31 +721,31 @@ var parser = function () {
                         /* skip whitespace */
                         break;
                     case 1:
-                        return 10;
-                        break;
-                    case 2:
-                        return 8;
-                        break;
-                    case 3:
-                        return 17;
-                        break;
-                    case 4:
-                        return 13;
-                        break;
-                    case 5:
-                        return 4;
-                        break;
-                    case 6:
-                        return 39;
-                        break;
-                    case 7:
-                        return 38;
-                        break;
-                    case 8:
                         return 44;
                         break;
+                    case 2:
+                        return 43;
+                        break;
+                    case 3:
+                        return 10;
+                        break;
+                    case 4:
+                        return 8;
+                        break;
+                    case 5:
+                        return 17;
+                        break;
+                    case 6:
+                        return 13;
+                        break;
+                    case 7:
+                        return 4;
+                        break;
+                    case 8:
+                        return 47;
+                        break;
                     case 9:
-                        return 46;
+                        return 49;
                         break;
                     case 10:
                         return 28;
@@ -764,23 +769,23 @@ var parser = function () {
                         return 6;
                         break;
                     case 17:
-                        return 32;
+                        return 37;
                         break;
                     case 18:
-                        return 40;
+                        return 34;
                         break;
                     case 19:
-                        return 41;
+                        return 35;
                         break;
                     case 20:
-                        return 50;
+                        return 53;
                         break;
                     case 21:
-                        return 34;
+                        return 39;
                         break;
                 }
             },
-            rules: [/^(?:\s+)/, /^(?:"(.*?)")/, /^(?:\d+\b)/, /^(?:query|mutation\b)/, /^(?:false|true\b)/, /^(?:[\w\_\d]+)/, /^(?:-)/, /^(?:([\+*\/%&|^=><]+)|(![=<>]+)|(-))/, /^(?:\{)/, /^(?:\})/, /^(?:\()/, /^(?:\))/, /^(?:\.{3}\s*on\b)/, /^(?:,)/, /^(?:')/, /^(?:")/, /^(?:\.)/, /^(?:\$)/, /^(?:\[)/, /^(?:\])/, /^(?::)/, /^(?:!)/],
+            rules: [/^(?:\s+)/, /^(?:-)/, /^(?:([\+*\/%&|^=><]+)|(![=<>]+)|(-)|(in))/, /^(?:"(.*?)")/, /^(?:\d+\b)/, /^(?:query|mutation\b)/, /^(?:false|true\b)/, /^(?:[\w\_\d]+)/, /^(?:\{)/, /^(?:\})/, /^(?:\()/, /^(?:\))/, /^(?:\.{3}\s*on\b)/, /^(?:,)/, /^(?:')/, /^(?:")/, /^(?:\.)/, /^(?:\$)/, /^(?:\[)/, /^(?:\])/, /^(?::)/, /^(?:!)/],
             conditions: { "INITIAL": { "rules": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], "inclusive": true } }
         };
         return lexer;
@@ -4832,8 +4837,9 @@ class FilterString {
    * @private
    */
 
+
   /**
-   * Handles case where no other conditions are matched and text is treated as a field
+   * Handles case where text appears on the left side of the operator
    *
    * @param table     Table name
    * @param node      Current node
@@ -4894,7 +4900,14 @@ class FilterString {
 
 
   /**
-   * Handles case where text appears on the left side of the operator
+   * Handles arrays of values
+   *
+   * @param node      Current node
+   * @private
+   */
+
+  /**
+   * Handles case where no other conditions are matched and text is treated as a field
    *
    * @param table     Table name
    * @param node      Current node
@@ -4969,6 +4982,9 @@ class FilterString {
       case Nodes.QUERY_CALL:
         value = this._handleQueryCall(docroot, node, variables, flavor);
         break;
+      case Nodes.ARRAY:
+        value = this._handleArray(docroot, node, variables, flavor);
+        break;
       case Nodes.RAW_TEXT:
         value = this._handleLeftSide(table, node, aliases);
         break;
@@ -4999,6 +5015,28 @@ var _initialiseProps = function _initialiseProps() {
     text: getFieldValue(table, node, aliases),
     variables: []
   });
+
+  this._handleArray = (docroot, node, variables, flavor) => {
+    let values = [];
+
+    node.value.forEach(x => {
+      switch (x.type) {
+        case Nodes.QUERY_CALL:
+          values = [...values, this._handleQueryCall(docroot, x, variables, flavor).variables];
+          break;
+        case Nodes.VARIABLE:
+          values = [...values, ...this._handleVariable(x, variables).variables];
+          break;
+        default:
+          values.push(x.value);
+      }
+    });
+
+    return {
+      text: `(${node.value.map(x => '?').join(', ')})`,
+      variables: values
+    };
+  };
 
   this._handleBuiltIn = node => ({
     // If the node is a built-in SQL function such as INTERVAL
