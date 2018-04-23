@@ -104,7 +104,7 @@ experts.
 
 ### “Idk... sounds like a load of bull. Do people even use this?”
 Yes, as a matter of fact, DQL is slowly replacing all query building operations in the 
-[@GoLinguistic](https://github.com/GoLinguistic) codebase (closed source, sorry). DQL was developed out of Linguistic do
+[@Linguistic](https://github.com/Linguistic) codebase (closed source, sorry). DQL was developed out of Linguistic do
 to the need for an abstract, unified way for communicating with the platform's Postgres database. As a result, DQL will 
 continue to improve and grow to meet the needs of the Linguistic platform.  
 
